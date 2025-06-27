@@ -64,9 +64,11 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
         return;
       }
 
-      const orderData = {
+      // Prepara os dados que serão enviados para a rota de criação de preferência
+      // Esta rota no backend (server.js) será responsável por criar o pedido no BD
+      const checkoutData = {
         items: cartItems.map(item => ({
-          _id: item._id,
+          _id: item._id, // O backend usará este _id para referenciar o produto
           nome: item.nome,
           tipo: item.tipo,
           price: item.price,
@@ -76,36 +78,21 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
         shippingAddress: deliveryData,
       };
 
-      const orderResponse = await axios.post(`${API_URL}/api/orders`, orderData, {
+      // 1. Chamar a rota para criar a PREFERÊNCIA de pagamento no Mercado Pago
+      // Esta rota no backend (server.js) JÁ CRIA O PEDIDO no seu banco de dados
+      const preferenceResponse = await axios.post(`${API_URL}/api/payments/create-preference`, checkoutData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         }
       });
 
-      const orderId = orderResponse.data.data._id; 
-      // Removido: const orderTotal = orderResponse.data.data.total; // Esta linha gerava o warning
+      const { init_point } = preferenceResponse.data;
 
-      const pixPaymentResponse = await axios.post(`${API_URL}/api/payments/create-pix-payment`, { orderId }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      onOrderSuccess(); // Limpa o carrinho ou faz outras ações de sucesso do pedido
 
-      const { qrCodeBase64, pixCode, expirationDate, amount: mpAmount, paymentIdMP } = pixPaymentResponse.data;
-
-      onOrderSuccess(); 
-
-      navigate(`/pix-payment/${orderId}`, { 
-        state: { 
-          amount: mpAmount, 
-          qrCodeBase64, 
-          pixCode, 
-          expirationDate,
-          paymentIdMP 
-        } 
-      });
+      // 2. Redirecionar o usuário para o init_point do Mercado Pago
+      window.location.href = init_point; 
       
     } catch (error) {
       console.error('Erro no checkout:', error);
@@ -346,8 +333,8 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
             <h3>Instruções Importantes:</h3>
             <ul>
               <li>Após clicar em "Finalizar Compra", seu pedido será registrado</li>
-              <li>Você será redirecionado para a página de pagamento PIX</li>
-              <li>O pagamento será acertado via PIX usando o QR Code ou código copia e cola</li>
+              <li>Você será redirecionado para a página de pagamento do Mercado Pago</li>
+              <li>Lá você poderá escolher o método de pagamento (PIX, Cartão, Boleto, etc.)</li>
             </ul>
           </div>
 
