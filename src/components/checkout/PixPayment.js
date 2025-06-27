@@ -1,22 +1,37 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react'; 
+import { useLocation } from 'react-router-dom'; 
 import './PixPayment.css';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 const PixPayment = ({ orderId, amount, onBack, onSuccess }) => {
-  const [pixData, setPixData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation(); 
+  
+  // Extrai os dados do PIX do state da navegação
+  // Usamos useMemo para garantir que initialPixData seja um valor estável
+  const initialPixData = React.useMemo(() => {
+    return location.state?.pixCode ? {
+      pixCode: location.state.pixCode,
+      qrCodeBase64: location.state.qrCodeBase64,
+      expirationDate: location.state.expirationDate,
+      amount: location.state.amount,
+      paymentIdMP: location.state.paymentIdMP 
+    } : null;
+  }, [location.state]); // Depende apenas de location.state
+
+  // pixData não precisa de setPixData se for sempre inicializado com initialPixData
+  const pixData = initialPixData; 
+  const [isLoading, setIsLoading] = useState(!initialPixData); 
   const [error, setError] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutos em segundos
+  const [timeLeft, setTimeLeft] = useState(initialPixData ? Math.floor((new Date(initialPixData.expirationDate).getTime() - Date.now()) / 1000) : 30 * 60);
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const [manualConfirmation, setManualConfirmation] = useState(false);
+  const [copyFeedback, setCopyFeedback] = useState(''); 
   
-  // Usando useRef para armazenar o intervalo
   const statusCheckInterval = useRef(null);
 
-  // Função para verificar o status do pagamento
   const checkPaymentStatus = React.useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
@@ -26,46 +41,39 @@ const PixPayment = ({ orderId, amount, onBack, onSuccess }) => {
         }
       });
       
+      console.log('Status de pagamento verificado:', response.data);
+
       if (response.data.paymentStatus === 'approved') {
         setPaymentStatus('approved');
         if (statusCheckInterval.current) {
           clearInterval(statusCheckInterval.current);
         }
         onSuccess();
+      } else if (response.data.paymentStatus === 'cancelled' || response.data.paymentStatus === 'rejected') {
+        setPaymentStatus(response.data.paymentStatus);
+        if (statusCheckInterval.current) {
+          clearInterval(statusCheckInterval.current);
+        }
       }
     } catch (err) {
       console.error('Erro ao verificar status:', err);
     }
   }, [orderId, onSuccess]);
 
-  // Efeito principal para gerar o PIX e iniciar a verificação
+  // Efeito para iniciar a verificação de status e o contador
   useEffect(() => {
-    const generatePixPayment = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.post(`${API_URL}/api/pix/generate`, { orderId }, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        
-        setPixData(response.data);
-        setIsLoading(false);
-        
-        // --- NOVO LOG DE DEPURACAO AQUI ---
-        console.log('Dados PIX recebidos no frontend:', response.data);
-        console.log('pixCode recebido no frontend:', response.data.pixCode);
-        // --- FIM DO LOG DE DEPURACAO ---
-
-        // Iniciar verificação periódica do status
-        statusCheckInterval.current = setInterval(checkPaymentStatus, 10000);
-      } catch (err) {
-        setError(err.response?.data?.message || 'Erro ao gerar pagamento PIX');
-        setIsLoading(false);
-      }
-    };
-
-    generatePixPayment();
+    // Se os dados PIX já foram recebidos via state, inicie o processo
+    if (pixData) { // Agora usamos pixData diretamente
+      setIsLoading(false);
+      // Iniciar verificação periódica do status
+      statusCheckInterval.current = setInterval(checkPaymentStatus, 10000);
+    } else {
+      // Se por algum motivo os dados não vieram no state (ex: refresh direto na URL),
+      // pode tentar buscar do backend ou mostrar um erro.
+      // Neste caso, vamos apenas definir um erro, pois o CheckoutPage deve sempre passar os dados.
+      setError('Dados do PIX não foram carregados. Por favor, tente novamente.');
+      setIsLoading(false);
+    }
 
     // Limpeza ao desmontar
     return () => {
@@ -73,14 +81,14 @@ const PixPayment = ({ orderId, amount, onBack, onSuccess }) => {
         clearInterval(statusCheckInterval.current);
       }
     };
-  }, [orderId, checkPaymentStatus]);
+  }, [pixData, checkPaymentStatus]); // Depende de pixData e checkPaymentStatus
 
   // Efeito para o contador regressivo
   useEffect(() => {
     let timer;
     if (timeLeft > 0 && paymentStatus === 'pending') {
       timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-    } else if (timeLeft === 0 && paymentStatus === 'pending') {
+    } else if (timeLeft <= 0 && paymentStatus === 'pending') { 
       setPaymentStatus('expired');
       if (statusCheckInterval.current) {
         clearInterval(statusCheckInterval.current);
@@ -107,7 +115,7 @@ const PixPayment = ({ orderId, amount, onBack, onSuccess }) => {
       }
       onSuccess();
     } catch (err) {
-      setError('Erro ao confirmar pagamento');
+      setError('Erro ao confirmar pagamento manualmente');
     }
   };
 
@@ -118,9 +126,10 @@ const PixPayment = ({ orderId, amount, onBack, onSuccess }) => {
   };
 
   const copyToClipboard = (text) => {
-    if (!text) { // Adicionado verificação para texto vazio
+    if (!text) { 
       console.warn('Tentativa de copiar texto vazio para a área de transferência.');
-      // Você pode adicionar um feedback visual para o usuário aqui, como um toast
+      setCopyFeedback('Nada para copiar!'); 
+      setTimeout(() => setCopyFeedback(''), 2000); 
       return;
     }
     const el = document.createElement('textarea');
@@ -130,13 +139,15 @@ const PixPayment = ({ orderId, amount, onBack, onSuccess }) => {
     document.execCommand('copy');
     document.body.removeChild(el);
     console.log('Código PIX copiado para a área de transferência!'); 
+    setCopyFeedback('Copiado!'); 
+    setTimeout(() => setCopyFeedback(''), 2000); 
   };
 
   if (isLoading) {
     return (
       <div className="pix-payment-loading">
         <div className="spinner"></div>
-        <p>Gerando pagamento PIX...</p>
+        <p>Carregando dados do PIX...</p>
       </div>
     );
   }
@@ -173,13 +184,13 @@ const PixPayment = ({ orderId, amount, onBack, onSuccess }) => {
   return (
     <div className="pix-payment-container">
       <h2>Pagamento via PIX</h2>
-      <p className="pix-amount">Valor: R$ {amount.toFixed(2)}</p>
+      <p className="pix-amount">Valor: R$ {amount ? amount.toFixed(2) : '0.00'}</p>
       
       <div className="pix-qr-code">
         {pixData?.qrCodeBase64 ? (
-          <img src={pixData.qrCodeBase64} alt="QR Code PIX" />
+          <img src={`data:image/png;base64,${pixData.qrCodeBase64}`} alt="QR Code PIX" />
         ) : (
-          <QRCodeCanvas value={pixData?.pixCode || ''} size={200} /> 
+          pixData?.pixCode && <QRCodeCanvas value={pixData.pixCode} size={200} /> 
         )}
       </div>
       
@@ -194,20 +205,21 @@ const PixPayment = ({ orderId, amount, onBack, onSuccess }) => {
           <li>Selecione a opção PIX</li>
           <li>Escolha "Pagar com QR Code" ou "Copiar e Colar"</li>
           <li>Confirme o pagamento</li>
-          <li>Após pagar, clique em "Já paguei" abaixo</li>
+          <li>Aguarde a confirmação automática do pagamento.</li> 
         </ol>
       </div>
       
       <div className="pix-copy-code">
         <h4>Código PIX (Copiar e Colar):</h4>
         <div className="pix-code-container">
-          <p className="pix-code">{pixData?.pixCode}</p> {/* Aqui o valor é exibido */}
+          <p className="pix-code">{pixData?.pixCode || 'Carregando...'}</p> 
           <button 
             onClick={() => copyToClipboard(pixData?.pixCode)} 
             className="copy-button"
           >
             Copiar
           </button>
+          {copyFeedback && <span className="copy-feedback">{copyFeedback}</span>} 
         </div>
       </div>
       
@@ -217,7 +229,7 @@ const PixPayment = ({ orderId, amount, onBack, onSuccess }) => {
           onClick={() => setManualConfirmation(true)}
           className="confirm-button"
         >
-          Já paguei
+          Já paguei (Confirmação Manual)
         </button>
       </div>
 
@@ -225,7 +237,7 @@ const PixPayment = ({ orderId, amount, onBack, onSuccess }) => {
         <div className="manual-confirmation-modal">
           <div className="modal-content">
             <h3>Confirmar Pagamento</h3>
-            <p>Você já realizou o pagamento deste pedido via PIX?</p>
+            <p>Você já realizou o pagamento deste pedido via PIX? (Esta é uma confirmação manual)</p>
             <div className="modal-buttons">
               <button 
                 onClick={() => setManualConfirmation(false)}

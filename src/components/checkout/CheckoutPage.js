@@ -64,7 +64,6 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
         return;
       }
 
-      // Preparar os dados do pedido para criação inicial
       const orderData = {
         items: cartItems.map(item => ({
           _id: item._id,
@@ -75,11 +74,8 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
           imagem: item.imagem
         })),
         shippingAddress: deliveryData,
-        // O total será calculado no backend pelo pre-save hook do Mongoose
-        // total: cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) + 0.01
       };
 
-      // 1. Enviar pedido para o backend (cria o pedido com status 'pending')
       const orderResponse = await axios.post(`${API_URL}/api/orders`, orderData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -87,11 +83,29 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
         }
       });
 
-      const orderId = orderResponse.data.data._id; // Obter o ID do pedido criado
-      const orderTotal = orderResponse.data.data.total; // Obter o total calculado pelo backend
+      const orderId = orderResponse.data.data._id; 
+      // Removido: const orderTotal = orderResponse.data.data.total; // Esta linha gerava o warning
 
-      onOrderSuccess(); // Limpa o carrinho ou faz outras ações de sucesso do pedido
-      navigate(`/pix-payment/${orderId}`, { state: { amount: orderTotal } }); // Redireciona para a página PIX
+      const pixPaymentResponse = await axios.post(`${API_URL}/api/payments/create-pix-payment`, { orderId }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const { qrCodeBase64, pixCode, expirationDate, amount: mpAmount, paymentIdMP } = pixPaymentResponse.data;
+
+      onOrderSuccess(); 
+
+      navigate(`/pix-payment/${orderId}`, { 
+        state: { 
+          amount: mpAmount, 
+          qrCodeBase64, 
+          pixCode, 
+          expirationDate,
+          paymentIdMP 
+        } 
+      });
       
     } catch (error) {
       console.error('Erro no checkout:', error);
@@ -155,7 +169,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
   };
 
   const principalAddress = user?.enderecos?.find(addr => addr.principal) || user?.enderecos?.[0];
-  const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) + 0.01; // Frete de 1 centavo
+  const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) + 0.01; 
 
   return (
     <div className="checkout-container">
@@ -180,7 +194,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
                 </div>
               ))}
               <div className="cart-shipping">
-                <p>Frete: R$ 0.01</p> {/* Alterado para 1 centavo */}
+                <p>Frete: R$ 0.01</p> 
               </div>
               <div className="cart-total">
                 <p>Total: R$ {totalAmount.toFixed(2)}</p>
