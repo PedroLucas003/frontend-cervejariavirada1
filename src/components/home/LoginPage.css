@@ -1,0 +1,215 @@
+/* Estilos baseados no Uiverse.io com tema dark */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #121212;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  background: linear-gradient(#212121, #212121) padding-box,
+              linear-gradient(145deg, transparent 35%,#e81cff, #40c9ff) border-box;
+  border: 2px solid transparent;
+  padding: 32px 24px;
+  font-size: 14px;
+  font-family: inherit;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  border-radius: 16px;
+}
+
+.form-container h2 {
+  text-align: center;
+  margin: 0;
+  color: #fff;
+  font-size: 1.8rem;
+}
+
+.subtitle {
+  text-align: center;
+  color: #b0b0b0;
+  margin: 0 0 20px 0;
+  font-size: 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #b0b0b0;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #fff;
+  font-family: inherit;
+  background-color: transparent;
+  border: 1px solid #414141;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #e81cff;
+}
+
+.form-group input::placeholder {
+  opacity: 0.5;
+  color: #b0b0b0;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.address-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #414141;
+}
+
+.address-section h3 {
+  margin: 0 0 15px 0;
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.form-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  font-family: inherit;
+  color: #fff;
+  font-weight: 600;
+  width: 100%;
+  background: #313131;
+  border: 1px solid #414141;
+  padding: 12px 16px;
+  font-size: inherit;
+  gap: 8px;
+  margin-top: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.form-submit-btn:hover {
+  background-color: #e81cff;
+  border-color: #e81cff;
+}
+
+.form-submit-btn:active {
+  scale: 0.95;
+}
+
+.form-submit-btn:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.toggle-mode {
+  text-align: center;
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin-top: 15px;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #40c9ff;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0;
+  margin-left: 5px;
+  text-decoration: underline;
+}
+
+.toggle-btn:hover {
+  color: #e81cff;
+}
+
+.error-message {
+  background: #3a1c1f;
+  color: #ff8a8a;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.field-error {
+  color: #ff8a8a;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    padding: 1rem;
+    align-items: flex-start;
+    padding-top: 3rem;
+  }
+  
+  .form-container {
+    padding: 24px 16px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 20px 12px;
+  }
+  
+  .form-container h2 {
+    font-size: 1.5rem;
+  }
+}
