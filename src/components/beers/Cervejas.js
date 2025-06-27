@@ -30,12 +30,11 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
       setError(null);
       
       const response = await axios.get(`${API_URL}/api/beers/public`, {
-      headers: {
-        'Accept': 'application/json',
-        'Cache-Control': 'no-cache'
-      },
-      withCredentials: true
-    });
+  headers: {
+    'Accept': 'application/json'
+  },
+  withCredentials: true
+});
       
       if (!response.data || !response.data.success || !Array.isArray(response.data.data)) {
         throw new Error('Estrutura de dados inválida');
