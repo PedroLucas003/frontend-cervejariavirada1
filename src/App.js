@@ -15,7 +15,7 @@ import AdminOrdersPage from './components/users/AdminOrdersPage';
 import PixPayment from './components/checkout/PixPayment'; // <--- CAMINHO CORRIGIDO AQUI
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+const API_URL = process.env.REACT_APP_API_URL;
 
 // Componente Wrapper para PixPayment para extrair os parâmetros da URL e o state
 const PixPaymentWrapper = ({ onOrderSuccess }) => {

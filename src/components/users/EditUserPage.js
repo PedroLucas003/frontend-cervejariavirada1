@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import './EditUserPage.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://backendn2.onrender.com';
+const API_URL = process.env.REACT_APP_API_URL;
 
 const EditUserPage = () => {
   const { id } = useParams();

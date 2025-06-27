@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Cervejas.css';
 
-const API_URL = 'http://localhost:3001';
+const API_URL = process.env.REACT_APP_API_URL;
 
 const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   const [cervejas, setCervejas] = useState([]);

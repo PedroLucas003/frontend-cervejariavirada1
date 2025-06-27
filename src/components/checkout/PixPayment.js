@@ -3,7 +3,7 @@ import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react'; 
 import './PixPayment.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+const API_URL = process.env.REACT_APP_API_URL;
 
 const PixPayment = ({ orderId, amount, onBack, onSuccess }) => {
   const [pixData, setPixData] = useState(null);

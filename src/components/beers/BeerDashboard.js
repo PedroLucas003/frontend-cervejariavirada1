@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './BeerDashboard.css';
 
-const API_URL = 'http://localhost:3001';
+const API_URL = process.env.REACT_APP_API_URL;
 
 const BeerDashboard = ({ user }) => {
   const [beers, setBeers] = useState([]);

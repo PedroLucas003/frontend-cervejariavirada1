@@ -17,7 +17,7 @@ const UserProfilePage = ({ user, onUpdateUser }) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [activeTab, setActiveTab] = useState('info');
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+ const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     if (user) {
