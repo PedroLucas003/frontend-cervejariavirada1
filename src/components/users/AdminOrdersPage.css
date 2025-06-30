@@ -1,5 +1,5 @@
-/* VARIÁVEIS DE CORES */
-:root {
+/* VARIÁVEIS DE CORES - Específicas para AdminOrders */
+.admin-orders-root {
   --bg-black: #121212;
   --bg-container: #212121;
   --text-primary: #ffffff;
@@ -20,12 +20,14 @@
   --error-text: #ff8a8a;
 }
 
-/* ESTILOS DA PÁGINA DE PEDIDOS */
+/* ESTILOS DA PÁGINA DE PEDIDOS - Admin */
 .admin-orders-container {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
   color: var(--text-primary);
+  background-color: var(--bg-black);
+  min-height: 100vh;
 }
 
 .admin-orders-container h1 {
@@ -49,14 +51,14 @@
   border-radius: 3px;
 }
 
-.orders-grid {
+.admin-orders-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 20px;
   margin-top: 20px;
 }
 
-.order-card {
+.admin-orders-card {
   background: linear-gradient(var(--bg-container), var(--bg-container)) padding-box,
               linear-gradient(145deg, transparent 35%, var(--secondary-color), var(--primary-color)) border-box;
   border: 2px solid transparent;
@@ -64,43 +66,43 @@
   padding: 24px;
   box-shadow: 0 4px 20px var(--shadow-color);
   transition: transform 0.3s ease;
-  animation: fadeIn 0.5s ease-out forwards;
+  animation: adminFadeIn 0.5s ease-out forwards;
 }
 
-.order-card:hover {
+.admin-orders-card:hover {
   transform: translateY(-5px);
 }
 
-.order-header {
+.admin-orders-header {
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 15px;
   margin-bottom: 15px;
 }
 
-.order-header h3 {
+.admin-orders-header h3 {
   margin-top: 0;
   color: var(--primary-color);
 }
 
-.order-header p {
+.admin-orders-header p {
   color: var(--text-secondary);
   margin: 5px 0;
 }
 
-.order-header p strong {
+.admin-orders-header p strong {
   color: var(--text-primary);
 }
 
-.order-items {
+.admin-orders-items {
   margin-top: 15px;
 }
 
-.order-items h4 {
+.admin-orders-items h4 {
   color: var(--text-primary);
   margin-bottom: 10px;
 }
 
-.order-item {
+.admin-orders-item {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -108,11 +110,11 @@
   border-bottom: 1px solid var(--border-color);
 }
 
-.order-item:last-child {
+.admin-orders-item:last-child {
   border-bottom: none;
 }
 
-.order-item img {
+.admin-orders-item img {
   width: 50px;
   height: 50px;
   object-fit: contain;
@@ -121,46 +123,47 @@
   padding: 5px;
 }
 
-.order-item div p {
+.admin-orders-item div p {
   margin: 3px 0;
   font-size: 14px;
   color: var(--text-secondary);
 }
 
-.order-item div p:first-child {
+.admin-orders-item div p:first-child {
   color: var(--text-primary);
   font-weight: 500;
 }
 
 /* Status styles */
-.status-pending {
+.admin-status-pending {
   color: #fa8c16;
   font-weight: 600;
 }
 
-.status-processing {
+.admin-status-processing {
   color: var(--primary-color);
   font-weight: 600;
 }
 
-.status-delivered {
+.admin-status-delivered {
   color: #52c41a;
   font-weight: 600;
 }
 
-.status-cancelled {
+.admin-status-cancelled {
   color: var(--danger-color);
   font-weight: 600;
 }
 
 /* Loading e mensagens de erro */
-.loading-screen {
+.admin-loading-screen {
   text-align: center;
   padding: 2rem;
   color: var(--text-primary);
+  background-color: var(--bg-black);
 }
 
-.global-error {
+.admin-global-error {
   background-color: var(--error-bg);
   color: var(--error-text);
   padding: 1rem;
@@ -172,7 +175,7 @@
 }
 
 /* ANIMAÇÕES */
-@keyframes fadeIn {
+@keyframes adminFadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
@@ -183,13 +186,13 @@
     padding: 1rem;
   }
   
-  .orders-grid {
+  .admin-orders-grid {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 480px) {
-  .order-card {
+  .admin-orders-card {
     padding: 16px;
   }
   
