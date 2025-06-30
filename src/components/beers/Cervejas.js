@@ -50,7 +50,8 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           beerType: beer.beerType,
           descricao: beer.description || 'Descrição não disponível', // AGORA USA A DESCRIÇÃO DO BANCO DE DADOS
           imagem: getBeerImage(beer.beerType),
-          teor: `${beer.alcoholContent}% ABV`,
+          // CORREÇÃO AQUI: Não adiciona "% ABV" novamente se já vem do banco de dados
+          teor: beer.alcoholContent, 
           ibu: beer.ibu,
           cor: beer.color,
           turbidez: beer.turbidity,
@@ -189,7 +190,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
               {/* Para renderizar quebras de linha se existirem na descrição do BD */}
               <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
               <div className="cerveja-specs">
-                <span className="spec-item">ABV: {cerveja.teor}</span>
+                <span className="spec-item">ABV: {cerveja.teor}</span> {/* AGORA EXIBE SEM DUPLICAR */}
                 {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
                 {cerveja.cor && <span className="spec-item">Cor: {cerveja.cor}</span>}
                 {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
@@ -215,7 +216,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
         <div className="cart-header">
           <h3>Seu Carrinho</h3>
           <button className="close-cart" onClick={() => setShowCart(false)}>
-            <i className="fas fa-times"></i>
+            <i className="fas fa fa-times"></i>
           </button>
         </div>
 
