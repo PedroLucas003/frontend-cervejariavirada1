@@ -11,7 +11,7 @@ const BeerDashboard = ({ user }) => {
     beerType: '',
     description: '',
     alcoholContent: '',
-    yearCreated: '',
+    yearCreated: new Date().getFullYear().toString(),
     quantity: 0,
     price: 15.90
   });
@@ -21,7 +21,6 @@ const BeerDashboard = ({ user }) => {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  // Redireciona se não for admin
   useEffect(() => {
     if (!user || !user.isAdmin) {
       navigate('/');
@@ -70,6 +69,36 @@ const BeerDashboard = ({ user }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    if (name === 'beerType') {
+      const defaultData = {
+        'Belgian Blonde Ale': {
+          description: 'Estilo: Belgian Blonde Ale\nABV: 6%\nIBU: 30\n\nUma cerveja de corpo leve, de espuma fina, com um aroma frutado e um sabor suave, de um perfil fácil de beber.',
+          alcoholContent: '6% ABV'
+        },
+        'Tripel': {
+          description: 'Estilo: Tripel\nABV: 9.2%\nIBU: 23\nCor: Dourada\nTurbidez: média (encorpada)\n\nUma cerveja de corpo leve, de espuma fina, com um aroma frutado e um sabor suave, de um perfil fácil de beber, o que contrasta com sua colossal carga alcóolica, indicada apenas pelo final seco. Inspirada nas cervejas monásticas da escola Belga e fermentada usando as mesmas leveduras históricas, a Tripel é uma cerveja apenas para os fortes. Aprecie com moderação. Sério.',
+          alcoholContent: '9.2% ABV'
+        },
+        'Extra Stout': {
+          description: 'Estilo: Extra Stout\nABV: 6.7%\nIBU: 55\nCor: Preta\nTurbidez: alta (completamente opaca)\n\nUma cerveja de origem britânica e amada pelos americanos, a Imperial Stout é conhecida historicamente como a versão da English Porter que encantou a corte imperial russa. O estilo é definido pela combinação de maltes em diferentes intensidades de torra, conferindo tons de café e chocolate numa cerveja densa, quase licorosa, que contrasta perfeitamente o amargor presente com um leve adocicado. Os czares ficaram maravilhados. E você, ficaria também?',
+          alcoholContent: '6.7% ABV'
+        },
+        'Irish Red Ale': {
+          description: 'Estilo: Irish Red Ale\nABV: 5.8%\nIBU: 30\nCor: Vermelho-acobreada\nTurbidez: média (encorpada)\n\nUma abordagem pernambucana a uma cerveja irlandesa. Combina tipos diferentes de maltes de meia torra para formar uma cerveja de cor intensa e corpo complexo, contrastando um leve sabor caramelizado com o amargor destacado e o toque floral do lúpulo. Excelente para clarear as ideias e pensar melhor, seja antes ou depois do almoço.',
+          alcoholContent: '5.8% ABV'
+        }
+      };
+      
+      setFormData(prev => ({
+        ...prev,
+        beerType: value,
+        description: defaultData[value]?.description || '',
+        alcoholContent: defaultData[value]?.alcoholContent || ''
+      }));
+      return;
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: name === 'quantity' || name === 'price' ? Number(value) : value
@@ -97,7 +126,7 @@ const BeerDashboard = ({ user }) => {
         beerType: '',
         description: '',
         alcoholContent: '',
-        yearCreated: '',
+        yearCreated: new Date().getFullYear().toString(),
         quantity: 0,
         price: 15.90
       });
@@ -168,11 +197,10 @@ const BeerDashboard = ({ user }) => {
                 required
               >
                 <option value="">Selecione um tipo</option>
-                <option value="IPA">IPA</option>
-                <option value="Stout">Stout</option>
-                <option value="Weiss">Weiss</option>
-                <option value="Pilsen">Pilsen</option>
-                <option value="Outro">Outro</option>
+                <option value="Belgian Blonde Ale">Belgian Blonde Ale</option>
+                <option value="Tripel">Tripel</option>
+                <option value="Extra Stout">Extra Stout</option>
+                <option value="Irish Red Ale">Irish Red Ale</option>
               </select>
             </div>
 
@@ -183,7 +211,7 @@ const BeerDashboard = ({ user }) => {
                 value={formData.description}
                 onChange={handleChange}
                 required
-                rows="3"
+                rows="5"
                 placeholder="Descrição da cerveja..."
               />
             </div>
@@ -262,7 +290,7 @@ const BeerDashboard = ({ user }) => {
                       beerType: '',
                       description: '',
                       alcoholContent: '',
-                      yearCreated: '',
+                      yearCreated: new Date().getFullYear().toString(),
                       quantity: 0,
                       price: 15.90
                     });
@@ -298,7 +326,7 @@ const BeerDashboard = ({ user }) => {
                     {beers.map(beer => (
                       <tr key={beer._id}>
                         <td>{beer.beerType}</td>
-                        <td>{beer.description}</td>
+                        <td className="description-cell">{beer.description}</td>
                         <td>{beer.alcoholContent}</td>
                         <td>{beer.yearCreated}</td>
                         <td>{beer.quantity}</td>

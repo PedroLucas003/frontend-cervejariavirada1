@@ -15,13 +15,12 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
 
   const getBeerImage = useCallback((beerType) => {
     const images = {
-      'IPA': '/ipa-beer.png',
-      'Stout': '/stout-beer.png',
-      'Weiss': '/weiss-beer.png',
-      'Pilsen': '/pilsen-beer.png',
-      'Outro': '/default-beer.png'
+      'Belgian Blonde Ale': '/belgian-blonde.png',
+      'Tripel': '/tripel.png',
+      'Extra Stout': '/stout-beer.png',
+      'Irish Red Ale': '/irish-red.png'
     };
-    return images[beerType] || images['Outro'];
+    return images[beerType] || '/default-beer.png';
   }, []);
 
   const fetchBeers = useCallback(async () => {
@@ -30,11 +29,11 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
       setError(null);
       
       const response = await axios.get(`${API_URL}/api/beers/public`, {
-  headers: {
-    'Accept': 'application/json'
-  },
-  withCredentials: true
-});
+        headers: {
+          'Accept': 'application/json'
+        },
+        withCredentials: true
+      });
       
       if (!response.data || !response.data.success || !Array.isArray(response.data.data)) {
         throw new Error('Estrutura de dados inválida');
@@ -49,7 +48,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
         imagem: getBeerImage(beer.beerType),
         teor: beer.alcoholContent,
         ano: beer.yearCreated,
-        price: 0.01, // Alterado para 1 centavo
+        price: beer.price || 15.90,
         quantity: beer.quantity
       }));
 
