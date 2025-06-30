@@ -13,14 +13,17 @@ const HeroBanner = () => {
         <video autoPlay loop muted playsInline className="hero-video">
           <source src="/cervejariavirada.mp4" type="video/mp4" />
         </video>
-        <div className="glass-overlay"></div> {/* Nova camada */}
+        <div className="glass-overlay"></div>
       </div>
 
       <div className="hero-content-container">
         <div className="hero-content">
-          <div className="brand-name">
-            <div className="cervejaria">Cervejaria</div>
-            <div className="virada">Vir<span className="inverted-a">a</span>da</div>
+          <div className="brand-logo-container">
+            <img 
+              src="/logo-cervejaria-virada.png" 
+              alt="Cervejaria Virada" 
+              className="brand-logo"
+            />
           </div>
           <p className="subtitle">Artesanal • Autêntica • Inesquecível</p>
           <button className="cta-button" onClick={scrollToCervejas}>
