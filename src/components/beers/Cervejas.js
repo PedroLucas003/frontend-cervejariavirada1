@@ -24,16 +24,17 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   }, []);
 
   const fetchBeers = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const response = await axios.get(`${API_URL}/api/beers/public`, {
-        headers: {
-          'Accept': 'application/json'
-        },
-        withCredentials: true
-      });
+  try {
+    setLoading(true);
+    setError(null);
+    
+    const response = await axios.get(`${API_URL}/api/beers/public?t=${Date.now()}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache'
+      },
+      withCredentials: true
+    });
       
       if (!response.data || !response.data.success || !Array.isArray(response.data.data)) {
         throw new Error('Estrutura de dados inválida');
