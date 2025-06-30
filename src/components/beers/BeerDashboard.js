@@ -175,185 +175,187 @@ const BeerDashboard = ({ user }) => {
 
   return (
     <div className="beer-dashboard">
-      <h2>Painel Admin - Gerenciamento de Cervejas</h2>
-      <p className="admin-welcome">Bem-vindo, {user?.email}</p>
-      
-      {loading ? (
-        <div className="loading-indicator">
-          <div className="spinner"></div>
-          <p>Carregando...</p>
-        </div>
-      ) : (
-        <>
-          {error && <div className="error-message">{error}</div>}
+      <div className="dashboard-container">
+        <h2>Painel Admin - Gerenciamento de Cervejas</h2>
+        <p className="admin-welcome">Bem-vindo, {user?.email}</p>
+        
+        {loading ? (
+          <div className="loading-indicator">
+            <div className="spinner"></div>
+            <p>Carregando...</p>
+          </div>
+        ) : (
+          <>
+            {error && <div className="error-message">{error}</div>}
 
-          <form onSubmit={handleSubmit} className="beer-form">
-            <div className="form-group">
-              <label>Tipo:</label>
-              <select
-                name="beerType"
-                value={formData.beerType}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Selecione um tipo</option>
-                <option value="Belgian Blonde Ale">Belgian Blonde Ale</option>
-                <option value="Tripel">Tripel</option>
-                <option value="Extra Stout">Extra Stout</option>
-                <option value="Irish Red Ale">Irish Red Ale</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Descrição:</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-                rows="5"
-                placeholder="Descrição da cerveja..."
-              />
-            </div>
-
-            <div className="form-row">
+            <form onSubmit={handleSubmit} className="beer-form">
               <div className="form-group">
-                <label>Teor Alcoólico:</label>
-                <input
-                  type="text"
-                  name="alcoholContent"
-                  value={formData.alcoholContent}
+                <label>Tipo:</label>
+                <select
+                  name="beerType"
+                  value={formData.beerType}
                   onChange={handleChange}
                   required
-                  placeholder="Ex: 5.0% ABV"
-                />
-              </div>
-              <div className="form-group">
-                <label>Ano de Criação:</label>
-                <input
-                  type="text"
-                  name="yearCreated"
-                  value={formData.yearCreated}
-                  onChange={handleChange}
-                  required
-                  placeholder="Ex: 2020"
-                />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label>Quantidade em Estoque:</label>
-                <input
-                  type="number"
-                  name="quantity"
-                  value={formData.quantity}
-                  onChange={handleChange}
-                  min="0"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Preço (R$):</label>
-                <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleChange}
-                  min="0"
-                  step="0.01"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="form-actions">
-              <button 
-                type="submit" 
-                className="submit-btn"
-                disabled={submitting}
-              >
-                {submitting ? (
-                  <span className="submitting-text">
-                    {editingId ? 'Atualizando...' : 'Adicionando...'}
-                  </span>
-                ) : (
-                  editingId ? 'Atualizar Cerveja' : 'Adicionar Cerveja'
-                )}
-              </button>
-              
-              {editingId && (
-                <button 
-                  type="button" 
-                  onClick={() => {
-                    setFormData({
-                      beerType: '',
-                      description: '',
-                      alcoholContent: '',
-                      yearCreated: new Date().getFullYear().toString(),
-                      quantity: 0,
-                      price: 15.90
-                    });
-                    setEditingId(null);
-                  }}
-                  className="cancel-btn"
                 >
-                  Cancelar Edição
+                  <option value="">Selecione um tipo</option>
+                  <option value="Belgian Blonde Ale">Belgian Blonde Ale</option>
+                  <option value="Tripel">Tripel</option>
+                  <option value="Extra Stout">Extra Stout</option>
+                  <option value="Irish Red Ale">Irish Red Ale</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Descrição:</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  required
+                  rows="5"
+                  placeholder="Descrição da cerveja..."
+                />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Teor Alcoólico:</label>
+                  <input
+                    type="text"
+                    name="alcoholContent"
+                    value={formData.alcoholContent}
+                    onChange={handleChange}
+                    required
+                    placeholder="Ex: 5.0% ABV"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Ano de Criação:</label>
+                  <input
+                    type="text"
+                    name="yearCreated"
+                    value={formData.yearCreated}
+                    onChange={handleChange}
+                    required
+                    placeholder="Ex: 2020"
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Quantidade em Estoque:</label>
+                  <input
+                    type="number"
+                    name="quantity"
+                    value={formData.quantity}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Preço (R$):</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleChange}
+                    min="0"
+                    step="0.01"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-actions">
+                <button 
+                  type="submit" 
+                  className="submit-btn"
+                  disabled={submitting}
+                >
+                  {submitting ? (
+                    <span className="submitting-text">
+                      {editingId ? 'Atualizando...' : 'Adicionando...'}
+                    </span>
+                  ) : (
+                    editingId ? 'Atualizar Cerveja' : 'Adicionar Cerveja'
+                  )}
                 </button>
+                
+                {editingId && (
+                  <button 
+                    type="button" 
+                    onClick={() => {
+                      setFormData({
+                        beerType: '',
+                        description: '',
+                        alcoholContent: '',
+                        yearCreated: new Date().getFullYear().toString(),
+                        quantity: 0,
+                        price: 15.90
+                      });
+                      setEditingId(null);
+                    }}
+                    className="cancel-btn"
+                  >
+                    Cancelar Edição
+                  </button>
+                )}
+              </div>
+            </form>
+
+            <div className="beer-list">
+              <h3>Cervejas Cadastradas</h3>
+              {beers.length === 0 ? (
+                <p>Nenhuma cerveja cadastrada</p>
+              ) : (
+                <div className="responsive-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Tipo</th>
+                        <th>Descrição</th>
+                        <th>Teor</th>
+                        <th>Ano</th>
+                        <th>Estoque</th>
+                        <th>Preço</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {beers.map(beer => (
+                        <tr key={beer._id}>
+                          <td>{beer.beerType}</td>
+                          <td className="description-cell">{beer.description}</td>
+                          <td>{beer.alcoholContent}</td>
+                          <td>{beer.yearCreated}</td>
+                          <td>{beer.quantity}</td>
+                          <td>R$ {beer.price.toFixed(2)}</td>
+                          <td className="actions-cell">
+                            <button 
+                              onClick={() => handleEdit(beer)}
+                              className="edit-btn"
+                            >
+                              Editar
+                            </button>
+                            <button 
+                              onClick={() => handleDelete(beer._id)}
+                              className="delete-btn"
+                            >
+                              Excluir
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
-          </form>
-
-          <div className="beer-list">
-            <h3>Cervejas Cadastradas</h3>
-            {beers.length === 0 ? (
-              <p>Nenhuma cerveja cadastrada</p>
-            ) : (
-              <div className="responsive-table">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Tipo</th>
-                      <th>Descrição</th>
-                      <th>Teor</th>
-                      <th>Ano</th>
-                      <th>Estoque</th>
-                      <th>Preço</th>
-                      <th>Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {beers.map(beer => (
-                      <tr key={beer._id}>
-                        <td>{beer.beerType}</td>
-                        <td className="description-cell">{beer.description}</td>
-                        <td>{beer.alcoholContent}</td>
-                        <td>{beer.yearCreated}</td>
-                        <td>{beer.quantity}</td>
-                        <td>R$ {beer.price.toFixed(2)}</td>
-                        <td className="actions-cell">
-                          <button 
-                            onClick={() => handleEdit(beer)}
-                            className="edit-btn"
-                          >
-                            Editar
-                          </button>
-                          <button 
-                            onClick={() => handleDelete(beer._id)}
-                            className="delete-btn"
-                          >
-                            Excluir
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
