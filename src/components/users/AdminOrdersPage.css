@@ -18,40 +18,16 @@
   --shadow-color: rgba(0, 0, 0, 0.3);
   --error-bg: #3a1c1f;
   --error-text: #ff8a8a;
-  --warning-color: #fa8c16;
-  --success-color: #52c41a;
 }
 
-/* ESTILOS GERAIS */
-body {
-  background-color: var(--bg-black);
-  color: var(--text-primary);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* CONTAINER PRINCIPAL */
+/* ESTILOS DA PÁGINA DE PEDIDOS */
 .admin-orders-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  max-width: 1200px;
+  margin: 2rem auto;
   padding: 2rem;
-  background-color: var(--bg-black);
   color: var(--text-primary);
 }
 
-.dashboard-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  background: linear-gradient(var(--bg-container), var(--bg-container)) padding-box,
-              linear-gradient(145deg, transparent 35%, var(--secondary-color), var(--primary-color)) border-box;
-  border: 2px solid transparent;
-  padding: 32px 24px;
-  box-sizing: border-box;
-  border-radius: 16px;
-}
-
-/* CABEÇALHO */
 .admin-orders-container h1 {
   text-align: center;
   margin: 0 0 1.5rem 0;
@@ -73,45 +49,6 @@ body {
   border-radius: 3px;
 }
 
-/* FILTROS */
-.filters-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: rgba(30, 30, 30, 0.5);
-  border-radius: 8px;
-}
-
-.status-filter {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.status-filter label {
-  color: var(--text-secondary);
-  font-size: 14px;
-}
-
-.status-filter select {
-  padding: 8px 12px;
-  border-radius: 6px;
-  background-color: var(--input-bg);
-  border: 1px solid var(--input-border);
-  color: var(--text-primary);
-  cursor: pointer;
-}
-
-.stats-summary {
-  display: flex;
-  gap: 15px;
-  color: var(--text-secondary);
-  font-size: 14px;
-}
-
-/* GRID DE PEDIDOS */
 .orders-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -119,20 +56,19 @@ body {
   margin-top: 20px;
 }
 
-/* CARD DE PEDIDO */
 .order-card {
-  background-color: var(--bg-container);
-  border-radius: 12px;
-  padding: 20px;
+  background: linear-gradient(var(--bg-container), var(--bg-container)) padding-box,
+              linear-gradient(145deg, transparent 35%, var(--secondary-color), var(--primary-color)) border-box;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 24px;
   box-shadow: 0 4px 20px var(--shadow-color);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
   animation: fadeIn 0.5s ease-out forwards;
-  border: 1px solid var(--border-color);
 }
 
 .order-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
 .order-header {
@@ -148,15 +84,13 @@ body {
 
 .order-header p {
   color: var(--text-secondary);
-  margin: 8px 0;
-  font-size: 14px;
+  margin: 5px 0;
 }
 
 .order-header p strong {
   color: var(--text-primary);
 }
 
-/* ITENS DO PEDIDO */
 .order-items {
   margin-top: 15px;
 }
@@ -164,7 +98,6 @@ body {
 .order-items h4 {
   color: var(--text-primary);
   margin-bottom: 10px;
-  font-size: 16px;
 }
 
 .order-item {
@@ -186,7 +119,6 @@ body {
   border-radius: 8px;
   background-color: var(--bg-black);
   padding: 5px;
-  border: 1px solid var(--border-color);
 }
 
 .order-item div p {
@@ -200,66 +132,32 @@ body {
   font-weight: 500;
 }
 
-/* RODAPÉ DO PEDIDO */
-.order-footer {
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px solid var(--border-color);
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.order-footer p {
-  margin: 5px 0;
-}
-
-.order-footer p strong {
-  color: var(--text-primary);
-}
-
-/* SELECT DE STATUS */
-.status-select {
-  padding: 4px 8px;
-  border-radius: 4px;
-  margin-left: 8px;
-  background-color: var(--input-bg);
-  border: 1px solid;
-  color: var(--text-primary);
-  cursor: pointer;
-  font-weight: 500;
-}
-
+/* Status styles */
 .status-pending {
-  border-color: var(--warning-color);
-  color: var(--warning-color);
+  color: #fa8c16;
+  font-weight: 600;
 }
 
 .status-processing {
-  border-color: var(--primary-color);
   color: var(--primary-color);
-}
-
-.status-shipped {
-  border-color: #9254de;
-  color: #9254de;
+  font-weight: 600;
 }
 
 .status-delivered {
-  border-color: var(--success-color);
-  color: var(--success-color);
+  color: #52c41a;
+  font-weight: 600;
 }
 
 .status-cancelled {
-  border-color: var(--danger-color);
   color: var(--danger-color);
+  font-weight: 600;
 }
 
-/* MENSAGENS */
-.no-orders {
+/* Loading e mensagens de erro */
+.loading-screen {
   text-align: center;
   padding: 2rem;
-  color: var(--text-secondary);
-  font-style: italic;
+  color: var(--text-primary);
 }
 
 .global-error {
@@ -271,30 +169,6 @@ body {
   margin: 2rem auto;
   max-width: 600px;
   border-left: 4px solid var(--danger-color);
-}
-
-/* LOADING */
-.loading-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: var(--text-primary);
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  border-top-color: var(--primary-color);
-  animation: spin 1s linear infinite;
-  margin-bottom: 15px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }
 
 /* ANIMAÇÕES */
@@ -309,31 +183,17 @@ body {
     padding: 1rem;
   }
   
-  .dashboard-container {
-    padding: 20px 15px;
-  }
-  
-  .filters-container {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-  
   .orders-grid {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 480px) {
-  .dashboard-container {
-    padding: 16px 12px;
+  .order-card {
+    padding: 16px;
   }
   
   .admin-orders-container h1 {
     font-size: 1.5rem;
-  }
-  
-  .order-card {
-    padding: 16px;
   }
 }
