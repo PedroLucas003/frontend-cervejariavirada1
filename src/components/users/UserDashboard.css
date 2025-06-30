@@ -1,42 +1,21 @@
-/* VARIÁVEIS DE CORES - Específicas para UserDashboard */
-.user-dash-root {
-  --bg-black: #121212;
-  --bg-container: #212121;
-  --text-primary: #ffffff;
-  --text-secondary: #b0b0b0;
-  --primary-color: #40c9ff;
-  --primary-hover: #00b4ff;
-  --secondary-color: #e81cff;
-  --secondary-hover: #d100f9;
-  --danger-color: #ff3a3a;
-  --danger-hover: #ff1a1a;
-  --border-color: #414141;
-  --input-bg: transparent;
-  --input-border: #414141;
-  --table-row-odd: #1e1e1e;
-  --table-row-hover: #282828;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --error-bg: #3a1c1f;
-  --error-text: #ff8a8a;
-}
+/* UserDashboard.css - Versão Aprimorada */
 
-/* Estilos Gerais - UserDashboard */
-.user-dash-container {
+/* Estilos Gerais */
+.user-dashboard {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--text-primary);
-  background-color: var(--bg-black);
+  color: #2d3436;
+  background-color: #f5f6fa;
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   margin-top: 80px;
-  animation: userFadeIn 0.6s ease-out;
-  min-height: 100vh;
+  animation: fadeIn 0.6s ease-out;
 }
 
-.user-dash-container h2 {
-  color: var(--text-primary);
+.user-dashboard h2 {
+  color: #2c3e50;
   margin-bottom: 1.5rem;
   font-size: 2.2rem;
   text-align: center;
@@ -44,7 +23,7 @@
   padding-bottom: 0.5rem;
 }
 
-.user-dash-container h2::after {
+.user-dashboard h2::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -52,32 +31,32 @@
   transform: translateX(-50%);
   width: 100px;
   height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  background: linear-gradient(90deg, #3498db, #2ecc71);
   border-radius: 2px;
 }
 
 /* Mensagens */
-.user-dash-error-message {
+.error-message {
   padding: 1rem;
   margin-bottom: 1.5rem;
   border-radius: 8px;
-  background-color: var(--error-bg);
-  color: var(--error-text);
-  border-left: 5px solid var(--danger-color);
+  background-color: #ffebee;
+  color: #c62828;
+  border-left: 5px solid #ef5350;
   font-weight: 500;
   position: relative;
-  animation: userShake 0.5s ease-in-out;
+  animation: shake 0.5s ease-in-out;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.user-dash-success-message {
+.success-message {
   padding: 1rem;
   margin-bottom: 1.5rem;
   border-radius: 8px;
-  background-color: #1e3a1f;
-  color: #4caf50;
+  background-color: #e8f5e9;
+  color: #2e7d32;
   border-left: 5px solid #4caf50;
   font-weight: 500;
   position: relative;
@@ -86,7 +65,7 @@
   align-items: center;
 }
 
-.user-dash-close-btn {
+.close-btn {
   background: none;
   border: none;
   font-size: 1.2rem;
@@ -96,12 +75,12 @@
   transition: transform 0.2s;
 }
 
-.user-dash-close-btn:hover {
+.close-btn:hover {
   transform: scale(1.2);
 }
 
 /* Controles */
-.user-dash-controls {
+.controls {
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
@@ -109,26 +88,26 @@
   align-items: center;
 }
 
-.user-dash-search-input {
+.search-input {
   flex: 1;
   min-width: 250px;
   padding: 0.75rem 1rem;
-  border: 2px solid var(--border-color);
+  border: 2px solid #dfe6e9;
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.3s;
-  background-color: var(--bg-container);
-  color: var(--text-primary);
+  background-color: #f8f9fa;
 }
 
-.user-dash-search-input:focus {
+.search-input:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(64, 201, 255, 0.2);
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  background-color: #fff;
 }
 
 /* Botão Adicionar com Degradê */
-.user-dash-add-user-btn {
+.add-user-btn {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
@@ -136,54 +115,53 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
   color: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2);
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.user-dash-add-user-btn:hover {
-  background: linear-gradient(135deg, var(--secondary-hover), var(--primary-hover));
+.add-user-btn:hover {
+  background: linear-gradient(135deg, #27ae60, #219653);
   transform: translateY(-2px);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 10px rgba(46, 204, 113, 0.3);
 }
 
-.user-dash-add-user-btn:active {
+.add-user-btn:active {
   transform: translateY(0);
 }
 
-.user-dash-add-user-btn::before {
+.add-user-btn::before {
   content: "+";
   font-size: 1.2rem;
 }
 
 /* Lista de Usuários */
-.user-dash-list {
+.user-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
-.user-dash-card {
-  background: var(--bg-container);
+.user-card {
+  background: #ffffff;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--border-color);
 }
 
-.user-dash-card:hover {
+.user-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-.user-dash-info h3 {
-  color: var(--primary-color);
+.user-info h3 {
+  color: #3498db;
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
   display: flex;
@@ -191,14 +169,14 @@
   gap: 0.5rem;
 }
 
-.user-dash-info p {
-  color: var(--text-secondary);
+.user-info p {
+  color: #7f8c8d;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
 }
 
 /* Badges */
-.user-dash-current-user {
+.current-user {
   display: inline-block;
   padding: 0.25rem 0.5rem;
   background-color: #f39c12;
@@ -209,10 +187,10 @@
   margin-top: 0.5rem;
 }
 
-.user-dash-admin-badge {
+.admin-badge {
   display: inline-block;
   padding: 0.25rem 0.5rem;
-  background-color: var(--secondary-color);
+  background-color: #9b59b6;
   color: white;
   border-radius: 4px;
   font-size: 0.8rem;
@@ -220,21 +198,20 @@
   margin-left: 0.5rem;
 }
 
-.user-dash-details {
+.user-details {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px dashed var(--border-color);
+  border-top: 1px dashed #dfe6e9;
 }
 
-.user-dash-actions {
+.user-actions {
   display: flex;
   gap: 0.8rem;
   margin-top: 1.5rem;
 }
 
 /* Botões de Ação com Degradê */
-.user-dash-edit-btn, 
-.user-dash-delete-btn {
+.edit-btn, .delete-btn {
   flex: 1;
   padding: 0.6rem 1rem;
   border: none;
@@ -250,55 +227,61 @@
   color: white;
 }
 
-.user-dash-edit-btn {
-  background: linear-gradient(135deg, var(--primary-color), #2980b9);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+.edit-btn {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  box-shadow: 0 2px 5px rgba(52, 152, 219, 0.2);
 }
 
-.user-dash-edit-btn:hover {
-  background: linear-gradient(135deg, var(--primary-hover), #1a6ca3);
+.edit-btn:hover {
+  background: linear-gradient(135deg, #2980b9, #1a6ca3);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
 }
 
-.user-dash-delete-btn {
-  background: linear-gradient(135deg, var(--danger-color), #c0392b);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+.delete-btn {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.2);
 }
 
-.user-dash-delete-btn:hover {
-  background: linear-gradient(135deg, var(--danger-hover), #a52714);
+.delete-btn:hover {
+  background: linear-gradient(135deg, #c0392b, #a52714);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
 }
 
-.user-dash-edit-btn:active, 
-.user-dash-delete-btn:active {
+.edit-btn:active, .delete-btn:active {
   transform: translateY(0);
 }
 
-.user-dash-edit-btn:disabled, 
-.user-dash-delete-btn:disabled {
+.edit-btn:disabled, .delete-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none !important;
   box-shadow: none !important;
 }
 
-/* Mensagem sem resultados */
-.user-dash-no-results {
-  text-align: center;
-  padding: 2rem;
-  color: var(--text-secondary);
-  font-style: italic;
-  background: var(--bg-container);
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  grid-column: 1 / -1;
-  border: 1px solid var(--border-color);
+/* Ícones nos botões */
+.edit-btn::before {
+  content: "✏️";
 }
 
-.user-dash-no-results::before {
+.delete-btn::before {
+  content: "🗑️";
+}
+
+/* Mensagem sem resultados */
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  color: #7f8c8d;
+  font-style: italic;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  grid-column: 1 / -1;
+}
+
+.no-results::before {
   content: "😕";
   font-size: 2rem;
   display: block;
@@ -306,7 +289,7 @@
 }
 
 /* Loading */
-.user-dash-loading-container {
+.loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -315,168 +298,181 @@
   gap: 1rem;
 }
 
-.user-dash-loading-spinner {
+.loading-spinner {
   width: 50px;
   height: 50px;
-  border: 5px solid var(--border-color);
-  border-top: 5px solid var(--primary-color);
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
   border-radius: 50%;
-  animation: userSpin 1s linear infinite;
+  animation: spin 1s linear infinite;
 }
 
-.user-dash-loading-text {
-  color: var(--text-secondary);
+.loading-text {
+  color: #7f8c8d;
   font-size: 1rem;
-}
-
-/* Formulário de adição de usuário */
-.user-dash-add-form-container {
-  background: var(--bg-container);
-  padding: 1.5rem;
-  margin: 1rem 0;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-  border: 1px solid var(--border-color);
-}
-
-.user-dash-add-form-container h3 {
-  margin-top: 0;
-  color: var(--text-primary);
-}
-
-.user-dash-add-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.user-dash-form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.user-dash-form-group label {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.user-dash-form-group input,
-.user-dash-form-group select {
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  font-size: 1rem;
-  background-color: var(--input-bg);
-  color: var(--text-primary);
-}
-
-.user-dash-form-group input:focus,
-.user-dash-form-group select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(64, 201, 255, 0.2);
-}
-
-.user-dash-checkbox-group {
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.user-dash-form-hint {
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-}
-
-.user-dash-form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.user-dash-submit-btn {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s;
-}
-
-.user-dash-submit-btn:hover {
-  background: linear-gradient(135deg, var(--primary-hover), var(--secondary-hover));
-  transform: translateY(-2px);
-}
-
-.user-dash-cancel-btn {
-  background: var(--bg-container);
-  color: var(--text-primary);
-  padding: 0.75rem 1.5rem;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s;
-}
-
-.user-dash-cancel-btn:hover {
-  background: var(--table-row-hover);
-  transform: translateY(-2px);
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-  .user-dash-container {
+  .user-dashboard {
     padding: 1rem;
     margin: 1rem;
     margin-top: 80px;
   }
   
-  .user-dash-controls {
+  .controls {
     flex-direction: column;
   }
   
-  .user-dash-search-input, 
-  .user-dash-add-user-btn {
+  .search-input, .add-user-btn {
     width: 100%;
   }
   
-  .user-dash-list {
+  .user-list {
     grid-template-columns: 1fr;
   }
   
-  .user-dash-actions {
+  .user-actions {
     flex-direction: column;
   }
 }
 
 @media (max-width: 480px) {
-  .user-dash-container h2 {
+  .user-dashboard h2 {
     font-size: 1.8rem;
   }
   
-  .user-dash-card {
+  .user-card {
     padding: 1rem;
   }
 }
 
 /* Animações */
-@keyframes userFadeIn {
+@keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes userShake {
+@keyframes shake {
   0%, 100% { transform: translateX(0); }
   20%, 60% { transform: translateX(-5px); }
   40%, 80% { transform: translateX(5px); }
 }
 
-@keyframes userSpin {
+@keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Efeito de onda nos cards */
+.user-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.user-card:active::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+/* Estilos adicionais para o formulário de adição */
+.add-user-form-container {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.add-user-form-container h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.add-user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.add-user-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.add-user-form .form-group label {
+    font-weight: 600;
+    color: #555;
+}
+
+.add-user-form .form-group input[type="text"],
+.add-user-form .form-group input[type="email"],
+.add-user-form .form-group input[type="password"] {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.add-user-form .checkbox-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-user-form .form-hint {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.add-user-form .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.add-user-form .submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-user-form .submit-btn:hover {
+    background-color: #45a049;
+}
+
+.add-user-form .cancel-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-user-form .cancel-btn:hover {
+    background-color: #d32f2f;
 }
