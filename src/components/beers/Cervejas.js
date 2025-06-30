@@ -28,56 +28,89 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
     setLoading(true);
     setError(null);
     
-    const response = await axios.get(`${API_URL}/api/beers/public?t=${Date.now()}`, {
+    // Cache-buster nuclear - garante que cada requisição é única
+    const timestamp = Date.now();
+    const response = await axios.get(`${API_URL}/api/beers/public?_=${timestamp}`, {
       headers: {
         'Accept': 'application/json',
-        'Cache-Control': 'no-cache'
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache'
       },
       withCredentials: true
     });
-      
-      if (!response.data || !response.data.success || !Array.isArray(response.data.data)) {
-        throw new Error('Estrutura de dados inválida');
-      }
-
-      let formattedBeers = response.data.data.map(beer => {
-        return {
-          _id: beer._id,
-          nome: `Virada ${beer.beerType}`,
-          tipo: beer.beerType,
-          beerType: beer.beerType,
-          descricao: beer.description || 'Descrição não disponível', 
-          imagem: getBeerImage(beer.beerType),
-          // <--- CORREÇÃO AQUI: Usa alcoholContent diretamente, pois você já limpou o BD
-          teor: beer.alcoholContent, 
-          ibu: beer.ibu,
-          cor: beer.color,
-          turbidez: beer.turbidity,
-          ano: beer.yearCreated || 2016,
-          price: beer.price || 15.90,
-          quantity: beer.quantity,
-          createdAt: beer.createdAt // <--- Agora este campo virá do backend
-        };
-      });
-
-      // ADICIONADO: Ordena as cervejas pela data de criação (mais recente primeiro)
-      formattedBeers.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-      setCervejas(formattedBeers);
-
-      const newStock = {};
-      response.data.data.forEach(beer => {
-        newStock[beer._id] = beer.quantity;
-      });
-      setStock(newStock);
-
-    } catch (error) {
-      console.error('Erro ao carregar cervejas:', error);
-      setError('Erro ao carregar as cervejas. Tente novamente.');
-    } finally {
-      setLoading(false);
+    
+    if (!response.data || !response.data.success || !Array.isArray(response.data.data)) {
+      throw new Error('Estrutura de dados inválida');
     }
-  }, [getBeerImage]);
+
+    // DEBUG - Verifique os dados crus recebidos
+    console.log('Dados recebidos do backend:', response.data.data);
+
+    let formattedBeers = response.data.data.map(beer => {
+      // DEBUG - Verifique cada descrição individualmente
+      console.log(`Descrição da cerveja ${beer._id}:`, beer.description);
+      
+      return {
+        _id: beer._id,
+        nome: `Virada ${beer.beerType}`,
+        tipo: beer.beerType,
+        beerType: beer.beerType,
+        descricao: beer.description || 'Descrição não disponível',
+        imagem: getBeerImage(beer.beerType),
+        teor: beer.alcoholContent, 
+        ibu: beer.ibu,
+        cor: beer.color,
+        turbidez: beer.turbidity,
+        ano: beer.yearCreated || 2016,
+        price: beer.price || 15.90,
+        quantity: beer.quantity,
+        createdAt: beer.createdAt,
+        // Adiciona um checksum para forçar atualização se os dados mudarem
+        dataChecksum: JSON.stringify(beer).length + beer.description.length
+      };
+    });
+
+    // Ordenação mais robusta
+    formattedBeers.sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return dateB - dateA || a.nome.localeCompare(b.nome);
+    });
+
+    // Atualização condicional - só atualiza se os dados realmente mudaram
+    setCervejas(prev => {
+      const prevChecksum = prev.map(b => b.dataChecksum).join('|');
+      const newChecksum = formattedBeers.map(b => b.dataChecksum).join('|');
+      
+      if (prevChecksum !== newChecksum) {
+        console.log('Dados das cervejas mudaram - atualizando estado');
+        return formattedBeers;
+      }
+      console.log('Dados idênticos - mantendo estado anterior');
+      return prev;
+    });
+
+    // Atualização do estoque
+    const newStock = {};
+    response.data.data.forEach(beer => {
+      newStock[beer._id] = beer.quantity;
+    });
+    setStock(newStock);
+
+  } catch (error) {
+    console.error('Erro ao carregar cervejas:', error);
+    setError('Erro ao carregar as cervejas. Tente novamente.');
+    
+    // Tentativa de recuperação automática após 5 segundos
+    setTimeout(() => {
+      console.log('Tentando recarregar automaticamente...');
+      fetchBeers();
+    }, 5000);
+    
+  } finally {
+    setLoading(false);
+  }
+}, [getBeerImage]);
 
   useEffect(() => {
     fetchBeers();
