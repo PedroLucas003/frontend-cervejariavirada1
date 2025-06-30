@@ -40,17 +40,14 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
       }
 
       let formattedBeers = response.data.data.map(beer => {
-        // REMOVIDO: A lógica de sobrescrever a descrição com base no beerType
-        // A descrição agora vem diretamente do banco de dados (beer.description)
-
         return {
           _id: beer._id,
           nome: `Virada ${beer.beerType}`,
           tipo: beer.beerType,
           beerType: beer.beerType,
-          descricao: beer.description || 'Descrição não disponível', // AGORA USA A DESCRIÇÃO DO BANCO DE DADOS
+          descricao: beer.description || 'Descrição não disponível', 
           imagem: getBeerImage(beer.beerType),
-          // CORREÇÃO AQUI: Não adiciona "% ABV" novamente se já vem do banco de dados
+          // <--- CORREÇÃO AQUI: Usa alcoholContent diretamente, pois você já limpou o BD
           teor: beer.alcoholContent, 
           ibu: beer.ibu,
           cor: beer.color,
@@ -58,7 +55,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           ano: beer.yearCreated || 2016,
           price: beer.price || 15.90,
           quantity: beer.quantity,
-          createdAt: beer.createdAt // IMPORTANTE: Incluído para a ordenação
+          createdAt: beer.createdAt // <--- Agora este campo virá do backend
         };
       });
 
@@ -190,7 +187,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
               {/* Para renderizar quebras de linha se existirem na descrição do BD */}
               <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
               <div className="cerveja-specs">
-                <span className="spec-item">ABV: {cerveja.teor}</span> {/* AGORA EXIBE SEM DUPLICAR */}
+                <span className="spec-item">ABV: {cerveja.teor}</span> {/* Agora exibe o teor limpo do BD */}
                 {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
                 {cerveja.cor && <span className="spec-item">Cor: {cerveja.cor}</span>}
                 {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
@@ -216,7 +213,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
         <div className="cart-header">
           <h3>Seu Carrinho</h3>
           <button className="close-cart" onClick={() => setShowCart(false)}>
-            <i className="fas fa fa-times"></i>
+            <i className="fas fa-times"></i>
           </button>
         </div>
 
