@@ -39,33 +39,16 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
         throw new Error('Estrutura de dados inválida');
       }
 
-      const formattedBeers = response.data.data.map(beer => {
-        let description = '';
-        
-        // Construir a descrição baseada no tipo de cerveja
-        switch(beer.beerType) {
-          case 'Belgian Blonde Ale':
-            description = `IBU: ${beer.ibu || 30} Uma cerveja de corpo leve, de espuma fina, com um aroma frutado e um sabor suave, de um perfil fácil de beber.`;
-            break;
-          case 'Tripel':
-            description = `IBU: ${beer.ibu || 23} Cor: Dourada Turbidez: média (encorpada) Uma cerveja de corpo leve, de espuma fina, com um aroma frutado e um sabor suave, de um perfil fácil de beber, o que contrasta com sua colossal carga alcóolica, indicada apenas pelo final seco. Inspirada nas cervejas monásticas da escola Belga e fermentada usando as mesmas leveduras históricas, a Tripel é uma cerveja apenas para os fortes. Aprecie com moderação. Sério.`;
-            break;
-          case 'Extra Stout':
-            description = `IBU: ${beer.ibu || 55} Cor: Preta Turbidez: alta (completamente opaca) Uma cerveja de origem britânica e amada pelos americanos, a Imperial Stout é conhecida historicamente como a versão da English Porter que encantou a corte imperial russa. O estilo é definido pela combinação de maltes em diferentes intensidades de torra, conferindo tons de café e chocolate numa cerveja densa, quase licorosa, que contrasta perfeitamente o amargor presente com um leve adocicado. Os czares ficaram maravilhados. E você, ficaria também?`;
-            break;
-          case 'Irish Red Ale':
-            description = `IBU: ${beer.ibu || 30} Cor: Vermelho-acobreada Turbidez: média (encorpada) Uma abordagem pernambucana a uma cerveja irlandesa. Combina tipos diferentes de maltes de meia torra para formar uma cerveja de cor intensa e corpo complexo, contrastando um leve sabor caramelizado com o amargor destacado e o toque floral do lúpulo. Excelente para clarear as ideias e pensar melhor, seja antes ou depois do almoço.`;
-            break;
-          default:
-            description = beer.description || '';
-        }
+      let formattedBeers = response.data.data.map(beer => {
+        // REMOVIDO: A lógica de sobrescrever a descrição com base no beerType
+        // A descrição agora vem diretamente do banco de dados (beer.description)
 
         return {
           _id: beer._id,
           nome: `Virada ${beer.beerType}`,
           tipo: beer.beerType,
           beerType: beer.beerType,
-          descricao: description,
+          descricao: beer.description || 'Descrição não disponível', // AGORA USA A DESCRIÇÃO DO BANCO DE DADOS
           imagem: getBeerImage(beer.beerType),
           teor: `${beer.alcoholContent}% ABV`,
           ibu: beer.ibu,
@@ -73,9 +56,13 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           turbidez: beer.turbidity,
           ano: beer.yearCreated || 2016,
           price: beer.price || 15.90,
-          quantity: beer.quantity
+          quantity: beer.quantity,
+          createdAt: beer.createdAt // IMPORTANTE: Incluído para a ordenação
         };
       });
+
+      // ADICIONADO: Ordena as cervejas pela data de criação (mais recente primeiro)
+      formattedBeers.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
       setCervejas(formattedBeers);
 
@@ -199,7 +186,8 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
             <div className="cerveja-info">
               <h3>{cerveja.nome}</h3>
               <p className="cerveja-tipo">{cerveja.tipo}</p>
-              <p className="cerveja-desc">{cerveja.descricao}</p>
+              {/* Para renderizar quebras de linha se existirem na descrição do BD */}
+              <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
               <div className="cerveja-specs">
                 <span className="spec-item">ABV: {cerveja.teor}</span>
                 {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
