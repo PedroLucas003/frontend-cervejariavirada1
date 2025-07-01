@@ -12,7 +12,8 @@ import EditUserPage from './components/users/EditUserPage';
 import UserProfilePage from './components/users/UserProfilePage';
 import UserOrdersPage from './components/users/UserOrdersPage';
 import AdminOrdersPage from './components/users/AdminOrdersPage';
-import PixPayment from './components/checkout/PixPayment'; // <--- CAMINHO CORRIGIDO AQUI
+import PixPayment from './components/checkout/PixPayment';
+
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
