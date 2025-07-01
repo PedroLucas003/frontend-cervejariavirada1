@@ -1,170 +1,105 @@
-/* Estilos Gerais */
-:root {
-  --primary-color: #e67e22;
-  --primary-hover: #d35400;
-  --secondary-color: #2d2d2d;
-  --dark-bg: #1a1a1a;
-  --card-bg: #252525;
-  --text-light: #e0e0e0;
-  --text-muted: #b0b0b0;
-  --success-color: #27ae60;
-  --error-color: #e74c3c;
-  --border-radius: 12px;
-  --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  --transition: all 0.3s ease;
-}
-
-/* Seção de Cervejas */
 .cervejas-section {
-  padding: 60px 20px;
+  padding: 40px 20px;
   min-height: 100vh;
-  color: var(--text-light);
-  background: linear-gradient(to bottom, #000000, var(--secondary-color));
+  color: #e0e0e0;
+  background: linear-gradient(to bottom, #000000, #2d2d2d);
   background-attachment: fixed;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 40px;
 }
 
 .section-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 3rem;
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 30px;
   color: #ffffff;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.section-subtitle {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  max-width: 600px;
-  margin: 0 auto;
 }
 
 .destaque {
-  color: var(--primary-color);
+  color: #e67e22;
 }
 
-/* Grid de Cervejas */
+.inverted-a {
+  display: inline-block;
+  transform: rotate(180deg);
+}
+
 .cervejas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Card de Cerveja */
 .cerveja-card {
-  background: var(--card-bg);
-  border-radius: var(--border-radius);
+  background: #1e1e1e;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: var(--box-shadow);
-  transition: var(--transition);
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s;
 }
 
 .cerveja-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-  border-color: rgba(230, 126, 34, 0.3);
-}
-
-.cerveja-card.hovered {
-  transform: translateY(-10px);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
 .cerveja-imagem-container {
-  height: 320px;
+  height: 300px;
   position: relative;
-  overflow: hidden;
 }
 
 .cerveja-imagem {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
 }
 
-.cerveja-card:hover .cerveja-imagem {
-  transform: scale(1.05);
-}
-
-.cerveja-badge {
+.cerveja-detalhes {
   position: absolute;
   top: 15px;
   left: 15px;
   display: flex;
   gap: 10px;
-  z-index: 2;
 }
 
 .cerveja-tag {
-  background: var(--primary-color);
+  background: #e67e22;
   color: white;
-  padding: 5px 15px;
+  padding: 5px 10px;
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .cerveja-ano {
   background: rgba(0, 0, 0, 0.7);
   color: white;
-  padding: 5px 15px;
+  padding: 5px 10px;
   border-radius: 20px;
   font-size: 0.8rem;
-  font-weight: bold;
-}
-
-.cerveja-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  opacity: 0;
-  transition: var(--transition);
-}
-
-.cerveja-card:hover .cerveja-overlay {
-  opacity: 1;
 }
 
 .add-to-cart-btn {
-  background: var(--primary-color);
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #e67e22;
   color: white;
   border: none;
-  padding: 12px 25px;
+  padding: 10px 20px;
   border-radius: 50px;
   cursor: pointer;
   font-weight: bold;
   display: flex;
   align-items: center;
-  gap: 10px;
-  transition: var(--transition);
-  transform: translateY(20px);
-  opacity: 0;
-}
-
-.cerveja-card:hover .add-to-cart-btn {
-  transform: translateY(0);
-  opacity: 1;
+  gap: 8px;
+  transition: all 0.3s;
 }
 
 .add-to-cart-btn:hover {
-  background: var(--primary-hover);
-  transform: translateY(-3px);
+  background: #d35400;
 }
 
 .add-to-cart-btn.disabled {
@@ -172,107 +107,64 @@
   cursor: not-allowed;
 }
 
-.add-to-cart-btn i {
-  font-size: 1rem;
-}
-
-/* Informações da Cerveja */
 .cerveja-info {
-  padding: 20px;
-  background: var(--card-bg);
-}
-
-.cerveja-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+  padding: 15px;
 }
 
 .cerveja-info h3 {
-  font-size: 1.4rem;
-  margin: 0;
-  color: #ffffff;
-  font-weight: 600;
-}
-
-.cerveja-price {
-  font-weight: bold;
-  color: var(--primary-color);
   font-size: 1.3rem;
-  background: rgba(230, 126, 34, 0.1);
-  padding: 5px 10px;
-  border-radius: 5px;
+  margin-bottom: 5px;
+  color: #ffffff;
 }
 
 .cerveja-tipo {
-  color: var(--primary-color);
+  color: #b0b0b0;
   font-size: 0.9rem;
-  margin-bottom: 15px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  margin-bottom: 10px;
 }
 
 .cerveja-desc {
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  margin-bottom: 20px;
-  line-height: 1.6;
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
 }
 
 .cerveja-specs {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.spec-item {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
-  color: var(--text-light);
-}
-
-.spec-item i {
-  color: var(--primary-color);
+  gap: 5px;
+  margin-bottom: 10px;
   font-size: 0.9rem;
 }
 
-/* Estoque */
-.cerveja-stock {
-  margin-top: 20px;
-}
-
-.stock-meter {
-  height: 6px;
-  background: #333;
-  border-radius: 3px;
-  margin-bottom: 8px;
-  overflow: hidden;
-}
-
-.stock-level {
-  height: 100%;
-  background: var(--primary-color);
-  border-radius: 3px;
-  transition: width 0.5s ease;
-}
-
-.stock-value {
-  font-size: 0.85rem;
-  display: block;
-  text-align: right;
+.stock-label {
+  font-weight: bold;
+  color: #e0e0e0;
 }
 
 .stock-value.in-stock {
-  color: var(--success-color);
+  color: #27ae60;
 }
 
 .stock-value.out-of-stock {
-  color: var(--error-color);
+  color: #e74c3c;
+}
+
+.cerveja-teor {
+  display: inline-block;
+  background: #333333;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #e0e0e0;
+}
+
+.cerveja-price {
+  display: block;
+  font-weight: bold;
+  color: #e67e22;
+  font-size: 1.2rem;
+  margin-top: 10px;
 }
 
 /* Carrinho */
@@ -280,73 +172,59 @@
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background: var(--primary-color);
-  width: 70px;
-  height: 70px;
+  background: #e67e22;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   cursor: pointer;
-  box-shadow: var(--box-shadow);
-  transition: var(--transition);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
   z-index: 100;
 }
 
 .cart-icon.has-items {
-  background: var(--primary-hover);
-  animation: pulse 2s infinite;
+  background: #d35400;
 }
 
 .cart-icon:hover {
-  transform: scale(1.1) rotate(10deg);
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 15px rgba(230, 126, 34, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(230, 126, 34, 0);
-  }
+  transform: scale(1.1);
 }
 
 .cart-count {
   position: absolute;
   top: -5px;
   right: -5px;
-  background: var(--error-color);
+  background: #e74c3c;
   color: white;
-  width: 28px;
-  height: 28px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.9rem;
-  font-weight: bold;
+  font-size: 0.8rem;
 }
 
 .cart-sidebar {
   position: fixed;
   top: 0;
   right: 0;
-  width: 380px;
+  width: 350px;
   height: 100%;
-  background: var(--dark-bg);
+  background: #1e1e1e;
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
   transform: translateX(100%);
   transition: transform 0.3s ease-out;
   z-index: 101;
-  padding: 25px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  color: var(--text-light);
+  color: #e0e0e0;
 }
 
 .cart-sidebar.open {
@@ -357,31 +235,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
-  padding-bottom: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #333;
 }
 
 .cart-header h3 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: #ffffff;
-  font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 1px;
 }
 
 .close-cart {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  color: var(--text-muted);
-  transition: var(--transition);
-}
-
-.close-cart:hover {
-  color: var(--primary-color);
-  transform: rotate(90deg);
+  color: #b0b0b0;
 }
 
 .empty-cart {
@@ -390,59 +260,18 @@
   align-items: center;
   justify-content: center;
   flex-grow: 1;
-  color: var(--text-muted);
-  text-align: center;
-  padding: 20px;
+  color: #b0b0b0;
 }
 
 .empty-cart i {
-  font-size: 3.5rem;
-  margin-bottom: 20px;
-  color: var(--primary-color);
-  opacity: 0.7;
-}
-
-.empty-cart p {
-  font-size: 1.1rem;
-  margin-bottom: 25px;
-}
-
-.continue-shopping {
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: var(--transition);
-}
-
-.continue-shopping:hover {
-  background: var(--primary-hover);
-  transform: translateY(-3px);
+  font-size: 3rem;
+  margin-bottom: 15px;
 }
 
 .cart-items {
   flex-grow: 1;
   overflow-y: auto;
   margin-bottom: 20px;
-  padding-right: 10px;
-}
-
-/* Custom Scrollbar */
-.cart-items::-webkit-scrollbar {
-  width: 6px;
-}
-
-.cart-items::-webkit-scrollbar-track {
-  background: #333;
-  border-radius: 3px;
-}
-
-.cart-items::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 3px;
 }
 
 .cart-item {
@@ -450,19 +279,13 @@
   gap: 15px;
   padding: 15px 0;
   border-bottom: 1px solid #333;
-  transition: var(--transition);
-}
-
-.cart-item:hover {
-  background: rgba(255, 255, 255, 0.03);
 }
 
 .cart-item-image {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .cart-item-details {
@@ -471,13 +294,13 @@
 
 .cart-item-details h4 {
   margin: 0 0 5px 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #ffffff;
 }
 
 .cart-item-type {
-  color: var(--text-muted);
-  font-size: 0.85rem;
+  color: #b0b0b0;
+  font-size: 0.8rem;
   margin: 0 0 10px 0;
 }
 
@@ -490,32 +313,19 @@
 .cart-item-quantity button {
   background: #333;
   border: none;
-  width: 28px;
-  height: 28px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  color: var(--text-light);
-  transition: var(--transition);
-}
-
-.cart-item-quantity button:hover {
-  background: var(--primary-color);
-  color: white;
+  color: #e0e0e0;
 }
 
 .cart-item-quantity button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background: #333;
-  color: var(--text-light);
-}
-
-.cart-item-quantity span {
-  min-width: 20px;
-  text-align: center;
 }
 
 .cart-item-price {
@@ -529,57 +339,46 @@
 .remove-item {
   background: none;
   border: none;
-  color: var(--error-color);
+  color: #e74c3c;
   cursor: pointer;
   margin-top: 5px;
-  font-size: 0.9rem;
-  transition: var(--transition);
-}
-
-.remove-item:hover {
-  transform: scale(1.1);
+  font-size: 0.8rem;
 }
 
 .cart-summary {
   border-top: 1px solid #333;
-  padding-top: 20px;
+  padding-top: 15px;
 }
 
 .cart-total {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
-  font-size: 1.3rem;
-  margin-bottom: 25px;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
   color: #ffffff;
 }
 
 .checkout-btn {
   width: 100%;
-  background: var(--primary-color);
+  background: #e67e22;
   color: white;
   border: none;
-  padding: 15px;
-  font-size: 1.1rem;
+  padding: 12px;
+  font-size: 1rem;
   font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
-  transition: var(--transition);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  transition: background 0.3s;
 }
 
 .checkout-btn:hover {
-  background: var(--primary-hover);
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
+  background: #d35400;
 }
 
 .checkout-btn:disabled {
   background: #666666;
   cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
 }
 
 .cart-overlay {
@@ -590,7 +389,6 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
   z-index: 99;
-  backdrop-filter: blur(5px);
 }
 
 /* Loading */
@@ -600,7 +398,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -610,58 +408,47 @@
 }
 
 .spinner {
-  width: 60px;
-  height: 60px;
-  border: 5px solid rgba(255, 255, 255, 0.1);
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top-color: var(--primary-color);
+  border-top-color: #e67e22;
   animation: spin 1s ease-in-out infinite;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-.loading-overlay p {
-  font-size: 1.2rem;
-  letter-spacing: 1px;
-}
-
 /* Error */
 .error-message {
   background: #3a1c1f;
   color: #ff8a8a;
-  padding: 20px;
-  border-radius: var(--border-radius);
+  padding: 15px;
+  border-radius: 5px;
   margin: 20px auto;
   max-width: 600px;
   text-align: center;
-  border-left: 4px solid var(--error-color);
 }
 
 .retry-button {
-  background: var(--primary-color);
+  background: #e67e22;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 8px 15px;
   border-radius: 5px;
-  margin-top: 15px;
+  margin-top: 10px;
   cursor: pointer;
-  transition: var(--transition);
-}
-
-.retry-button:hover {
-  background: var(--primary-hover);
 }
 
 /* Footer Estilizado */
 .transparent-footer {
-  background: linear-gradient(to top, #000000, var(--secondary-color));
-  color: var(--text-light);
+  background: linear-gradient(to top, #000000, #2d2d2d);
+  color: #e0e0e0;
   padding: 3rem 20px;
   text-align: center;
-  border-top: 1px solid var(--primary-color);
+  border-top: 1px solid #e67e22;
   position: relative;
 }
 
@@ -683,7 +470,7 @@
   max-height: 100px;
   width: auto;
   filter: drop-shadow(0 0 5px rgba(230, 126, 34, 0.5));
-  transition: var(--transition);
+  transition: transform 0.3s ease;
 }
 
 .footer-logo-img:hover {
@@ -708,7 +495,7 @@
 .footer-contact {
   font-size: 1rem;
   margin: 0;
-  color: var(--text-muted);
+  color: #b0b0b0;
   line-height: 1.5;
 }
 
@@ -719,9 +506,9 @@
 }
 
 .social-icon {
-  color: var(--text-light);
+  color: #e0e0e0;
   font-size: 2.2rem;
-  transition: var(--transition);
+  transition: all 0.3s ease;
   background: rgba(30, 30, 30, 0.7);
   width: 60px;
   height: 60px;
@@ -757,12 +544,6 @@
 }
 
 /* Responsivo */
-@media (max-width: 1024px) {
-  .cervejas-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
-}
-
 @media (max-width: 900px) {
   .footer-content {
     grid-template-columns: 1fr;
@@ -786,31 +567,9 @@
     height: 50px;
     font-size: 1.8rem;
   }
-  
-  .cart-sidebar {
-    width: 320px;
-  }
-}
-
-@media (max-width: 768px) {
-  .section-title {
-    font-size: 2.5rem;
-  }
-  
-  .cerveja-card {
-    max-width: 100%;
-  }
 }
 
 @media (max-width: 480px) {
-  .cervejas-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-  }
-  
   .footer-social {
     gap: 1rem;
   }
@@ -819,13 +578,5 @@
     width: 45px;
     height: 45px;
     font-size: 1.5rem;
-  }
-  
-  .cart-sidebar {
-    width: 100%;
-  }
-  
-  .cerveja-specs {
-    grid-template-columns: 1fr;
   }
 }

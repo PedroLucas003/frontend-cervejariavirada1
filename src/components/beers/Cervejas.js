@@ -11,7 +11,6 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showCart, setShowCart] = useState(false);
-  const [hoveredCard, setHoveredCard] = useState(null);
   const navigate = useNavigate();
 
   const getBeerImage = useCallback((beerType) => {
@@ -130,10 +129,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   return (
     <>
       <section id="cervejas-section" className="cervejas-section">
-        <div className="section-header">
-          <h2 className="section-title">Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
-          <p className="section-subtitle">Cervejas artesanais com tradição e qualidade</p>
-        </div>
+        <h2 className="section-title">Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
 
         {error && (
           <div className="error-message">
@@ -159,17 +155,8 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           )}
 
           {cervejas.map((cerveja) => (
-            <div 
-              key={cerveja._id} 
-              className={`cerveja-card ${hoveredCard === cerveja._id ? 'hovered' : ''}`}
-              onMouseEnter={() => setHoveredCard(cerveja._id)}
-              onMouseLeave={() => setHoveredCard(null)}
-            >
+            <div key={cerveja._id} className="cerveja-card">
               <div className="cerveja-imagem-container">
-                <div className="cerveja-badge">
-                  <span className="cerveja-tag">Virada</span>
-                  <span className="cerveja-ano">{cerveja.ano}</span>
-                </div>
                 <img
                   src={cerveja.imagem}
                   alt={cerveja.nome}
@@ -180,53 +167,36 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                     e.target.src = "/default-beer.png";
                   }}
                 />
-                <div className="cerveja-overlay">
-                  <button
-                    className={`add-to-cart-btn ${stock[cerveja._id] <= 0 ? 'disabled' : ''}`}
-                    onClick={() => handleAddToCart(cerveja)}
-                    disabled={stock[cerveja._id] <= 0}
-                  >
-                    <i className="fas fa-shopping-cart"></i>
-                    {stock[cerveja._id] > 0 ? 'Adicionar' : 'Esgotado'}
-                  </button>
+                <div className="cerveja-detalhes">
+                  <div className="cerveja-tag">Virada</div>
+                  <div className="cerveja-ano">{cerveja.ano}</div>
                 </div>
+                <button
+                  className={`add-to-cart-btn ${stock[cerveja._id] <= 0 ? 'disabled' : ''}`}
+                  onClick={() => handleAddToCart(cerveja)}
+                  disabled={stock[cerveja._id] <= 0}
+                >
+                  <i className="fas fa-shopping-cart"></i>
+                  {stock[cerveja._id] > 0 ? 'Adicionar' : 'Esgotado'}
+                </button>
               </div>
               <div className="cerveja-info">
-                <div className="cerveja-header">
-                  <h3>{cerveja.nome}</h3>
-                  <span className="cerveja-price">R$ {(cerveja.price || 0).toFixed(2)}</span>
-                </div>
+                <h3>{cerveja.nome}</h3>
                 <p className="cerveja-tipo">{cerveja.tipo}</p>
                 <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
                 <div className="cerveja-specs">
-                  <div className="spec-item">
-                    <i className="fas fa-beer"></i>
-                    <span>ABV: {cerveja.teor}</span>
-                  </div>
-                  {cerveja.ibu && (
-                    <div className="spec-item">
-                      <i className="fas fa-chart-line"></i>
-                      <span>IBU: {cerveja.ibu}</span>
-                    </div>
-                  )}
-                  {cerveja.cor && (
-                    <div className="spec-item">
-                      <i className="fas fa-palette"></i>
-                      <span>Cor: {cerveja.cor}</span>
-                    </div>
-                  )}
+                  <span className="spec-item">ABV: {cerveja.teor}</span>
+                  {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
+                  {cerveja.cor && <span className="spec-item">Cor: {cerveja.cor}</span>}
+                  {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
                 </div>
                 <div className="cerveja-stock">
-                  <div className="stock-meter">
-                    <div 
-                      className="stock-level" 
-                      style={{ width: `${Math.min(100, (stock[cerveja._id] / 10) * 100)}%` }}
-                    ></div>
-                  </div>
+                  <span className="stock-label">Estoque:</span>
                   <span className={`stock-value ${stock[cerveja._id] > 0 ? 'in-stock' : 'out-of-stock'}`}>
-                    {stock[cerveja._id]} unidades disponíveis
+                    {stock[cerveja._id]} unidades
                   </span>
                 </div>
+                <span className="cerveja-price">R$ {(cerveja.price || 0).toFixed(2)}</span>
               </div>
             </div>
           ))}
@@ -249,9 +219,6 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
             <div className="empty-cart">
               <i className="fas fa-shopping-cart"></i>
               <p>Seu carrinho está vazio</p>
-              <button className="continue-shopping" onClick={() => setShowCart(false)}>
-                Continuar Comprando
-              </button>
             </div>
           ) : (
             <>
