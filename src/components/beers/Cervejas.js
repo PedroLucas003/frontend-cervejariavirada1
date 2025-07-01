@@ -47,7 +47,6 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           beerType: beer.beerType,
           descricao: beer.description || 'Descrição não disponível', 
           imagem: getBeerImage(beer.beerType),
-          // <--- CORREÇÃO AQUI: Usa alcoholContent diretamente, pois você já limpou o BD
           teor: beer.alcoholContent, 
           ibu: beer.ibu,
           cor: beer.color,
@@ -55,11 +54,10 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           ano: beer.yearCreated || 2016,
           price: beer.price || 15.90,
           quantity: beer.quantity,
-          createdAt: beer.createdAt // <--- Agora este campo virá do backend
+          createdAt: beer.createdAt
         };
       });
 
-      // ADICIONADO: Ordena as cervejas pela data de criação (mais recente primeiro)
       formattedBeers.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
       setCervejas(formattedBeers);
@@ -129,152 +127,194 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   };
 
   return (
-    <section id="cervejas-section" className="cervejas-section">
-      <h2 className="section-title">Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
+    <>
+      <section id="cervejas-section" className="cervejas-section">
+        <h2 className="section-title">Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
 
-      {error && (
-        <div className="error-message">
-          <p>{error}</p>
-          <button 
-            onClick={() => {
-              setError(null);
-              fetchBeers();
-            }}
-            className="retry-button"
-          >
-            Tentar Novamente
-          </button>
-        </div>
-      )}
-
-      <div className="cervejas-grid">
-        {loading && (
-          <div className="loading-overlay">
-            <div className="spinner"></div>
-            <p>Carregando cervejas...</p>
+        {error && (
+          <div className="error-message">
+            <p>{error}</p>
+            <button 
+              onClick={() => {
+                setError(null);
+                fetchBeers();
+              }}
+              className="retry-button"
+            >
+              Tentar Novamente
+            </button>
           </div>
         )}
 
-        {cervejas.map((cerveja) => (
-          <div key={cerveja._id} className="cerveja-card">
-            <div className="cerveja-imagem-container">
-              <img
-                src={cerveja.imagem}
-                alt={cerveja.nome}
-                className="cerveja-imagem"
-                loading="lazy"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "/default-beer.png";
-                }}
-              />
-              <div className="cerveja-detalhes">
-                <div className="cerveja-tag">Virada</div>
-                <div className="cerveja-ano">{cerveja.ano}</div>
-              </div>
-              <button
-                className={`add-to-cart-btn ${stock[cerveja._id] <= 0 ? 'disabled' : ''}`}
-                onClick={() => handleAddToCart(cerveja)}
-                disabled={stock[cerveja._id] <= 0}
-              >
-                <i className="fas fa-shopping-cart"></i>
-                {stock[cerveja._id] > 0 ? 'Adicionar' : 'Esgotado'}
-              </button>
+        <div className="cervejas-grid">
+          {loading && (
+            <div className="loading-overlay">
+              <div className="spinner"></div>
+              <p>Carregando cervejas...</p>
             </div>
-            <div className="cerveja-info">
-              <h3>{cerveja.nome}</h3>
-              <p className="cerveja-tipo">{cerveja.tipo}</p>
-              {/* Para renderizar quebras de linha se existirem na descrição do BD */}
-              <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
-              <div className="cerveja-specs">
-                <span className="spec-item">ABV: {cerveja.teor}</span> {/* Agora exibe o teor limpo do BD */}
-                {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
-                {cerveja.cor && <span className="spec-item">Cor: {cerveja.cor}</span>}
-                {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
+          )}
+
+          {cervejas.map((cerveja) => (
+            <div key={cerveja._id} className="cerveja-card">
+              <div className="cerveja-imagem-container">
+                <img
+                  src={cerveja.imagem}
+                  alt={cerveja.nome}
+                  className="cerveja-imagem"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "/default-beer.png";
+                  }}
+                />
+                <div className="cerveja-detalhes">
+                  <div className="cerveja-tag">Virada</div>
+                  <div className="cerveja-ano">{cerveja.ano}</div>
+                </div>
+                <button
+                  className={`add-to-cart-btn ${stock[cerveja._id] <= 0 ? 'disabled' : ''}`}
+                  onClick={() => handleAddToCart(cerveja)}
+                  disabled={stock[cerveja._id] <= 0}
+                >
+                  <i className="fas fa-shopping-cart"></i>
+                  {stock[cerveja._id] > 0 ? 'Adicionar' : 'Esgotado'}
+                </button>
               </div>
-              <div className="cerveja-stock">
-                <span className="stock-label">Estoque:</span>
-                <span className={`stock-value ${stock[cerveja._id] > 0 ? 'in-stock' : 'out-of-stock'}`}>
-                  {stock[cerveja._id]} unidades
-                </span>
+              <div className="cerveja-info">
+                <h3>{cerveja.nome}</h3>
+                <p className="cerveja-tipo">{cerveja.tipo}</p>
+                <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
+                <div className="cerveja-specs">
+                  <span className="spec-item">ABV: {cerveja.teor}</span>
+                  {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
+                  {cerveja.cor && <span className="spec-item">Cor: {cerveja.cor}</span>}
+                  {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
+                </div>
+                <div className="cerveja-stock">
+                  <span className="stock-label">Estoque:</span>
+                  <span className={`stock-value ${stock[cerveja._id] > 0 ? 'in-stock' : 'out-of-stock'}`}>
+                    {stock[cerveja._id]} unidades
+                  </span>
+                </div>
+                <span className="cerveja-price">R$ {(cerveja.price || 0).toFixed(2)}</span>
               </div>
-              <span className="cerveja-price">R$ {(cerveja.price || 0).toFixed(2)}</span>
             </div>
-          </div>
-        ))}
-      </div>
-
-      <div className={`cart-icon ${getTotalItems() > 0 ? 'has-items' : ''}`} onClick={() => setShowCart(!showCart)}>
-        <i className="fas fa-shopping-cart"></i>
-        {getTotalItems() > 0 && <span className="cart-count">{getTotalItems()}</span>}
-      </div>
-
-      <div className={`cart-sidebar ${showCart ? 'open' : ''}`}>
-        <div className="cart-header">
-          <h3>Seu Carrinho</h3>
-          <button className="close-cart" onClick={() => setShowCart(false)}>
-            <i className="fas fa-times"></i>
-          </button>
+          ))}
         </div>
 
-        {cart.length === 0 ? (
-          <div className="empty-cart">
-            <i className="fas fa-shopping-cart"></i>
-            <p>Seu carrinho está vazio</p>
+        <div className={`cart-icon ${getTotalItems() > 0 ? 'has-items' : ''}`} onClick={() => setShowCart(!showCart)}>
+          <i className="fas fa-shopping-cart"></i>
+          {getTotalItems() > 0 && <span className="cart-count">{getTotalItems()}</span>}
+        </div>
+
+        <div className={`cart-sidebar ${showCart ? 'open' : ''}`}>
+          <div className="cart-header">
+            <h3>Seu Carrinho</h3>
+            <button className="close-cart" onClick={() => setShowCart(false)}>
+              <i className="fas fa-times"></i>
+            </button>
           </div>
-        ) : (
-          <>
-            <div className="cart-items">
-              {cart.map(item => (
-                <div key={item._id} className="cart-item">
-                  <img src={item.imagem} alt={item.nome} className="cart-item-image" />
-                  <div className="cart-item-details">
-                    <h4>{item.nome}</h4>
-                    <p className="cart-item-type">{item.tipo}</p>
-                    <div className="cart-item-quantity">
-                      <button onClick={() => handleUpdateQuantity(item._id, item.quantity - 1)}>
-                        <i className="fas fa-minus"></i>
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button 
-                        onClick={() => handleUpdateQuantity(item._id, item.quantity + 1)}
-                        disabled={stock[item._id] <= item.quantity}
+
+          {cart.length === 0 ? (
+            <div className="empty-cart">
+              <i className="fas fa-shopping-cart"></i>
+              <p>Seu carrinho está vazio</p>
+            </div>
+          ) : (
+            <>
+              <div className="cart-items">
+                {cart.map(item => (
+                  <div key={item._id} className="cart-item">
+                    <img src={item.imagem} alt={item.nome} className="cart-item-image" />
+                    <div className="cart-item-details">
+                      <h4>{item.nome}</h4>
+                      <p className="cart-item-type">{item.tipo}</p>
+                      <div className="cart-item-quantity">
+                        <button onClick={() => handleUpdateQuantity(item._id, item.quantity - 1)}>
+                          <i className="fas fa-minus"></i>
+                        </button>
+                        <span>{item.quantity}</span>
+                        <button 
+                          onClick={() => handleUpdateQuantity(item._id, item.quantity + 1)}
+                          disabled={stock[item._id] <= item.quantity}
+                        >
+                          <i className="fas fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="cart-item-price">
+                      R$ {((item.price || 0) * item.quantity).toFixed(2)}
+                      <button
+                        className="remove-item"
+                        onClick={() => handleRemoveFromCart(item._id)}
                       >
-                        <i className="fas fa-plus"></i>
+                        <i className="fas fa-trash"></i>
                       </button>
                     </div>
                   </div>
-                  <div className="cart-item-price">
-                    R$ {((item.price || 0) * item.quantity).toFixed(2)}
-                    <button
-                      className="remove-item"
-                      onClick={() => handleRemoveFromCart(item._id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="cart-summary">
-              <div className="cart-total">
-                <span>Total:</span>
-                <span>R$ {getTotalPrice()}</span>
+                ))}
               </div>
-              <button
-                className="checkout-btn"
-                onClick={proceedToCheckout}
-                disabled={cart.length === 0}
-              >
-                Finalizar Compra
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-      {showCart && <div className="cart-overlay" onClick={() => setShowCart(false)}></div>}
-    </section>
+
+              <div className="cart-summary">
+                <div className="cart-total">
+                  <span>Total:</span>
+                  <span>R$ {getTotalPrice()}</span>
+                </div>
+                <button
+                  className="checkout-btn"
+                  onClick={proceedToCheckout}
+                  disabled={cart.length === 0}
+                >
+                  Finalizar Compra
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+        {showCart && <div className="cart-overlay" onClick={() => setShowCart(false)}></div>}
+      </section>
+
+      {/* Novo Footer */}
+      <footer className="transparent-footer">
+        <div className="footer-content">
+          <div className="footer-logo">
+            <img 
+              src="/logo-cervejaria-virada.png" 
+              alt="Cervejaria Virada" 
+              className="footer-logo-img"
+            />
+          </div>
+          
+          <div className="footer-info">
+            <p className="footer-text">
+              Cervejaria Virada - Artesanal, Autêntica, Inesquecível
+            </p>
+            <p className="footer-contact">
+              Orçamentos para eventos e fornecimento de chopes especiais via contato
+            </p>
+          </div>
+          
+          <div className="footer-social">
+            <a 
+              href="https://wa.me/558195723437" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="social-icon whatsapp"
+            >
+              <i className="fab fa-whatsapp"></i>
+            </a>
+            <a 
+              href="https://www.instagram.com/tomevirada/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="social-icon instagram"
+            >
+              <i className="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+      </footer>
+    </>
   );
 };
 
