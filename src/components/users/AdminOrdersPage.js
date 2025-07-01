@@ -28,16 +28,6 @@ const AdminOrdersPage = () => {
     fetchOrders();
   }, []);
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
   if (loading) return <div className="loading-screen">Carregando...</div>;
   if (error) return <div className="global-error">{error}</div>;
 
@@ -48,41 +38,30 @@ const AdminOrdersPage = () => {
       {orders.length === 0 ? (
         <p>Nenhum pedido encontrado.</p>
       ) : (
-        <div className="orders-list">
+        <div className="orders-grid">
           {orders.map((order) => (
             <div key={order._id} className="order-card">
               <div className="order-header">
-                <div className="order-id-status">
-                  <h3>Pedido #{order._id.substring(0, 7)}</h3>
-                  <span className={`status-badge status-${order.status}`}>
-                    {order.status || 'Processando'}
-                  </span>
-                </div>
-                <p className="order-date">{formatDate(order.createdAt)}</p>
-              </div>
-
-              <div className="order-customer">
+                <h3>Pedido #{order._id.substring(0, 7)}</h3>
                 <p><strong>Cliente:</strong> {order.user?.nomeCompleto || order.userEmail}</p>
-              </div>
-
-              <div className="order-summary">
+                <p><strong>Data:</strong> {new Date(order.createdAt).toLocaleDateString('pt-BR')}</p>
+                <p><strong>Status:</strong> <span className={`status-${order.status}`}>
+                  {order.status || 'Processando'}
+                </span></p>
                 <p><strong>Total:</strong> R$ {order.total.toFixed(2)}</p>
-                <p><strong>Itens:</strong> {order.items.length}</p>
               </div>
 
               <div className="order-items">
-                <h4>Itens do Pedido:</h4>
+                <h4>Itens:</h4>
                 {order.items.map((item) => (
                   <div key={item._id} className="order-item">
                     <img 
                       src={item.productId?.imagem || 'https://placehold.co/50x50'} 
                       alt={item.productId?.nome} 
-                      className="item-image"
                     />
-                    <div className="item-details">
-                      <p className="item-name">{item.productId?.nome || 'Produto não disponível'}</p>
-                      <p className="item-quantity">Quantidade: {item.quantity}</p>
-                      <p className="item-price">Preço unitário: R$ {item.price.toFixed(2)}</p>
+                    <div>
+                      <p>{item.productId?.nome || 'Produto não disponível'}</p>
+                      <p>Qtd: {item.quantity} × R$ {item.price.toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
