@@ -274,7 +274,6 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
         {showCart && <div className="cart-overlay" onClick={() => setShowCart(false)}></div>}
       </section>
 
-      {/* Novo Footer */}
       <footer className="transparent-footer">
         <div className="footer-content">
           <div className="footer-logo">
@@ -286,11 +285,10 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           </div>
           
           <div className="footer-info">
-            <p className="footer-text">
-              Cervejaria Virada - Artesanal, Autêntica, Inesquecível
-            </p>
+            <h3 className="footer-text">CERVEJARIA VIRADA</h3>
             <p className="footer-contact">
-              Orçamentos para eventos e fornecimento de chopes especiais via contato
+              Orçamentos para eventos e fornecimento de chopes artesanais<br />
+              Entre em contato e leve a autêntica experiência Virada para seu evento
             </p>
           </div>
           
@@ -300,6 +298,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
               target="_blank" 
               rel="noopener noreferrer"
               className="social-icon whatsapp"
+              title="WhatsApp"
             >
               <i className="fab fa-whatsapp"></i>
             </a>
@@ -308,9 +307,14 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
               target="_blank" 
               rel="noopener noreferrer"
               className="social-icon instagram"
+              title="Instagram"
             >
               <i className="fab fa-instagram"></i>
             </a>
+          </div>
+          
+          <div className="footer-copyright">
+            © {new Date().getFullYear()} Cervejaria Virada. Todos os direitos reservados.
           </div>
         </div>
       </footer>

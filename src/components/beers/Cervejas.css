@@ -129,7 +129,7 @@
   margin-bottom: 15px;
 }
 
-.cerveja-stock {
+.cerveja-specs {
   display: flex;
   gap: 5px;
   margin-bottom: 10px;
@@ -441,85 +441,142 @@
   margin-top: 10px;
   cursor: pointer;
 }
-/* Estilos para o Footer */
+
+/* Footer Estilizado */
 .transparent-footer {
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 2rem 0;
+  background: linear-gradient(to top, #000000, #2d2d2d);
+  color: #e0e0e0;
+  padding: 3rem 20px;
   text-align: center;
-  margin-top: 3rem;
+  border-top: 1px solid #e67e22;
+  position: relative;
 }
 
 .footer-content {
   max-width: 1200px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
+}
+
+.footer-logo {
+  display: flex;
+  justify-content: center;
 }
 
 .footer-logo-img {
-  max-height: 80px;
+  max-height: 100px;
   width: auto;
+  filter: drop-shadow(0 0 5px rgba(230, 126, 34, 0.5));
+  transition: transform 0.3s ease;
+}
+
+.footer-logo-img:hover {
+  transform: scale(1.05);
 }
 
 .footer-info {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
+  padding: 0 20px;
 }
 
 .footer-text {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
   margin: 0;
+  color: #ffffff;
+  letter-spacing: 1px;
 }
 
 .footer-contact {
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin: 0;
-  font-style: italic;
+  color: #b0b0b0;
+  line-height: 1.5;
 }
 
 .footer-social {
   display: flex;
-  gap: 1.5rem;
+  justify-content: center;
+  gap: 2rem;
 }
 
 .social-icon {
-  color: white;
-  font-size: 1.8rem;
-  transition: transform 0.3s ease;
+  color: #e0e0e0;
+  font-size: 2.2rem;
+  transition: all 0.3s ease;
+  background: rgba(30, 30, 30, 0.7);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #333;
 }
 
 .social-icon:hover {
-  transform: scale(1.1);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .whatsapp:hover {
   color: #25D366;
+  border-color: #25D366;
 }
 
 .instagram:hover {
   color: #E1306C;
+  border-color: #E1306C;
+}
+
+.footer-copyright {
+  grid-column: 1 / -1;
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: #666;
+  border-top: 1px solid #333;
+  padding-top: 1rem;
 }
 
 /* Responsivo */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .footer-content {
-    padding: 0 1rem;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
   
   .footer-logo-img {
-    max-height: 60px;
+    max-height: 80px;
   }
   
   .footer-text {
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
   
   .footer-contact {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .social-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-social {
+    gap: 1rem;
+  }
+  
+  .social-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.5rem;
   }
 }
