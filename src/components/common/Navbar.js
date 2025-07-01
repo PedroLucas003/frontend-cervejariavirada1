@@ -37,10 +37,7 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
           <button className="menu-toggle" onClick={toggleMobileMenu}>
             <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
           </button>
-          {/* Adicionei o botão Home aqui */}
-          <Link to="/" className="home-button">
-            <i className="fas fa-home"></i>
-          </Link>
+          {/* Removi o botão Home com ícone de casinha daqui */}
         </div>
 
         <div className="navbar-right">
@@ -54,7 +51,7 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
 
                 {menuOpen && (
                   <div className="dropdown-menu">
-                    {/* Adicionei o link para Home no dropdown também */}
+                    {/* Mantive o link para Home no dropdown */}
                     <Link to="/" onClick={() => setMenuOpen(false)}>
                       <i className="fas fa-home"></i> Início
                     </Link>
