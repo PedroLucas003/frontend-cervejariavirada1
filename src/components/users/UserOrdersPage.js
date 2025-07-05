@@ -8,6 +8,7 @@ const UserOrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [expandedOrder, setExpandedOrder] = useState(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -36,50 +37,103 @@ const UserOrdersPage = () => {
     fetchOrders();
   }, []);
 
-  if (loading) return <div className="loading-screen">Carregando pedidos...</div>;
-  if (error) return <div className="global-error">{error}</div>;
+  const toggleOrder = (orderId) => {
+    setExpandedOrder(expandedOrder === orderId ? null : orderId);
+  };
+
+  if (loading) return <div className="user-orders-loading">Carregando seus pedidos...</div>;
+  if (error) return <div className="user-orders-error">{error}</div>;
 
   return (
     <div className="user-orders-page">
       <div className="user-orders-container">
-        <h1>Meus Pedidos</h1>
+        <div className="user-orders-header">
+          <h1>Meus Pedidos</h1>
+          <p className="orders-count">{orders.length} {orders.length === 1 ? 'pedido' : 'pedidos'} encontrados</p>
+        </div>
+
         {orders.length === 0 ? (
-          <p className="no-orders">Você ainda não fez nenhum pedido.</p>
+          <div className="no-orders">
+            <div className="no-orders-content">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="10" cy="20.5" r="1"/><circle cx="18" cy="20.5" r="1"/><path d="M2.5 2.5h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6l1.6-8.4H7.1"/>
+              </svg>
+              <h3>Você ainda não fez nenhum pedido</h3>
+              <p>Quando você fizer um pedido, ele aparecerá aqui.</p>
+            </div>
+          </div>
         ) : (
-          <div className="orders-list">
+          <div className="orders-accordion">
             {orders.map((order) => (
-              <div key={order._id} className="order-card">
-                <div className="order-header">
-                  <h3>Pedido #{order._id.substring(0, 7)}</h3>
-                  <p><strong>Data:</strong> {new Date(order.createdAt).toLocaleDateString('pt-BR')}</p>
-                  <p><strong>Status:</strong> <span className={`status status-${order.status}`}>{order.status || 'Processando'}</span></p>
-                  <p><strong>Total:</strong> R$ {order.total.toFixed(2)}</p>
+              <div 
+                key={order._id} 
+                className={`order-card ${expandedOrder === order._id ? 'expanded' : ''}`}
+              >
+                <div 
+                  className="order-summary" 
+                  onClick={() => toggleOrder(order._id)}
+                >
+                  <div className="order-id-status">
+                    <span className="order-id">Pedido #{order._id.substring(0, 8)}</span>
+                    <span className={`status-badge status-${order.status}`}>
+                      {order.status || 'Processando'}
+                    </span>
+                  </div>
+                  <div className="order-date-total">
+                    <span className="order-date">
+                      {new Date(order.createdAt).toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                      })}
+                    </span>
+                    <span className="order-total">R$ {order.total.toFixed(2)}</span>
+                  </div>
+                  <div className="order-toggle">
+                    {expandedOrder === order._id ? '▲' : '▼'}
+                  </div>
                 </div>
-                <div className="order-body">
-                  <h4>Itens do Pedido:</h4>
-                  {order.items.map((item) => (
-                    item.productId ? (
-                      <div key={item._id || item.productId._id} className="order-item">
-                        <img 
-                          src={item.productId.imagem || 'https://placehold.co/50x50/e2e8f0/e2e8f0?text=Cerva'} 
-                          alt={item.productId.nome} 
-                          className="item-image"
-                          onError={(e) => {
-                            e.target.src = 'https://placehold.co/50x50/e2e8f0/e2e8f0?text=Cerva';
-                          }}
-                        />
-                        <div className="item-details">
-                          <span>{item.productId.nome}</span>
-                          <span>Qtd: {item.quantity}</span>
-                          <span>Preço Unit.: R$ {item.price.toFixed(2)}</span>
+
+                <div className="order-details">
+                  <div className="order-items">
+                    <h4>Itens do Pedido</h4>
+                    {order.items.map((item) => (
+                      item.productId ? (
+                        <div key={item._id || item.productId._id} className="order-item">
+                          <div className="item-image-container">
+                            <img 
+                              src={item.productId.imagem || 'https://placehold.co/80x80/333/333?text=Produto'} 
+                              alt={item.productId.nome} 
+                              className="item-image"
+                              onError={(e) => {
+                                e.target.src = 'https://placehold.co/80x80/333/333?text=Produto';
+                              }}
+                            />
+                          </div>
+                          <div className="item-info">
+                            <h5>{item.productId.nome}</h5>
+                            <div className="item-meta">
+                              <span>Qtd: {item.quantity}</span>
+                              <span>R$ {item.price.toFixed(2)} cada</span>
+                              <span className="item-subtotal">R$ {(item.price * item.quantity).toFixed(2)}</span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div key={item._id} className="order-item-deleted">
-                        <span>Produto não mais disponível</span>
-                      </div>
-                    )
-                  ))}
+                      ) : (
+                        <div key={item._id} className="order-item-deleted">
+                          <span>Produto não mais disponível</span>
+                          <span>Qtd: {item.quantity}</span>
+                        </div>
+                      )
+                    ))}
+                  </div>
+
+                  <div className="order-footer">
+                    <div className="order-actions">
+                      <button className="track-order">Acompanhar Pedido</button>
+                      <button className="contact-support">Falar com Suporte</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
