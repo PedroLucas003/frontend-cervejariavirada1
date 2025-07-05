@@ -1,40 +1,24 @@
-/* VARIÁVEIS DE CORES */
-:root {
-  --bg-black: #121212;
-  --bg-container: #212121;
-  --text-primary: #ffffff;
-  --text-secondary: #b0b0b0;
-  --primary-color: #40c9ff;
-  --primary-hover: #00b4ff;
-  --secondary-color: #e81cff;
-  --secondary-hover: #d100f9;
-  --danger-color: #ff3a3a;
-  --danger-hover: #ff1a1a;
-  --border-color: #414141;
-  --input-bg: transparent;
-  --input-border: #414141;
-  --table-row-odd: #1e1e1e;
-  --table-row-hover: #282828;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --error-bg: #3a1c1f;
-  --error-text: #ff8a8a;
+/* ESTILOS EXCLUSIVOS PARA A PÁGINA DE ADMIN DE PEDIDOS */
+.admin-orders-page {
+  background-color: #000000;
+  min-height: 100vh;
+  padding: 20px 0;
 }
 
-/* ESTILOS DA PÁGINA DE PEDIDOS */
 .admin-orders-container {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 2rem;
-  color: var(--text-primary);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #ffffff;
 }
 
 .admin-orders-container h1 {
   text-align: center;
-  margin: 0 0 1.5rem 0;
-  color: var(--text-primary);
-  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #ffffff;
+  font-size: 2rem;
   position: relative;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 }
 
 .admin-orders-container h1::after {
@@ -43,154 +27,287 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 100px;
+  width: 150px;
   height: 3px;
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  background: linear-gradient(90deg, #40c9ff, #e81cff);
   border-radius: 3px;
 }
 
-.orders-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+.admin-orders-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
   gap: 20px;
-  margin-top: 20px;
+  flex-wrap: wrap;
 }
 
-.order-card {
-  background: linear-gradient(var(--bg-container), var(--bg-container)) padding-box,
-              linear-gradient(145deg, transparent 35%, var(--secondary-color), var(--primary-color)) border-box;
-  border: 2px solid transparent;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 20px var(--shadow-color);
-  transition: transform 0.3s ease;
-  animation: fadeIn 0.5s ease-out forwards;
+.search-box {
+  position: relative;
+  flex-grow: 1;
+  max-width: 500px;
 }
 
-.order-card:hover {
+.search-box input {
+  width: 100%;
+  padding: 12px 20px 12px 40px;
+  border-radius: 30px;
+  border: 1px solid #414141;
+  background-color: #121212;
+  color: #ffffff;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #40c9ff;
+  box-shadow: 0 0 0 2px rgba(64, 201, 255, 0.2);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b0b0b0;
+}
+
+.status-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-filter label {
+  color: #b0b0b0;
+  font-size: 14px;
+}
+
+.status-filter select {
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 1px solid #414141;
+  background-color: #121212;
+  color: #ffffff;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.status-filter select:focus {
+  outline: none;
+  border-color: #40c9ff;
+}
+
+.orders-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.summary-card {
+  background-color: #121212;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  border-left: 4px solid;
+  transition: transform 0.3s;
+}
+
+.summary-card:hover {
   transform: translateY(-5px);
 }
 
-.order-header {
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 15px;
-  margin-bottom: 15px;
+.summary-card.total {
+  border-left-color: #40c9ff;
 }
 
-.order-header h3 {
+.summary-card.pending {
+  border-left-color: #fa8c16;
+}
+
+.summary-card.processing {
+  border-left-color: #e81cff;
+}
+
+.summary-card.revenue {
+  border-left-color: #52c41a;
+}
+
+.summary-card h3 {
   margin-top: 0;
-  color: var(--primary-color);
-}
-
-.order-header p {
-  color: var(--text-secondary);
-  margin: 5px 0;
-}
-
-.order-header p strong {
-  color: var(--text-primary);
-}
-
-.order-items {
-  margin-top: 15px;
-}
-
-.order-items h4 {
-  color: var(--text-primary);
   margin-bottom: 10px;
+  font-size: 16px;
+  color: #b0b0b0;
 }
 
-.order-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border-color);
+.summary-card p {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
 }
 
-.order-item:last-child {
+.orders-table-container {
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #121212;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.orders-table th {
+  background-color: #212121;
+  color: #ffffff;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+.orders-table td {
+  padding: 15px;
+  border-bottom: 1px solid #212121;
+  color: #e0e0e0;
+  font-size: 14px;
+}
+
+.orders-table tr:last-child td {
   border-bottom: none;
 }
 
-.order-item img {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  border-radius: 8px;
-  background-color: var(--bg-black);
-  padding: 5px;
+.orders-table tr:hover td {
+  background-color: #1a1a1a;
 }
 
-.order-item div p {
-  margin: 3px 0;
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.order-item div p:first-child {
-  color: var(--text-primary);
-  font-weight: 500;
-}
-
-/* Status styles */
-.status-pending {
-  color: #fa8c16;
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-pending {
+  background-color: rgba(250, 140, 22, 0.1);
+  color: #fa8c16;
 }
 
 .status-processing {
-  color: var(--primary-color);
-  font-weight: 600;
+  background-color: rgba(64, 201, 255, 0.1);
+  color: #40c9ff;
+}
+
+.status-shipped {
+  background-color: rgba(232, 28, 255, 0.1);
+  color: #e81cff;
 }
 
 .status-delivered {
+  background-color: rgba(82, 196, 26, 0.1);
   color: #52c41a;
-  font-weight: 600;
 }
 
 .status-cancelled {
-  color: var(--danger-color);
-  font-weight: 600;
+  background-color: rgba(255, 58, 58, 0.1);
+  color: #ff3a3a;
 }
 
-/* Loading e mensagens de erro */
-.loading-screen {
+.order-items-cell {
+  max-width: 200px;
+}
+
+.item-chip {
+  display: inline-block;
+  background-color: #212121;
+  color: #b0b0b0;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin: 2px;
+}
+
+.status-select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #414141;
+  background-color: #212121;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.status-select:focus {
+  outline: none;
+  border-color: #40c9ff;
+}
+
+.no-orders-found {
   text-align: center;
-  padding: 2rem;
-  color: var(--text-primary);
+  padding: 40px;
+  background-color: #121212;
+  border-radius: 10px;
+  color: #b0b0b0;
 }
 
-.global-error {
-  background-color: var(--error-bg);
-  color: var(--error-text);
-  padding: 1rem;
+.admin-orders-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.admin-orders-error {
+  padding: 20px;
+  background-color: #3a1c1f;
+  color: #ff8a8a;
   border-radius: 8px;
   text-align: center;
-  margin: 2rem auto;
+  margin: 20px auto;
   max-width: 600px;
-  border-left: 4px solid var(--danger-color);
+  border-left: 4px solid #ff3a3a;
 }
 
-/* ANIMAÇÕES */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* RESPONSIVIDADE */
+/* Responsividade */
 @media (max-width: 768px) {
-  .admin-orders-container {
-    padding: 1rem;
+  .admin-orders-filters {
+    flex-direction: column;
+    align-items: stretch;
   }
   
-  .orders-grid {
-    grid-template-columns: 1fr;
+  .search-box {
+    max-width: 100%;
+  }
+  
+  .orders-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .orders-table th, 
+  .orders-table td {
+    padding: 10px 8px;
+    font-size: 13px;
   }
 }
 
 @media (max-width: 480px) {
-  .order-card {
-    padding: 16px;
+  .orders-summary {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-orders-container {
+    padding: 15px;
   }
   
   .admin-orders-container h1 {
