@@ -44,7 +44,6 @@ const EditUserPage = () => {
         
         const userData = response.data.data || response.data;
         
-        // Formatar os dados para exibição
         setFormData({
           nomeCompleto: userData.nomeCompleto || '',
           email: userData.email || '',
@@ -118,7 +117,6 @@ const EditUserPage = () => {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     
-    // Formatar CPF enquanto digita
     if (name === 'cpf') {
       const numericValue = value.replace(/\D/g, '');
       if (numericValue.length > 11) return;
@@ -127,7 +125,6 @@ const EditUserPage = () => {
       return;
     }
     
-    // Formatar telefone enquanto digita
     if (name === 'telefone') {
       const numericValue = value.replace(/\D/g, '');
       if (numericValue.length > 11) return;
@@ -136,7 +133,6 @@ const EditUserPage = () => {
       return;
     }
     
-    // Formatar CEP enquanto digita
     if (name === 'enderecos.0.cep') {
       const numericValue = value.replace(/\D/g, '');
       if (numericValue.length > 8) return;
@@ -149,14 +145,12 @@ const EditUserPage = () => {
         }]
       }));
       
-      // Buscar endereço quando CEP estiver completo
       if (numericValue.length === 8) {
         fetchAddressByCEP(numericValue);
       }
       return;
     }
     
-    // Para campos aninhados no array de endereços
     if (name.startsWith('enderecos.0.')) {
       const field = name.split('.')[2];
       setFormData(prev => ({
@@ -169,7 +163,6 @@ const EditUserPage = () => {
       return;
     }
     
-    // Para campos normais
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
@@ -181,7 +174,6 @@ const EditUserPage = () => {
     setError(null);
     setSuccess(null);
     
-    // Validações básicas
     if (!formData.nomeCompleto.trim()) {
       setError('Nome completo é obrigatório');
       return;
@@ -207,7 +199,6 @@ const EditUserPage = () => {
       return;
     }
 
-    // Validação do estado (2 caracteres, maiúsculos)
     if (!formData.enderecos[0].estado || 
         formData.enderecos[0].estado.length !== 2 ||
         !formData.enderecos[0].estado.match(/^[A-Za-z]{2}$/)) {
@@ -215,7 +206,6 @@ const EditUserPage = () => {
       return;
     }
     
-    // Preparar dados para envio (remover formatação)
     const userToSend = {
       nomeCompleto: formData.nomeCompleto,
       email: formData.email,
@@ -256,7 +246,7 @@ const EditUserPage = () => {
 
   if (loading) {
     return (
-      <div className="loading-container">
+      <div className="edit-user-loading">
         <div className="loading-spinner"></div>
         <p>Carregando usuário...</p>
       </div>
@@ -264,129 +254,36 @@ const EditUserPage = () => {
   }
 
   return (
-    <div className="edit-user-container">
-      <h2>Editar Usuário</h2>
-      
-      {error && (
-        <div className="error-message">
-          {error}
-          <button onClick={() => setError(null)} className="close-btn">×</button>
+    <div className="edit-user-page">
+      <div className="edit-user-container">
+        <div className="edit-user-header">
+          <h1>Editar Usuário</h1>
+          <button onClick={() => navigate('/admin/users')} className="back-btn">
+            &larr; Voltar
+          </button>
         </div>
-      )}
-      
-      {success && (
-        <div className="success-message">
-          {success}
-        </div>
-      )}
+        
+        {error && (
+          <div className="edit-user-error">
+            {error}
+            <button onClick={() => setError(null)} className="close-btn">×</button>
+          </div>
+        )}
+        
+        {success && (
+          <div className="edit-user-success">
+            {success}
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit} className="edit-user-form">
-        <div className="form-row">
-          <div className="form-group">
-            <label>Nome Completo:</label>
-            <input
-              type="text"
-              name="nomeCompleto"
-              value={formData.nomeCompleto}
-              onChange={handleInputChange}
-              required
-              disabled={isSubmitting}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-              disabled={isSubmitting}
-            />
-          </div>
-        </div>
-        
-        <div className="form-row">
-          <div className="form-group">
-            <label>CPF:</label>
-            <input
-              type="text"
-              name="cpf"
-              value={formData.cpf}
-              onChange={handleInputChange}
-              placeholder="000.000.000-00"
-              maxLength="14"
-              required
-              disabled={isSubmitting}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Data de Nascimento:</label>
-            <input
-              type="date"
-              name="dataNascimento"
-              value={formData.dataNascimento}
-              onChange={handleInputChange}
-              required
-              disabled={isSubmitting}
-            />
-          </div>
-        </div>
-        
-        <div className="form-group">
-          <label>Telefone:</label>
-          <input
-            type="text"
-            name="telefone"
-            value={formData.telefone}
-            onChange={handleInputChange}
-            placeholder="(00) 00000-0000"
-            maxLength="15"
-            required
-            disabled={isSubmitting}
-          />
-        </div>
-        
-        <div className="address-section">
-          <h4>Endereço Principal</h4>
-          
-          <div className="form-row">
+        <form onSubmit={handleSubmit} className="edit-user-form">
+          <div className="form-grid">
             <div className="form-group">
-              <label>CEP:</label>
+              <label>Nome Completo</label>
               <input
                 type="text"
-                name="enderecos.0.cep"
-                value={formData.enderecos[0].cep}
-                onChange={handleInputChange}
-                placeholder="00000-000"
-                maxLength="9"
-                required
-                disabled={isSubmitting}
-              />
-            </div>
-            
-            <div className="form-group">
-              <label>Logradouro:</label>
-              <input
-                type="text"
-                name="enderecos.0.logradouro"
-                value={formData.enderecos[0].logradouro}
-                onChange={handleInputChange}
-                required
-                disabled={isSubmitting}
-              />
-            </div>
-          </div>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label>Número:</label>
-              <input
-                type="text"
-                name="enderecos.0.numero"
-                value={formData.enderecos[0].numero}
+                name="nomeCompleto"
+                value={formData.nomeCompleto}
                 onChange={handleInputChange}
                 required
                 disabled={isSubmitting}
@@ -394,24 +291,11 @@ const EditUserPage = () => {
             </div>
             
             <div className="form-group">
-              <label>Complemento:</label>
+              <label>Email</label>
               <input
-                type="text"
-                name="enderecos.0.complemento"
-                value={formData.enderecos[0].complemento}
-                onChange={handleInputChange}
-                disabled={isSubmitting}
-              />
-            </div>
-          </div>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label>Bairro:</label>
-              <input
-                type="text"
-                name="enderecos.0.bairro"
-                value={formData.enderecos[0].bairro}
+                type="email"
+                name="email"
+                value={formData.email}
                 onChange={handleInputChange}
                 required
                 disabled={isSubmitting}
@@ -419,66 +303,179 @@ const EditUserPage = () => {
             </div>
             
             <div className="form-group">
-              <label>Cidade:</label>
+              <label>CPF</label>
               <input
                 type="text"
-                name="enderecos.0.cidade"
-                value={formData.enderecos[0].cidade}
+                name="cpf"
+                value={formData.cpf}
+                onChange={handleInputChange}
+                placeholder="000.000.000-00"
+                maxLength="14"
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label>Data de Nascimento</label>
+              <input
+                type="date"
+                name="dataNascimento"
+                value={formData.dataNascimento}
                 onChange={handleInputChange}
                 required
                 disabled={isSubmitting}
               />
             </div>
+            
+            <div className="form-group">
+              <label>Telefone</label>
+              <input
+                type="text"
+                name="telefone"
+                value={formData.telefone}
+                onChange={handleInputChange}
+                placeholder="(00) 00000-0000"
+                maxLength="15"
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+          </div>
+
+          <div className="address-section">
+            <h3>Endereço Principal</h3>
+            
+            <div className="form-grid">
+              <div className="form-group">
+                <label>CEP</label>
+                <input
+                  type="text"
+                  name="enderecos.0.cep"
+                  value={formData.enderecos[0].cep}
+                  onChange={handleInputChange}
+                  placeholder="00000-000"
+                  maxLength="9"
+                  required
+                  disabled={isSubmitting}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>Logradouro</label>
+                <input
+                  type="text"
+                  name="enderecos.0.logradouro"
+                  value={formData.enderecos[0].logradouro}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isSubmitting}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>Número</label>
+                <input
+                  type="text"
+                  name="enderecos.0.numero"
+                  value={formData.enderecos[0].numero}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isSubmitting}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>Complemento</label>
+                <input
+                  type="text"
+                  name="enderecos.0.complemento"
+                  value={formData.enderecos[0].complemento}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>Bairro</label>
+                <input
+                  type="text"
+                  name="enderecos.0.bairro"
+                  value={formData.enderecos[0].bairro}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isSubmitting}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>Cidade</label>
+                <input
+                  type="text"
+                  name="enderecos.0.cidade"
+                  value={formData.enderecos[0].cidade}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isSubmitting}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>Estado (Sigla)</label>
+                <input
+                  type="text"
+                  name="enderecos.0.estado"
+                  value={formData.enderecos[0].estado}
+                  onChange={handleInputChange}
+                  placeholder="Ex: SP"
+                  maxLength="2"
+                  style={{ textTransform: 'uppercase' }}
+                  required
+                  disabled={isSubmitting}
+                />
+                <small className="hint">Digite a sigla do estado (2 letras)</small>
+              </div>
+            </div>
           </div>
           
-          <div className="form-group">
-            <label>Estado (Sigla):</label>
-            <input
-              type="text"
-              name="enderecos.0.estado"
-              value={formData.enderecos[0].estado}
-              onChange={handleInputChange}
-              placeholder="Ex: SP"
-              maxLength="2"
-              style={{ textTransform: 'uppercase' }}
-              required
-              disabled={isSubmitting}
-            />
-            <small className="hint">Digite a sigla do estado (2 letras)</small>
+          <div className="form-group checkbox-group">
+            <label>
+              <input
+                type="checkbox"
+                name="isAdmin"
+                checked={formData.isAdmin}
+                onChange={handleInputChange}
+                disabled={isSubmitting}
+              />
+              <span className="checkmark"></span>
+              Administrador
+            </label>
           </div>
-        </div>
-        
-        <div className="checkbox-group">
-          <label>
-            <input
-              type="checkbox"
-              name="isAdmin"
-              checked={formData.isAdmin}
-              onChange={handleInputChange}
+          
+          <div className="form-actions">
+            <button 
+              type="submit" 
+              className="submit-btn"
               disabled={isSubmitting}
-            />
-            Administrador
-          </label>
-        </div>
-        
-        <div className="form-actions">
-          <button 
-            type="submit" 
-            className="save-btn"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Salvando...' : 'Salvar Alterações'}
-          </button>
-          <button 
-            type="button" 
-            onClick={() => navigate('/admin/users')}
-            className="cancel-btn"
-            disabled={isSubmitting}
-          >
-            Cancelar
-          </button>
-        </div>
-      </form>
+            >
+              {isSubmitting ? (
+                <>
+                  <span className="spinner"></span>
+                  Salvando...
+                </>
+              ) : 'Salvar Alterações'}
+            </button>
+            <button 
+              type="button" 
+              onClick={() => navigate('/admin/users')}
+              className="cancel-btn"
+              disabled={isSubmitting}
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

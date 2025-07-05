@@ -31,6 +31,7 @@ const UserDashboard = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +57,15 @@ const UserDashboard = () => {
 
     fetchUsers();
   }, [navigate]);
+
+  const filteredUsers = users.filter(user => {
+    const term = searchTerm.toLowerCase();
+    return (
+      user.nomeCompleto.toLowerCase().includes(term) ||
+      user.email.toLowerCase().includes(term) ||
+      user.cpf.includes(term)
+    );
+  });
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -96,7 +106,6 @@ const UserDashboard = () => {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     
-    // Formatar CPF enquanto digita
     if (name === 'cpf') {
       const numericValue = value.replace(/\D/g, '');
       if (numericValue.length > 11) return;
@@ -105,7 +114,6 @@ const UserDashboard = () => {
       return;
     }
     
-    // Formatar telefone enquanto digita
     if (name === 'telefone') {
       const numericValue = value.replace(/\D/g, '');
       if (numericValue.length > 11) return;
@@ -114,7 +122,6 @@ const UserDashboard = () => {
       return;
     }
     
-    // Formatar CEP enquanto digita
     if (name === 'enderecos.0.cep') {
       const numericValue = value.replace(/\D/g, '');
       if (numericValue.length > 8) return;
@@ -127,14 +134,12 @@ const UserDashboard = () => {
         }]
       }));
       
-      // Buscar endereço quando CEP estiver completo
       if (numericValue.length === 8) {
         fetchAddressByCEP(numericValue);
       }
       return;
     }
     
-    // Para campos aninhados no array de endereços
     if (name.startsWith('enderecos.0.')) {
       const field = name.split('.')[2];
       setNewUser(prev => ({
@@ -147,7 +152,6 @@ const UserDashboard = () => {
       return;
     }
     
-    // Para campos normais
     setNewUser(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
@@ -158,7 +162,6 @@ const UserDashboard = () => {
     e.preventDefault();
     setError(null);
     
-    // Validações básicas
     if (!newUser.nomeCompleto.trim()) {
       setError('Nome completo é obrigatório');
       return;
@@ -189,7 +192,6 @@ const UserDashboard = () => {
       return;
     }
 
-    // Validação do estado (2 caracteres, maiúsculos)
     if (!newUser.enderecos[0].estado || 
         newUser.enderecos[0].estado.length !== 2 ||
         !newUser.enderecos[0].estado.match(/^[A-Za-z]{2}$/)) {
@@ -197,7 +199,6 @@ const UserDashboard = () => {
       return;
     }
     
-    // Preparar dados para envio (remover formatação)
     const userToSend = {
       ...newUser,
       cpf: newUser.cpf.replace(/\D/g, ''),
@@ -205,7 +206,7 @@ const UserDashboard = () => {
       enderecos: [{
         ...newUser.enderecos[0],
         cep: newUser.enderecos[0].cep.replace(/\D/g, ''),
-        estado: newUser.enderecos[0].estado.toUpperCase() // Garante que o estado fique em maiúsculas
+        estado: newUser.enderecos[0].estado.toUpperCase()
       }]
     };
     
@@ -271,7 +272,7 @@ const UserDashboard = () => {
 
   if (loading) {
     return (
-      <div className="loading-container">
+      <div className="user-dashboard-loading">
         <div className="loading-spinner"></div>
         <p>Carregando usuários...</p>
       </div>
@@ -279,280 +280,307 @@ const UserDashboard = () => {
   }
 
   return (
-    <div className="user-dashboard">
-      <h2>Gerenciamento de Usuários</h2>
-      
-      {error && (
-        <div className="error-message">
-          {error}
-          <button onClick={() => setError(null)} className="close-btn">×</button>
+    <div className="user-dashboard-page">
+      <div className="user-dashboard-container">
+        <div className="dashboard-header">
+          <h1>Painel de Usuários</h1>
+          <p className="users-count">{users.length} {users.length === 1 ? 'usuário' : 'usuários'} cadastrados</p>
         </div>
-      )}
-
-      {successMessage && (
-        <div className="success-message">
-          {successMessage}
-          <button onClick={() => setSuccessMessage('')}>×</button>
-        </div>
-      )}
-
-      <div className="controls">
-        <input
-          type="text"
-          placeholder="Buscar usuários..."
-          className="search-input"
-        />
-        <button 
-          onClick={() => setShowAddForm(!showAddForm)} 
-          className="add-user-btn"
-        >
-          {showAddForm ? 'Cancelar' : 'Adicionar Usuário'}
-        </button>
-      </div>
-
-      {showAddForm && (
-        <div className="add-user-form-container">
-          <h3>Adicionar Novo Usuário</h3>
-          <form onSubmit={handleAddUser} className="add-user-form">
-            <div className="form-row">
-              <div className="form-group">
-                <label>Nome Completo:</label>
-                <input
-                  type="text"
-                  name="nomeCompleto"
-                  value={newUser.nomeCompleto}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={newUser.email}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-            </div>
-            
-            <div className="form-row">
-              <div className="form-group">
-                <label>CPF:</label>
-                <input
-                  type="text"
-                  name="cpf"
-                  value={newUser.cpf}
-                  onChange={handleInputChange}
-                  placeholder="000.000.000-00"
-                  maxLength="14"
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Senha:</label>
-                <input
-                  type="password"
-                  name="senha"
-                  value={newUser.senha}
-                  onChange={handleInputChange}
-                  minLength="6"
-                  required
-                />
-              </div>
-            </div>
-            
-            <div className="form-row">
-              <div className="form-group">
-                <label>Data de Nascimento:</label>
-                <input
-                  type="date"
-                  name="dataNascimento"
-                  value={newUser.dataNascimento}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Telefone:</label>
-                <input
-                  type="text"
-                  name="telefone"
-                  value={newUser.telefone}
-                  onChange={handleInputChange}
-                  placeholder="(00) 00000-0000"
-                  maxLength="15"
-                  required
-                />
-              </div>
-            </div>
-            
-            <div className="address-section">
-              <h4>Endereço Principal</h4>
-              
-              <div className="form-row">
-                <div className="form-group">
-                  <label>CEP:</label>
-                  <input
-                    type="text"
-                    name="enderecos.0.cep"
-                    value={newUser.enderecos[0].cep}
-                    onChange={handleInputChange}
-                    placeholder="00000-000"
-                    maxLength="9"
-                    required
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>Logradouro:</label>
-                  <input
-                    type="text"
-                    name="enderecos.0.logradouro"
-                    value={newUser.enderecos[0].logradouro}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Número:</label>
-                  <input
-                    type="text"
-                    name="enderecos.0.numero"
-                    value={newUser.enderecos[0].numero}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>Complemento:</label>
-                  <input
-                    type="text"
-                    name="enderecos.0.complemento"
-                    value={newUser.enderecos[0].complemento}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Bairro:</label>
-                  <input
-                    type="text"
-                    name="enderecos.0.bairro"
-                    value={newUser.enderecos[0].bairro}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>Cidade:</label>
-                  <input
-                    type="text"
-                    name="enderecos.0.cidade"
-                    value={newUser.enderecos[0].cidade}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div className="form-group">
-                <label>Estado (Sigla):</label>
-                <input
-                  type="text"
-                  name="enderecos.0.estado"
-                  value={newUser.enderecos[0].estado}
-                  onChange={handleInputChange}
-                  placeholder="Ex: SP"
-                  maxLength="2"
-                  style={{ textTransform: 'uppercase' }}
-                  required
-                />
-                <small className="hint">Digite a sigla do estado (2 letras)</small>
-              </div>
-            </div>
-            
-            <div className="checkbox-group">
-              <label>
-                <input
-                  type="checkbox"
-                  name="isAdmin"
-                  checked={newUser.isAdmin}
-                  onChange={handleInputChange}
-                />
-                Administrador
-              </label>
-            </div>
-            
-            <div className="form-actions">
-              <button 
-                type="submit" 
-                className="submit-btn"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Salvando...' : 'Salvar Usuário'}
-              </button>
-              <button 
-                type="button" 
-                onClick={() => setShowAddForm(false)}
-                className="cancel-btn"
-              >
-                Cancelar
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      <div className="user-list">
-        {users.length === 0 ? (
-          <div className="no-results">
-            Nenhum usuário encontrado
+        
+        {error && (
+          <div className="dashboard-error">
+            {error}
+            <button onClick={() => setError(null)} className="close-btn">×</button>
           </div>
-        ) : (
-          users.map(user => (
-            <div key={user._id} className="user-card">
-              <div className="user-info">
-                <h3>
-                  {user.nomeCompleto}
-                  {user.isAdmin && <span className="admin-badge">Admin</span>}
-                </h3>
-                <p>Email: {user.email}</p>
-                <p>CPF: {user.cpf}</p>
-                <p>Telefone: {user.telefone}</p>
-                {user.enderecos && user.enderecos[0] && (
-                  <p>Endereço: {user.enderecos[0].cidade}/{user.enderecos[0].estado}</p>
-                )}
+        )}
+
+        {successMessage && (
+          <div className="dashboard-success">
+            {successMessage}
+            <button onClick={() => setSuccessMessage('')} className="close-btn">×</button>
+          </div>
+        )}
+
+        <div className="dashboard-controls">
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Buscar por nome, email ou CPF..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+            <span className="search-icon">🔍</span>
+          </div>
+          
+          <button 
+            onClick={() => setShowAddForm(!showAddForm)} 
+            className={`add-user-btn ${showAddForm ? 'cancel' : ''}`}
+          >
+            {showAddForm ? 'Cancelar' : 'Adicionar Usuário'}
+          </button>
+        </div>
+
+        {showAddForm && (
+          <div className="add-user-form-container">
+            <h3>Adicionar Novo Usuário</h3>
+            <form onSubmit={handleAddUser} className="add-user-form">
+              <div className="form-grid">
+                <div className="form-group">
+                  <label>Nome Completo</label>
+                  <input
+                    type="text"
+                    name="nomeCompleto"
+                    value={newUser.nomeCompleto}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={newUser.email}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label>CPF</label>
+                  <input
+                    type="text"
+                    name="cpf"
+                    value={newUser.cpf}
+                    onChange={handleInputChange}
+                    placeholder="000.000.000-00"
+                    maxLength="14"
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label>Senha</label>
+                  <input
+                    type="password"
+                    name="senha"
+                    value={newUser.senha}
+                    onChange={handleInputChange}
+                    minLength="6"
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label>Data de Nascimento</label>
+                  <input
+                    type="date"
+                    name="dataNascimento"
+                    value={newUser.dataNascimento}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label>Telefone</label>
+                  <input
+                    type="text"
+                    name="telefone"
+                    value={newUser.telefone}
+                    onChange={handleInputChange}
+                    placeholder="(00) 00000-0000"
+                    maxLength="15"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="address-section">
+                <h4>Endereço Principal</h4>
+                
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label>CEP</label>
+                    <input
+                      type="text"
+                      name="enderecos.0.cep"
+                      value={newUser.enderecos[0].cep}
+                      onChange={handleInputChange}
+                      placeholder="00000-000"
+                      maxLength="9"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="form-group">
+                    <label>Logradouro</label>
+                    <input
+                      type="text"
+                      name="enderecos.0.logradouro"
+                      value={newUser.enderecos[0].logradouro}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="form-group">
+                    <label>Número</label>
+                    <input
+                      type="text"
+                      name="enderecos.0.numero"
+                      value={newUser.enderecos[0].numero}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="form-group">
+                    <label>Complemento</label>
+                    <input
+                      type="text"
+                      name="enderecos.0.complemento"
+                      value={newUser.enderecos[0].complemento}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  
+                  <div className="form-group">
+                    <label>Bairro</label>
+                    <input
+                      type="text"
+                      name="enderecos.0.bairro"
+                      value={newUser.enderecos[0].bairro}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="form-group">
+                    <label>Cidade</label>
+                    <input
+                      type="text"
+                      name="enderecos.0.cidade"
+                      value={newUser.enderecos[0].cidade}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="form-group">
+                    <label>Estado (Sigla)</label>
+                    <input
+                      type="text"
+                      name="enderecos.0.estado"
+                      value={newUser.enderecos[0].estado}
+                      onChange={handleInputChange}
+                      placeholder="Ex: SP"
+                      maxLength="2"
+                      style={{ textTransform: 'uppercase' }}
+                      required
+                    />
+                    <small className="hint">Digite a sigla do estado (2 letras)</small>
+                  </div>
+                </div>
               </div>
               
-              <div className="user-actions">
+              <div className="form-group checkbox-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="isAdmin"
+                    checked={newUser.isAdmin}
+                    onChange={handleInputChange}
+                  />
+                  <span className="checkmark"></span>
+                  Administrador
+                </label>
+              </div>
+              
+              <div className="form-actions">
                 <button 
-                  onClick={() => navigate(`/admin/users/edit/${user._id}`)}
-                  className="edit-btn"
+                  type="submit" 
+                  className="submit-btn"
+                  disabled={isSubmitting}
                 >
-                  Editar
-                </button>
-                <button 
-                  onClick={() => handleDelete(user._id)}
-                  className="delete-btn"
-                >
-                  Excluir
+                  {isSubmitting ? (
+                    <>
+                      <span className="spinner"></span>
+                      Salvando...
+                    </>
+                  ) : 'Salvar Usuário'}
                 </button>
               </div>
-            </div>
-          ))
+            </form>
+          </div>
         )}
+
+        <div className="users-table-container">
+          <table className="users-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>CPF</th>
+                <th>Tipo</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.length === 0 ? (
+                <tr className="no-results">
+                  <td colSpan="5">
+                    <div className="no-results-content">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="18" y1="8" x2="23" y2="13"></line>
+                        <line x1="23" y1="8" x2="18" y2="13"></line>
+                      </svg>
+                      <p>Nenhum usuário encontrado</p>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                filteredUsers.map(user => (
+                  <tr key={user._id} className="user-row">
+                    <td>
+                      <div className="user-info">
+                        <span className="user-name">{user.nomeCompleto}</span>
+                        <span className="user-phone">{user.telefone}</span>
+                      </div>
+                    </td>
+                    <td>{user.email}</td>
+                    <td>{user.cpf}</td>
+                    <td>
+                      <span className={`user-type ${user.isAdmin ? 'admin' : 'regular'}`}>
+                        {user.isAdmin ? 'Admin' : 'Regular'}
+                      </span>
+                    </td>
+                    <td>
+                      <div className="user-actions">
+                        <button 
+                          onClick={() => navigate(`/admin/users/edit/${user._id}`)}
+                          className="edit-btn"
+                        >
+                          Editar
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(user._id)}
+                          className="delete-btn"
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
