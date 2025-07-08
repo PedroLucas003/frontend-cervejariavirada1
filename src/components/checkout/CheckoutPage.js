@@ -20,8 +20,6 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const [usingPrincipalAddress, setUsingPrincipalAddress] = useState(true);
-  const [couponCode, setCouponCode] = useState('');
-  const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
     const principalAddress = user?.enderecos?.find(addr => addr.principal) || user?.enderecos?.[0];
@@ -75,8 +73,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
           quantity: item.quantity,
           imagem: item.imagem
         })),
-        shippingAddress: deliveryData,
-        couponCode: couponCode || undefined
+        shippingAddress: deliveryData
       };
 
       const preferenceResponse = await axios.post(`${API_URL}/api/payments/create-preference`, checkoutData, {
@@ -99,15 +96,6 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
       );
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleApplyCoupon = () => {
-    // Simulação de aplicação de cupom
-    if (couponCode.toUpperCase() === 'DESCONTO10') {
-      setDiscount(0.1); // 10% de desconto
-    } else {
-      setError('Cupom inválido ou expirado');
     }
   };
 
@@ -164,7 +152,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
   const principalAddress = user?.enderecos?.find(addr => addr.principal) || user?.enderecos?.[0];
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const shipping = 0.01;
-  const totalAmount = (subtotal * (1 - discount)) + shipping;
+  const totalAmount = subtotal + shipping;
 
   return (
     <div className="checkout-page">
@@ -204,31 +192,11 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
                   ))}
                 </div>
 
-                <div className="coupon-section">
-                  <input
-                    type="text"
-                    placeholder="Código do cupom"
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)}
-                    className="coupon-input"
-                  />
-                  <button onClick={handleApplyCoupon} className="coupon-btn">
-                    Aplicar
-                  </button>
-                </div>
-
                 <div className="order-totals">
                   <div className="total-row">
                     <span>Subtotal:</span>
                     <span>R$ {subtotal.toFixed(2)}</span>
                   </div>
-                  
-                  {discount > 0 && (
-                    <div className="total-row discount">
-                      <span>Desconto ({discount * 100}%):</span>
-                      <span>- R$ {(subtotal * discount).toFixed(2)}</span>
-                    </div>
-                  )}
                   
                   <div className="total-row">
                     <span>Frete:</span>
@@ -354,81 +322,81 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
 
                 <div className="form-group">
                   <label htmlFor="neighborhood">Bairro *</label>
-                  <input
-                    type="text"
-                    id="neighborhood"
-                    name="neighborhood"
-                    value={deliveryData.neighborhood}
-                    onChange={handleInputChange}
-                    required
-                    disabled={usingPrincipalAddress}
-                  />
-                </div>
-
-                <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="city">Cidade *</label>
                     <input
                       type="text"
-                      id="city"
-                      name="city"
-                      value={deliveryData.city}
+                      id="neighborhood"
+                      name="neighborhood"
+                      value={deliveryData.neighborhood}
                       onChange={handleInputChange}
                       required
                       disabled={usingPrincipalAddress}
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="state">Estado *</label>
-                    <input
-                      type="text"
-                      id="state"
-                      name="state"
-                      value={deliveryData.state}
-                      onChange={handleInputChange}
-                      maxLength="2"
-                      required
-                      disabled={usingPrincipalAddress}
-                    />
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="city">Cidade *</label>
+                      <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        value={deliveryData.city}
+                        onChange={handleInputChange}
+                        required
+                        disabled={usingPrincipalAddress}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="state">Estado *</label>
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        value={deliveryData.state}
+                        onChange={handleInputChange}
+                        maxLength="2"
+                        required
+                        disabled={usingPrincipalAddress}
+                      />
+                    </div>
                   </div>
-                </div>
-              </form>
-            </div>
+                </form>
+              </div>
 
-            <div className="payment-instructions">
-              <h3 className="section-title">
-                <span className="info-icon">ℹ️</span> Informações Importantes
-              </h3>
-              <ul>
-                <li>Após clicar em "Finalizar Compra", seu pedido será registrado</li>
-                <li>Você será redirecionado para a página de pagamento do Mercado Pago</li>
-                <li>Lá você poderá escolher o método de pagamento (PIX, Cartão, Boleto, etc.)</li>
-                <li>O prazo de entrega começa a contar após a confirmação do pagamento</li>
-              </ul>
-            </div>
+              <div className="payment-instructions">
+                <h3 className="section-title">
+                  <span className="info-icon">ℹ️</span> Informações Importantes
+                </h3>
+                <ul>
+                  <li>Após clicar em "Finalizar Compra", seu pedido será registrado</li>
+                  <li>Você será redirecionado para a página de pagamento do Mercado Pago</li>
+                  <li>Lá você poderá escolher o método de pagamento (PIX, Cartão, Boleto, etc.)</li>
+                  <li>O prazo de entrega começa a contar após a confirmação do pagamento</li>
+                </ul>
+              </div>
 
-            <div className="checkout-actions">
-              <button
-                onClick={handleCheckout}
-                disabled={isLoading || !deliveryData.cep || !deliveryData.address ||
-                  !deliveryData.number || cartItems.length === 0}
-                className="checkout-btn"
-              >
-                {isLoading ? (
-                  <>
-                    <span className="spinner"></span>
-                    Processando...
-                  </>
-                ) : (
-                  'Finalizar Compra'
-                )}
-              </button>
+              <div className="checkout-actions">
+                <button
+                  onClick={handleCheckout}
+                  disabled={isLoading || !deliveryData.cep || !deliveryData.address ||
+                    !deliveryData.number || cartItems.length === 0}
+                  className="checkout-btn"
+                >
+                  {isLoading ? (
+                    <>
+                      <span className="spinner"></span>
+                      Processando...
+                    </>
+                  ) : (
+                    'Finalizar Compra'
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-export default CheckoutPage;
+  export default CheckoutPage;
