@@ -67,6 +67,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
       });
 
       formattedBeers.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
       setCervejas(formattedBeers);
 
       const newStock = {};
@@ -136,9 +137,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   return (
     <>
       <section id="cervejas-section" className="cervejas-section">
-        <div className="title-wrapper">
-          <h2 className="section-title">Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
-        </div>
+        <h2 className="section-title">Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
 
         {error && (
           <div className="error-message">
