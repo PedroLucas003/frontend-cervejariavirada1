@@ -11,7 +11,15 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showCart, setShowCart] = useState(false);
+  const [expandedCards, setExpandedCards] = useState({});
   const navigate = useNavigate();
+
+  const toggleCardExpansion = (id) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   const getBeerImage = useCallback((beerType) => {
     const images = {
@@ -183,7 +191,18 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
               <div className="cerveja-info">
                 <h3>{cerveja.nome}</h3>
                 <p className="cerveja-tipo">{cerveja.tipo}</p>
-                <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
+                
+                <button 
+                  className="toggle-desc-btn"
+                  onClick={() => toggleCardExpansion(cerveja._id)}
+                >
+                  {expandedCards[cerveja._id] ? 'Ocultar descrição' : 'Mostrar descrição'}
+                </button>
+                
+                {expandedCards[cerveja._id] && (
+                  <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
+                )}
+                
                 <div className="cerveja-specs">
                   <span className="spec-item">ABV: {cerveja.teor}</span>
                   {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
