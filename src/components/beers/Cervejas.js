@@ -138,7 +138,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
     <>
       <section id="cervejas-section" className="cervejas-section">
         <div className="title-container">
-          <h2 className="section-title">Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
+          <h2 className="section-title" style={{ textAlign: 'center', width: '100%' }}>Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
         </div>
 
         {error && (

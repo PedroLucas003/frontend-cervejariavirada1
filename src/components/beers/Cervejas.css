@@ -12,6 +12,7 @@
 }
 
 /* TÍTULO CENTRALIZADO */
+/* TÍTULO CENTRALIZADO */
 .title-container {
   width: 100%;
   text-align: center;
@@ -27,6 +28,7 @@
   padding: 0;
   display: block;
   text-align: center;
+  width: 100%;
 }
 
 .destaque {
