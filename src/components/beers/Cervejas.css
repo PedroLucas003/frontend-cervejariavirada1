@@ -18,17 +18,13 @@
   color: #e67e22;
 }
 
-.inverted-a {
-  display: inline-block;
-  transform: rotate(180deg);
-}
-
 .cervejas-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  align-items: start;
 }
 
 .cerveja-card {
@@ -37,6 +33,8 @@
   overflow: hidden;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s;
+  display: flex;
+  flex-direction: column;
 }
 
 .cerveja-card:hover {
@@ -47,6 +45,7 @@
 .cerveja-imagem-container {
   height: 300px;
   position: relative;
+  flex-shrink: 0;
 }
 
 .cerveja-imagem {
@@ -109,6 +108,9 @@
 
 .cerveja-info {
   padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .cerveja-info h3 {
@@ -123,6 +125,34 @@
   margin-bottom: 10px;
 }
 
+.toggle-desc-btn {
+  background: #333;
+  color: #e67e22;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin: 10px 0;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.3s;
+  width: 100%;
+  text-align: center;
+}
+
+.toggle-desc-btn:hover {
+  background: #444;
+}
+
+.cerveja-desc-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.cerveja-desc-container.expanded {
+  max-height: 500px;
+}
+
 .cerveja-desc {
   color: #b0b0b0;
   font-size: 0.9rem;
@@ -131,9 +161,22 @@
 
 .cerveja-specs {
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 10px;
   font-size: 0.9rem;
+}
+
+.spec-item {
+  background: #333333;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #e0e0e0;
+}
+
+.cerveja-stock {
+  margin-top: auto;
 }
 
 .stock-label {
@@ -149,16 +192,6 @@
   color: #e74c3c;
 }
 
-.cerveja-teor {
-  display: inline-block;
-  background: #333333;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #e0e0e0;
-}
-
 .cerveja-price {
   display: block;
   font-weight: bold;
@@ -167,7 +200,7 @@
   margin-top: 10px;
 }
 
-/* Carrinho */
+/* Estilos do carrinho (mantidos do original) */
 .cart-icon {
   position: fixed;
   bottom: 30px;
@@ -442,7 +475,7 @@
   cursor: pointer;
 }
 
-/* Footer Estilizado */
+/* Footer */
 .transparent-footer {
   background: linear-gradient(to top, #000000, #2d2d2d);
   color: #e0e0e0;
@@ -543,7 +576,7 @@
   padding-top: 1rem;
 }
 
-/* Responsivo */
+/* Responsividade */
 @media (max-width: 900px) {
   .footer-content {
     grid-template-columns: 1fr;
@@ -569,6 +602,16 @@
   }
 }
 
+@media (max-width: 768px) {
+  .cervejas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  
+  .cerveja-imagem-container {
+    height: 250px;
+  }
+}
+
 @media (max-width: 480px) {
   .footer-social {
     gap: 1rem;
@@ -578,5 +621,13 @@
     width: 45px;
     height: 45px;
     font-size: 1.5rem;
+  }
+
+  .cervejas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cerveja-desc-container.expanded {
+    max-height: 800px;
   }
 }
