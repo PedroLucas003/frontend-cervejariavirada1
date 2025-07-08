@@ -35,14 +35,14 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await axios.get(`${API_URL}/api/beers/public`, {
         headers: {
           'Accept': 'application/json'
         },
         withCredentials: true
       });
-      
+
       if (!response.data || !response.data.success || !Array.isArray(response.data.data)) {
         throw new Error('Estrutura de dados inválida');
       }
@@ -53,9 +53,9 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           nome: `Virada ${beer.beerType}`,
           tipo: beer.beerType,
           beerType: beer.beerType,
-          descricao: beer.description || 'Descrição não disponível', 
+          descricao: beer.description || 'Descrição não disponível',
           imagem: getBeerImage(beer.beerType),
-          teor: beer.alcoholContent, 
+          teor: beer.alcoholContent,
           ibu: beer.ibu,
           cor: beer.color,
           turbidez: beer.turbidity,
@@ -93,12 +93,12 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
       navigate('/login', { state: { from: '/' } });
       return;
     }
-    
+
     if (stock[cerveja._id] <= 0) {
       setError('Esta cerveja está esgotada no momento.');
       return;
     }
-    
+
     addToCart(cerveja);
     setShowCart(true);
   };
@@ -113,7 +113,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
       handleRemoveFromCart(id);
       return;
     }
-    
+
     const updatedCart = cart.map(item =>
       item._id === id ? { ...item, quantity: newQuantity } : item
     );
@@ -138,13 +138,13 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
     <>
       <section id="cervejas-section" className="cervejas-section">
         <div className="title-container">
-  <h2 className="section-title">Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
-</div>
+          <h2 className="section-title">Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
+        </div>
 
         {error && (
           <div className="error-message">
             <p>{error}</p>
-            <button 
+            <button
               onClick={() => {
                 setError(null);
                 fetchBeers();
@@ -193,18 +193,18 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
               <div className="cerveja-info">
                 <h3>{cerveja.nome}</h3>
                 <p className="cerveja-tipo">{cerveja.tipo}</p>
-                
-                <button 
+
+                <button
                   className="toggle-desc-btn"
                   onClick={() => toggleCardExpansion(cerveja._id)}
                 >
                   {expandedCards[cerveja._id] ? 'Ocultar descrição' : 'Mostrar descrição'}
                 </button>
-                
+
                 <div className={`cerveja-desc-container ${expandedCards[cerveja._id] ? 'expanded' : ''}`}>
                   <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
                 </div>
-                
+
                 <div className="cerveja-specs">
                   <span className="spec-item">ABV: {cerveja.teor}</span>
                   {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
@@ -255,7 +255,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                           <i className="fas fa-minus"></i>
                         </button>
                         <span>{item.quantity}</span>
-                        <button 
+                        <button
                           onClick={() => handleUpdateQuantity(item._id, item.quantity + 1)}
                           disabled={stock[item._id] <= item.quantity}
                         >
@@ -298,13 +298,13 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
       <footer className="transparent-footer">
         <div className="footer-content">
           <div className="footer-logo">
-            <img 
-              src="/logo-cervejaria-virada.png" 
-              alt="Cervejaria Virada" 
+            <img
+              src="/logo-cervejaria-virada.png"
+              alt="Cervejaria Virada"
               className="footer-logo-img"
             />
           </div>
-          
+
           <div className="footer-info">
             <h3 className="footer-text">CERVEJARIA VIRADA</h3>
             <p className="footer-contact">
@@ -312,20 +312,20 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
               Entre em contato e leve a autêntica experiência Virada para seu evento
             </p>
           </div>
-          
+
           <div className="footer-social">
-            <a 
-              href="https://wa.me/558195723437" 
-              target="_blank" 
+            <a
+              href="https://wa.me/558195723437"
+              target="_blank"
               rel="noopener noreferrer"
               className="social-icon whatsapp"
               title="WhatsApp"
             >
               <i className="fab fa-whatsapp"></i>
             </a>
-            <a 
-              href="https://www.instagram.com/tomevirada/" 
-              target="_blank" 
+            <a
+              href="https://www.instagram.com/tomevirada/"
+              target="_blank"
               rel="noopener noreferrer"
               className="social-icon instagram"
               title="Instagram"
@@ -333,7 +333,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
               <i className="fab fa-instagram"></i>
             </a>
           </div>
-          
+
           <div className="footer-copyright">
             © {new Date().getFullYear()} Cervejaria Virada. Todos os direitos reservados.
           </div>
