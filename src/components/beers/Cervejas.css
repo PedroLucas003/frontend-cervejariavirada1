@@ -12,15 +12,8 @@
   text-align: center;
   margin-bottom: 30px;
   color: #ffffff;
-  display: inline-block;
-}
-.section-title-container {
-  text-align: center;
-  width: 100%;
-}
-
-.destaque {
-  color: #e67e22;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .cervejas-grid {
@@ -486,7 +479,6 @@
   color: #e0e0e0;
   padding: 3rem 20px;
   text-align: center;
-  border-top: 1px solid #e67e22;
   position: relative;
 }
 

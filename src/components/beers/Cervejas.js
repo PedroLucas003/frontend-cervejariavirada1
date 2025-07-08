@@ -137,9 +137,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   return (
     <>
       <section id="cervejas-section" className="cervejas-section">
-        <div className="section-title-container">
-          <h2 className="section-title">Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
-        </div>
+        <h2 className="section-title">NOSSAS CERVEJAS HISTÓRICAS</h2>
 
         {error && (
           <div className="error-message">
