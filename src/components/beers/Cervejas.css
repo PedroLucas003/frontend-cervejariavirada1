@@ -1,23 +1,33 @@
+/* ESTILOS GERAIS */
 .cervejas-section {
   padding: 40px 20px;
   min-height: 100vh;
   color: #e0e0e0;
   background: linear-gradient(to bottom, #000000, #2d2d2d);
   background-attachment: fixed;
+  text-align: center;
 }
 
+/* TÍTULO CENTRALIZADO SEM BARRA LARANJA */
 .section-title {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 30px;
   color: #ffffff;
+  margin: 0 auto 30px;
+  display: inline-block;
+  position: relative;
+}
+
+/* REMOVE BARRA LARANJA */
+.section-title::after {
+  content: none;
 }
 
 .destaque {
   color: #e67e22;
 }
 
+/* GRID DE CERVEJAS */
 .cervejas-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -27,6 +37,7 @@
   align-items: start;
 }
 
+/* CARD DE CERVEJA */
 .cerveja-card {
   background: #1e1e1e;
   border-radius: 8px;
@@ -42,6 +53,7 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
+/* IMAGEM */
 .cerveja-imagem-container {
   height: 300px;
   position: relative;
@@ -54,6 +66,7 @@
   object-fit: cover;
 }
 
+/* DETALHES */
 .cerveja-detalhes {
   position: absolute;
   top: 15px;
@@ -79,6 +92,7 @@
   font-size: 0.8rem;
 }
 
+/* BOTÃO */
 .add-to-cart-btn {
   position: absolute;
   bottom: 20px;
@@ -106,6 +120,7 @@
   cursor: not-allowed;
 }
 
+/* INFORMAÇÕES */
 .cerveja-info {
   padding: 15px;
   flex-grow: 1;
@@ -125,6 +140,7 @@
   margin-bottom: 10px;
 }
 
+/* BOTÃO DESCRIÇÃO */
 .toggle-desc-btn {
   background: #333;
   color: #e67e22;
@@ -143,6 +159,7 @@
   background: #444;
 }
 
+/* DESCRIÇÃO */
 .cerveja-desc-container {
   max-height: 0;
   overflow: hidden;
@@ -159,6 +176,7 @@
   margin-bottom: 15px;
 }
 
+/* ESPECIFICAÇÕES */
 .cerveja-specs {
   display: flex;
   flex-wrap: wrap;
@@ -175,6 +193,7 @@
   color: #e0e0e0;
 }
 
+/* ESTOQUE */
 .cerveja-stock {
   margin-top: auto;
 }
@@ -192,6 +211,7 @@
   color: #e74c3c;
 }
 
+/* PREÇO */
 .cerveja-price {
   display: block;
   font-weight: bold;
@@ -200,7 +220,7 @@
   margin-top: 10px;
 }
 
-/* Estilos do carrinho (mantidos do original) */
+/* CARRINHO */
 .cart-icon {
   position: fixed;
   bottom: 30px;
@@ -243,6 +263,7 @@
   font-size: 0.8rem;
 }
 
+/* SIDEBAR CARRINHO */
 .cart-sidebar {
   position: fixed;
   top: 0;
@@ -424,7 +445,7 @@
   z-index: 99;
 }
 
-/* Loading */
+/* LOADING */
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -454,7 +475,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* Error */
+/* ERRO */
 .error-message {
   background: #3a1c1f;
   color: #ff8a8a;
@@ -475,7 +496,7 @@
   cursor: pointer;
 }
 
-/* Footer */
+/* FOOTER */
 .transparent-footer {
   background: linear-gradient(to top, #000000, #2d2d2d);
   color: #e0e0e0;
@@ -576,7 +597,7 @@
   padding-top: 1rem;
 }
 
-/* Responsividade */
+/* RESPONSIVIDADE */
 @media (max-width: 900px) {
   .footer-content {
     grid-template-columns: 1fr;
@@ -610,6 +631,10 @@
   .cerveja-imagem-container {
     height: 250px;
   }
+  
+  .section-title {
+    font-size: 2rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -629,5 +654,9 @@
 
   .cerveja-desc-container.expanded {
     max-height: 800px;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
   }
 }
