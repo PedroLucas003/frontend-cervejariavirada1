@@ -11,6 +11,7 @@ const AdminOrdersPage = () => {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [expandedOrder, setExpandedOrder] = useState(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -35,7 +36,6 @@ const AdminOrdersPage = () => {
   useEffect(() => {
     let result = orders;
     
-    // Filtrar por termo de pesquisa
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       result = result.filter(order => 
@@ -45,7 +45,6 @@ const AdminOrdersPage = () => {
       );
     }
     
-    // Filtrar por status
     if (statusFilter !== 'all') {
       result = result.filter(order => order.status === statusFilter);
     }
@@ -53,9 +52,35 @@ const AdminOrdersPage = () => {
     setFilteredOrders(result);
   }, [searchTerm, statusFilter, orders]);
 
-  const handleStatusChange = (orderId, newStatus) => {
-    // Implemente a lógica para atualizar o status do pedido
-    console.log(`Atualizar pedido ${orderId} para status ${newStatus}`);
+  const handleStatusChange = async (orderId, newStatus) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.patch(`${API_URL}/api/orders/${orderId}`, 
+        { status: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      setOrders(prev => prev.map(order => 
+        order._id === orderId ? { ...order, status: newStatus } : order
+      ));
+    } catch (err) {
+      setError(err.response?.data?.message || 'Erro ao atualizar status');
+    }
+  };
+
+  const toggleOrderDetails = (orderId) => {
+    setExpandedOrder(expandedOrder === orderId ? null : orderId);
+  };
+
+  const formatDate = (dateString) => {
+    const options = { 
+      day: '2-digit', 
+      month: '2-digit', 
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    return new Date(dateString).toLocaleDateString('pt-BR', options);
   };
 
   if (loading) return <div className="admin-orders-loading">Carregando...</div>;
@@ -117,59 +142,99 @@ const AdminOrdersPage = () => {
             <p>Nenhum pedido encontrado com os filtros atuais.</p>
           </div>
         ) : (
-          <div className="orders-table-container">
-            <table className="orders-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Cliente</th>
-                  <th>Data</th>
-                  <th>Status</th>
-                  <th>Total</th>
-                  <th>Itens</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredOrders.map((order) => (
-                  <tr key={order._id}>
-                    <td>#{order._id.substring(0, 8)}</td>
-                    <td>
-                      {order.user?.nomeCompleto || order.userEmail}
-                    </td>
-                    <td>
-                      {new Date(order.createdAt).toLocaleDateString('pt-BR')}
-                    </td>
-                    <td>
-                      <span className={`status-badge status-${order.status}`}>
-                        {order.status || 'Processando'}
-                      </span>
-                    </td>
-                    <td>R$ {order.total.toFixed(2)}</td>
-                    <td className="order-items-cell">
-                      {order.items.map(item => (
-                        <div key={item._id} className="item-chip">
-                          {item.quantity}x {item.productId?.nome || 'Produto'}
+          <div className="orders-list">
+            {filteredOrders.map((order) => (
+              <div key={order._id} className={`order-card ${expandedOrder === order._id ? 'expanded' : ''}`}>
+                <div className="order-header" onClick={() => toggleOrderDetails(order._id)}>
+                  <div className="order-id-status">
+                    <span className="order-id">Pedido #{order._id.substring(0, 8)}</span>
+                    <span className={`status-badge status-${order.status}`}>
+                      {order.status || 'Processando'}
+                    </span>
+                  </div>
+                  <div className="order-date-total">
+                    <span className="order-date">{formatDate(order.createdAt)}</span>
+                    <span className="order-total">R$ {order.total.toFixed(2)}</span>
+                  </div>
+                  <div className="order-toggle">
+                    {expandedOrder === order._id ? '▲' : '▼'}
+                  </div>
+                </div>
+
+                {expandedOrder === order._id && (
+                  <div className="order-details">
+                    <div className="details-grid">
+                      <div className="customer-info">
+                        <h4>Cliente</h4>
+                        <p><strong>Nome:</strong> {order.user?.nomeCompleto || order.userEmail}</p>
+                        <p><strong>Email:</strong> {order.userEmail}</p>
+                        {order.user?.telefone && <p><strong>Telefone:</strong> {order.user.telefone}</p>}
+                      </div>
+
+                      <div className="shipping-info">
+                        <h4>Endereço de Entrega</h4>
+                        <p>
+                          {order.shippingAddress.logradouro}, {order.shippingAddress.numero}
+                          {order.shippingAddress.complemento && `, ${order.shippingAddress.complemento}`}
+                        </p>
+                        <p>
+                          {order.shippingAddress.bairro}, {order.shippingAddress.cidade} - {order.shippingAddress.estado}
+                        </p>
+                        <p><strong>CEP:</strong> {order.shippingAddress.cep}</p>
+                      </div>
+
+                      <div className="payment-info">
+                        <h4>Pagamento</h4>
+                        <p><strong>Status:</strong> {order.paymentInfo?.paymentStatus || 'N/A'}</p>
+                        <p><strong>Método:</strong> {order.paymentInfo?.paymentMethod || 'N/A'}</p>
+                        {order.paidAt && <p><strong>Pago em:</strong> {formatDate(order.paidAt)}</p>}
+                      </div>
+
+                      <div className="order-items">
+                        <h4>Itens do Pedido</h4>
+                        <div className="items-list">
+                          {order.items.map((item) => (
+                            <div key={item._id || item.productId} className="order-item">
+                              <div className="item-image-container">
+                                <img 
+                                  src={item.image || item.productId?.imagem || 'https://placehold.co/80x80/333/333?text=Produto'} 
+                                  alt={item.name || item.productId?.nome} 
+                                  className="item-image"
+                                />
+                                <span className="item-quantity">{item.quantity}x</span>
+                              </div>
+                              <div className="item-details">
+                                <h5>{item.name || item.productId?.nome || 'Produto não disponível'}</h5>
+                                <p className="item-type">{item.type || item.productId?.tipo || ''}</p>
+                                <p className="item-price">R$ {item.price.toFixed(2)} cada</p>
+                                <p className="item-subtotal">Subtotal: R$ {(item.price * item.quantity).toFixed(2)}</p>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </td>
-                    <td>
-                      <select 
-                        value={order.status} 
-                        onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                        className="status-select"
-                      >
-                        <option value="pending">Pendente</option>
-                        <option value="processing">Processando</option>
-                        <option value="shipped">Enviado</option>
-                        <option value="delivered">Entregue</option>
-                        <option value="cancelled">Cancelado</option>
-                      </select>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      </div>
+                    </div>
+
+                    <div className="order-actions">
+                      <div className="status-select-container">
+                        <label>Atualizar status:</label>
+                        <select 
+                          value={order.status} 
+                          onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                          className="status-select"
+                        >
+                          <option value="pending">Pendente</option>
+                          <option value="processing">Processando</option>
+                          <option value="shipped">Enviado</option>
+                          <option value="delivered">Entregue</option>
+                          <option value="cancelled">Cancelado</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         )}
       </div>
