@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './AdminOrdersPage.css'; // Mantenha seu CSS atual
+import './AdminOrdersPage.css';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -35,66 +35,36 @@ const AdminOrdersPage = () => {
 
   useEffect(() => {
     let result = orders;
-
+    
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      result = result.filter(order =>
+      result = result.filter(order => 
         order._id.toLowerCase().includes(term) ||
         (order.user?.nomeCompleto && order.user.nomeCompleto.toLowerCase().includes(term)) ||
         order.userEmail.toLowerCase().includes(term)
       );
     }
-
+    
     if (statusFilter !== 'all') {
       result = result.filter(order => order.status === statusFilter);
     }
-
+    
     setFilteredOrders(result);
   }, [searchTerm, statusFilter, orders]);
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.patch(`${API_URL}/api/orders/${orderId}/status`, // Rota PATCH para atualizar status
+      await axios.patch(`${API_URL}/api/orders/${orderId}`, 
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      setOrders(prev => prev.map(order =>
+      
+      setOrders(prev => prev.map(order => 
         order._id === orderId ? { ...order, status: newStatus } : order
       ));
-      setError(''); // Limpa qualquer erro antigo
-      alert('Status do pedido atualizado com sucesso!'); // Feedback visual
     } catch (err) {
       setError(err.response?.data?.message || 'Erro ao atualizar status');
-      console.error('Erro ao atualizar status:', err);
-    }
-  };
-
-  const handleCancelOrder = async (orderId) => {
-    if (window.confirm('Tem certeza que deseja cancelar e reembolsar este pedido? Esta ação não pode ser desfeita e tentará estornar o valor no Mercado Pago e o estoque.')) {
-      try {
-        const token = localStorage.getItem('token');
-        // Usa POST para a rota de cancelamento/reembolso
-        const response = await axios.post(`${API_URL}/api/orders/${orderId}/cancel`, {}, // Envia um body vazio
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        // Após o cancelamento, atualiza o estado local para refletir a mudança
-        setOrders(prev => prev.map(order =>
-          order._id === orderId ? {
-            ...order,
-            status: 'cancelled',
-            paymentInfo: { ...order.paymentInfo, paymentStatus: 'refunded' } // Atualiza o status do pagamento para 'refunded'
-          } : order
-        ));
-        setError(''); // Limpa erros anteriores
-        alert(response.data.message || 'Pedido cancelado e reembolso iniciado com sucesso!'); // Alerta de sucesso
-      } catch (err) {
-        setError(err.response?.data?.message || 'Erro ao cancelar e reembolsar o pedido.');
-        console.error('Erro ao cancelar pedido:', err.response?.data || err);
-        alert(`Falha ao cancelar: ${err.response?.data?.message || err.message || 'Erro desconhecido'}`); // Alerta de erro
-      }
     }
   };
 
@@ -103,9 +73,9 @@ const AdminOrdersPage = () => {
   };
 
   const formatDate = (dateString) => {
-    const options = {
-      day: '2-digit',
-      month: '2-digit',
+    const options = { 
+      day: '2-digit', 
+      month: '2-digit', 
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
@@ -120,7 +90,7 @@ const AdminOrdersPage = () => {
     <div className="admin-orders-page">
       <div className="admin-orders-container">
         <h1>Painel de Pedidos</h1>
-
+        
         <div className="admin-orders-filters">
           <div className="search-box">
             <input
@@ -131,11 +101,11 @@ const AdminOrdersPage = () => {
             />
             <i className="search-icon">🔍</i>
           </div>
-
+          
           <div className="status-filter">
             <label>Filtrar por status:</label>
-            <select
-              value={statusFilter}
+            <select 
+              value={statusFilter} 
               onChange={(e) => setStatusFilter(e.target.value)}
             >
               <option value="all">Todos</option>
@@ -147,7 +117,7 @@ const AdminOrdersPage = () => {
             </select>
           </div>
         </div>
-
+        
         <div className="orders-summary">
           <div className="summary-card total">
             <h3>Total de Pedidos</h3>
@@ -226,9 +196,9 @@ const AdminOrdersPage = () => {
                           {order.items.map((item) => (
                             <div key={item._id || item.productId} className="order-item">
                               <div className="item-image-container">
-                                <img
-                                  src={item.image || item.productId?.imagem || 'https://placehold.co/80x80/333/333?text=Produto'}
-                                  alt={item.name || item.productId?.nome}
+                                <img 
+                                  src={item.image || item.productId?.imagem || 'https://placehold.co/80x80/333/333?text=Produto'} 
+                                  alt={item.name || item.productId?.nome} 
                                   className="item-image"
                                 />
                                 <span className="item-quantity">{item.quantity}x</span>
@@ -248,8 +218,8 @@ const AdminOrdersPage = () => {
                     <div className="order-actions">
                       <div className="status-select-container">
                         <label>Atualizar status:</label>
-                        <select
-                          value={order.status}
+                        <select 
+                          value={order.status} 
                           onChange={(e) => handleStatusChange(order._id, e.target.value)}
                           className="status-select"
                         >
@@ -260,15 +230,6 @@ const AdminOrdersPage = () => {
                           <option value="cancelled">Cancelado</option>
                         </select>
                       </div>
-                      {/* Botão de Cancelar e Reembolsar */}
-                      {order.status !== 'cancelled' && order.paymentInfo?.paymentStatus === 'approved' && (
-                        <button
-                          onClick={() => handleCancelOrder(order._id)}
-                          className="cancel-button"
-                        >
-                          Cancelar e Reembolsar
-                        </button>
-                      )}
                     </div>
                   </div>
                 )}
