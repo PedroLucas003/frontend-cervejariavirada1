@@ -598,17 +598,20 @@
   background: #444;
 }
 
-.cerveja-desc {
-  color: #b0b0b0;
-  font-size: 0.9rem;
-  margin-bottom: 15px;
+.cerveja-desc-container {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
 }
 
-.cerveja-desc.expanded {
-  max-height: 200px;
+.cerveja-desc-container.expanded {
+  max-height: 500px; /* Ajuste este valor conforme necessário */
+}
+
+.cerveja-desc {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
 }
 
 /* Responsividade para os cards */
@@ -634,5 +637,9 @@
   .toggle-desc-btn {
     padding: 10px;
     font-size: 0.9rem;
+  }
+  
+  .cerveja-desc-container.expanded {
+    max-height: 800px; /* Mais espaço para descrições longas em mobile */
   }
 }

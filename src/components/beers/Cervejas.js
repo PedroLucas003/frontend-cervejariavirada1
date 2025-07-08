@@ -199,9 +199,9 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                   {expandedCards[cerveja._id] ? 'Ocultar descrição' : 'Mostrar descrição'}
                 </button>
                 
-                {expandedCards[cerveja._id] && (
+                <div className={`cerveja-desc-container ${expandedCards[cerveja._id] ? 'expanded' : ''}`}>
                   <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
-                )}
+                </div>
                 
                 <div className="cerveja-specs">
                   <span className="spec-item">ABV: {cerveja.teor}</span>
