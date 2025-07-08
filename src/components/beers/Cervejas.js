@@ -163,7 +163,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           )}
 
           {cervejas.map((cerveja) => (
-            <div key={cerveja._id} className="cerveja-card">
+            <div key={cerveja._id} className={`cerveja-card ${expandedCards[cerveja._id] ? 'expanded' : ''}`}>
               <div className="cerveja-imagem-container">
                 <img
                   src={cerveja.imagem}
