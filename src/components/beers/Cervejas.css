@@ -10,15 +10,17 @@
   font-family: 'Bebas Neue', sans-serif;
   font-size: 2.5rem;
   text-align: center;
-  margin: 0 auto 30px; /* Adicione margin: 0 auto para centralizar horizontalmente */
+  margin-bottom: 30px;
   color: #ffffff;
-  width: 100%; /* Garante que o elemento ocupe toda a largura */
-  display: block; /* Garante que o elemento se comporte como bloco */
 }
 
 .destaque {
   color: #e67e22;
-  display: inline; /* Mantém o span como elemento inline para não quebrar o fluxo */
+}
+
+.inverted-a {
+  display: inline-block;
+  transform: rotate(180deg);
 }
 
 .cervejas-grid {
@@ -27,7 +29,6 @@
   gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  align-items: start;
 }
 
 .cerveja-card {
@@ -36,8 +37,6 @@
   overflow: hidden;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s;
-  display: flex;
-  flex-direction: column;
 }
 
 .cerveja-card:hover {
@@ -48,7 +47,6 @@
 .cerveja-imagem-container {
   height: 300px;
   position: relative;
-  flex-shrink: 0;
 }
 
 .cerveja-imagem {
@@ -111,9 +109,6 @@
 
 .cerveja-info {
   padding: 15px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
 }
 
 .cerveja-info h3 {
@@ -128,34 +123,6 @@
   margin-bottom: 10px;
 }
 
-.toggle-desc-btn {
-  background: #333;
-  color: #e67e22;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  margin: 10px 0;
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: all 0.3s;
-  width: 100%;
-  text-align: center;
-}
-
-.toggle-desc-btn:hover {
-  background: #444;
-}
-
-.cerveja-desc-container {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
-}
-
-.cerveja-desc-container.expanded {
-  max-height: 500px;
-}
-
 .cerveja-desc {
   color: #b0b0b0;
   font-size: 0.9rem;
@@ -164,22 +131,9 @@
 
 .cerveja-specs {
   display: flex;
-  flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 10px;
   font-size: 0.9rem;
-}
-
-.spec-item {
-  background: #333333;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  color: #e0e0e0;
-}
-
-.cerveja-stock {
-  margin-top: auto;
 }
 
 .stock-label {
@@ -195,6 +149,16 @@
   color: #e74c3c;
 }
 
+.cerveja-teor {
+  display: inline-block;
+  background: #333333;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #e0e0e0;
+}
+
 .cerveja-price {
   display: block;
   font-weight: bold;
@@ -203,7 +167,7 @@
   margin-top: 10px;
 }
 
-/* Estilos do carrinho (mantidos do original) */
+/* Carrinho */
 .cart-icon {
   position: fixed;
   bottom: 30px;
@@ -478,7 +442,7 @@
   cursor: pointer;
 }
 
-/* Footer */
+/* Footer Estilizado */
 .transparent-footer {
   background: linear-gradient(to top, #000000, #2d2d2d);
   color: #e0e0e0;
@@ -579,7 +543,7 @@
   padding-top: 1rem;
 }
 
-/* Responsividade */
+/* Responsivo */
 @media (max-width: 900px) {
   .footer-content {
     grid-template-columns: 1fr;
@@ -605,16 +569,6 @@
   }
 }
 
-@media (max-width: 768px) {
-  .cervejas-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  }
-  
-  .cerveja-imagem-container {
-    height: 250px;
-  }
-}
-
 @media (max-width: 480px) {
   .footer-social {
     gap: 1rem;
@@ -625,12 +579,41 @@
     height: 45px;
     font-size: 1.5rem;
   }
+}
+.title-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  text-align: center;
+}
 
-  .cervejas-grid {
-    grid-template-columns: 1fr;
+/* Estilos do título principal */
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  display: inline-block;
+  position: relative;
+}
+
+/* Destaque laranja */
+.destaque {
+  color: #e67e22;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2rem;
   }
+}
 
-  .cerveja-desc-container.expanded {
-    max-height: 800px;
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.8rem;
   }
 }
