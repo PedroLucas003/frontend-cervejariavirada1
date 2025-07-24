@@ -75,7 +75,7 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
                       </Link>
 
                       <Link to="/my-orders" onClick={() => setMenuOpen(false)}>
-                        <i className="fas fa-receipt"></i> Pedidos
+                        <i className="fas fa-receipt"></i> Meus Pedidos
                       </Link>
 
                       {user?.isAdmin && (
@@ -87,7 +87,7 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
                             <i className="fas fa-users"></i> Usuários
                           </Link>
                           <Link to="/admin/orders" onClick={() => setMenuOpen(false)}>
-                            <i className="fas fa-list-alt"></i> Pedidos
+                            <i className="fas fa-list-alt"></i> Todos Pedidos
                           </Link>
                         </>
                       )}

@@ -3,6 +3,7 @@ import axios from 'axios';
 import './UserOrdersPage.css';
 
 const API_URL = process.env.REACT_APP_API_URL;
+const WHATSAPP_NUMBER = '558195723437';
 
 const UserOrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -39,6 +40,15 @@ const UserOrdersPage = () => {
 
   const toggleOrder = (orderId) => {
     setExpandedOrder(expandedOrder === orderId ? null : orderId);
+  };
+
+  const handleTrackOrder = (orderId) => {
+    const message = encodeURIComponent(`Desejo saber do meu pedido #${orderId}`);
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+  };
+
+  const handleContactSupport = () => {
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}`, '_blank');
   };
 
   if (loading) return <div className="user-orders-loading">Carregando seus pedidos...</div>;
@@ -130,8 +140,18 @@ const UserOrdersPage = () => {
 
                   <div className="order-footer">
                     <div className="order-actions">
-                      <button className="track-order">Acompanhar Pedido</button>
-                      <button className="contact-support">Falar com Suporte</button>
+                      <button 
+                        className="track-order" 
+                        onClick={() => handleTrackOrder(order._id)}
+                      >
+                        Acompanhar Pedido
+                      </button>
+                      <button 
+                        className="contact-support" 
+                        onClick={handleContactSupport}
+                      >
+                        Falar com Suporte
+                      </button>
                     </div>
                   </div>
                 </div>
