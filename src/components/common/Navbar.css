@@ -26,13 +26,13 @@
   gap: 1rem;
 }
 
-/* Botão do menu hambúrguer (apenas mobile) */
+/* Botão do menu hambúrguer */
 .menu-toggle {
   background: transparent;
   border: none;
   cursor: pointer;
   padding: 0.5rem;
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -158,7 +158,6 @@
   z-index: 1002;
   transition: left 0.3s ease;
   padding-top: 5rem;
-  display: none;
 }
 
 .mobile-menu.open {
@@ -190,7 +189,6 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 1001;
-  display: none;
 }
 
 /* Ícone do carrinho */
@@ -231,27 +229,15 @@
     background: rgba(0, 0, 0, 0.8);
   }
   
-  .menu-toggle {
-    display: flex;
-  }
-  
-  .user-menu {
-    display: none;
-  }
-  
   .login-text {
     display: none;
   }
   
   .login-link,
+  .user-toggle,
   .cart-icon {
     font-size: 1.2rem;
     padding: 0.5rem;
-  }
-  
-  .mobile-menu,
-  .menu-overlay {
-    display: block;
   }
 }
 
