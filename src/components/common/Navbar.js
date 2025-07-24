@@ -34,24 +34,21 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="navbar-left">
-          <button className="menu-toggle" onClick={toggleMobileMenu}>
-            <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+          <button className="menu-toggle" onClick={toggleMobileMenu} aria-label="Menu">
+            <span className={`menu-icon ${mobileMenuOpen ? 'open' : ''}`}></span>
           </button>
-          {/* Removi o botão Home com ícone de casinha daqui */}
         </div>
 
         <div className="navbar-right">
           {isAuthenticated ? (
             <>
               <div className="user-menu">
-                <button className="user-toggle" onClick={toggleMenu}>
+                <button className="user-toggle" onClick={toggleMenu} aria-label="Perfil">
                   <i className="fas fa-user-circle user-icon"></i>
-                  <i className={`fas ${menuOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
                 </button>
 
                 {menuOpen && (
                   <div className="dropdown-menu">
-                    {/* Mantive o link para Home no dropdown */}
                     <Link to="/" onClick={() => setMenuOpen(false)}>
                       <i className="fas fa-home"></i> Início
                     </Link>

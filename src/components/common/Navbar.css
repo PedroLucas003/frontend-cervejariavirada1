@@ -2,7 +2,7 @@
 .navbar {
   background: transparent;
   color: white;
-  padding: 1.5rem 2rem;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,56 +15,91 @@
 }
 
 .navbar.scrolled {
-  background: rgba(44, 62, 80, 0.9);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
 }
 
 /* Estrutura do layout */
 .navbar-left, .navbar-right {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
+}
+
+/* Botão do menu hambúrguer */
+.menu-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1003;
+}
+
+.menu-icon {
+  width: 24px;
+  height: 2px;
+  background: white;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.menu-icon:before,
+.menu-icon:after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.menu-icon:before {
+  transform: translateY(-6px);
+}
+
+.menu-icon:after {
+  transform: translateY(6px);
+}
+
+.menu-icon.open {
+  background: transparent;
+}
+
+.menu-icon.open:before {
+  transform: rotate(45deg);
+}
+
+.menu-icon.open:after {
+  transform: rotate(-45deg);
 }
 
 /* Links e botões base */
-.home-link,
 .login-link,
 .user-toggle,
 .mobile-menu-item {
   color: white;
   text-decoration: none;
   font-weight: 500;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-  position: relative;
   transition: all 0.3s ease;
-  padding: 0.5rem 1.5rem;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  backdrop-filter: blur(5px);
 }
 
-.home-link:hover,
 .login-link:hover,
 .user-toggle:hover,
 .mobile-menu-item:hover {
-  background: rgba(0, 0, 0, 0.6);
-  transform: translateY(-2px);
-  color: #f1c40f;
-}
-
-/* Botão Home - agora igual ao Login */
-.home-link {
-  background: rgba(0, 0, 0, 0.4);
+  color: #ccc;
 }
 
 /* Botão Login */
 .login-link {
-  background: rgba(0, 0, 0, 0.4);
+  padding: 0.5rem 1rem;
 }
 
 /* Menu do usuário (desktop) */
@@ -73,21 +108,22 @@
 }
 
 .user-toggle {
-  background: rgba(0, 0, 0, 0.4);
-  padding: 0.5rem 1.5rem;
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  font-size: 1.2rem;
 }
 
 .dropdown-menu {
   position: absolute;
   right: 0;
   top: 100%;
-  background: rgba(44, 62, 80, 0.95);
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   padding: 0.5rem 0;
   min-width: 200px;
   z-index: 1001;
-  backdrop-filter: blur(10px);
 }
 
 .dropdown-menu a, 
@@ -104,7 +140,6 @@
   text-decoration: none;
   cursor: pointer;
   transition: background 0.2s;
-  border-radius: 0;
 }
 
 .dropdown-menu a:hover, 
@@ -113,29 +148,15 @@
 }
 
 /* Menu mobile */
-.menu-toggle {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: white;
-  display: none;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  backdrop-filter: blur(5px);
-}
-
 .mobile-menu {
   position: fixed;
   top: 0;
   left: -300px;
   width: 250px;
   height: 100vh;
-  background: rgba(44, 62, 80, 0.98);
+  background: rgba(0, 0, 0, 0.95);
   z-index: 1002;
   transition: left 0.3s ease;
-  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(15px);
   padding-top: 5rem;
 }
 
@@ -154,12 +175,10 @@
   padding: 1rem;
   margin: 0.25rem 0;
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .mobile-menu-item:hover {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .menu-overlay {
@@ -170,7 +189,6 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 1001;
-  backdrop-filter: blur(5px);
 }
 
 /* Ícone do carrinho */
@@ -180,26 +198,18 @@
   text-decoration: none;
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.4);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(5px);
-}
-
-.cart-icon:hover {
-  background: rgba(0, 0, 0, 0.6);
+  padding: 0.5rem;
 }
 
 .cart-count {
   position: absolute;
-  top: -8px;
-  right: -8px;
-  background: #f1c40f;
-  color: #2c3e50;
+  top: -5px;
+  right: -5px;
+  background: white;
+  color: black;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -216,38 +226,23 @@
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem;
-    background: rgba(44, 62, 80, 0.95);
+    background: rgba(0, 0, 0, 0.8);
   }
   
-  .menu-toggle {
-    display: block;
-  }
-  
-  .dropdown-menu {
+  .login-text {
     display: none;
   }
   
   .login-link,
-  .home-link {
-    padding: 0.75rem;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    justify-content: center;
-  }
-  
-  .login-link .button-text,
-  .home-link .button-text {
-    display: none;
-  }
-  
-  .login-link .button-icon,
-  .home-link .button-icon {
-    margin: 0;
+  .user-toggle,
+  .cart-icon {
     font-size: 1.2rem;
+    padding: 0.5rem;
   }
-  
-  .user-email {
-    display: none;
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.75rem;
   }
 }
