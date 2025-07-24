@@ -12,23 +12,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   const [error, setError] = useState(null);
   const [showCart, setShowCart] = useState(false);
   const [expandedCards, setExpandedCards] = useState({});
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [navbarScrolled, setNavbarScrolled] = useState(false);
   const navigate = useNavigate();
-
-  // Efeito para detectar scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setNavbarScrolled(true);
-      } else {
-        setNavbarScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const toggleCardExpansion = (id) => {
     setExpandedCards(prev => ({
@@ -152,29 +136,6 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
 
   return (
     <>
-      {/* Navbar Mobile */}
-      <nav className={`mobile-navbar ${navbarScrolled ? 'scrolled' : ''}`}>
-        <div className="navbar-logo">
-          <img src="/logo-cervejaria-virada.png" alt="Cervejaria Virada" />
-        </div>
-        <button 
-          className={`hamburger-menu ${menuOpen ? 'active' : ''}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-        </button>
-      </nav>
-
-      {/* Menu Mobile */}
-      <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
-        <a href="/" onClick={() => setMenuOpen(false)}>Home</a>
-        <a href="/cervejas" onClick={() => setMenuOpen(false)}>Cervejas</a>
-        <a href="/sobre" onClick={() => setMenuOpen(false)}>Sobre</a>
-        <a href="/contato" onClick={() => setMenuOpen(false)}>Contato</a>
-      </div>
-
       <section id="cervejas-section" className="cervejas-section">
         <div className="title-container">
           <h2 className="section-title" style={{ textAlign: 'center', width: '100%' }}>Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
