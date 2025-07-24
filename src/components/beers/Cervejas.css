@@ -32,7 +32,7 @@
 }
 
 .destaque {
-  color: #e67e22;
+  color: #d3b600;
 }
 
 /* GRID DE CERVEJAS */
@@ -84,7 +84,7 @@
 }
 
 .cerveja-tag {
-  background: #e67e22;
+  background: #d3b600;
   color: white;
   padding: 5px 10px;
   border-radius: 20px;
@@ -106,7 +106,7 @@
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #e67e22;
+  background:#d3b600;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -151,7 +151,7 @@
 /* BOTÃO DESCRIÇÃO */
 .toggle-desc-btn {
   background: #333;
-  color: #e67e22;
+  color:#d3b600;
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -223,7 +223,7 @@
 .cerveja-price {
   display: block;
   font-weight: bold;
-  color: #e67e22;
+  color:#d3b600;
   font-size: 1.2rem;
   margin-top: 10px;
 }
@@ -233,7 +233,7 @@
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background: #e67e22;
+  background:#d3b600;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -423,7 +423,7 @@
 
 .checkout-btn {
   width: 100%;
-  background: #e67e22;
+  background:#d3b600;
   color: white;
   border: none;
   padding: 12px;
@@ -474,7 +474,7 @@
   height: 50px;
   border: 5px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top-color: #e67e22;
+  border-top-color:#d3b600;
   animation: spin 1s ease-in-out infinite;
   margin-bottom: 15px;
 }
@@ -495,7 +495,7 @@
 }
 
 .retry-button {
-  background: #e67e22;
+  background:#d3b600;
   color: white;
   border: none;
   padding: 8px 15px;
@@ -510,7 +510,7 @@
   color: #e0e0e0;
   padding: 3rem 20px;
   text-align: center;
-  border-top: 1px solid #e67e22;
+  border-top: 1px solid#d3b600;
   position: relative;
 }
 
