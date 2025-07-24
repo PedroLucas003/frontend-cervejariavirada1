@@ -1,6 +1,6 @@
 /* ESTILOS EXCLUSIVOS PARA A PÁGINA DE CHECKOUT */
 .checkout-page {
-  background-color: #000000;
+  background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
   min-height: 100vh;
   padding: 20px 0;
 }
@@ -20,9 +20,10 @@
 .checkout-header h1 {
   margin: 0 0 20px 0;
   font-size: 2.2rem;
-  color: #ffffff;
+  color: #d3b600;
   position: relative;
   padding-bottom: 10px;
+  text-shadow: 0 0 10px rgba(211, 182, 0, 0.3);
 }
 
 .checkout-header h1::after {
@@ -33,7 +34,7 @@
   transform: translateX(-50%);
   width: 100px;
   height: 3px;
-  background: linear-gradient(90deg, #40c9ff, #e81cff);
+  background: linear-gradient(90deg, #d3b600, #f0d900);
   border-radius: 3px;
 }
 
@@ -54,8 +55,8 @@
 }
 
 .step.active {
-  background: linear-gradient(135deg, #40c9ff, #e81cff);
-  color: #000;
+  background: linear-gradient(135deg, #d3b600, #f0d900);
+  color: #121212;
   font-weight: 600;
 }
 
@@ -83,11 +84,12 @@
 }
 
 .order-summary {
-  background-color: #121212;
+  background-color: #1e1e1e;
   border-radius: 12px;
   padding: 25px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   height: fit-content;
+  border: 1px solid #333;
 }
 
 .summary-title {
@@ -96,13 +98,14 @@
   gap: 10px;
   margin-top: 0;
   margin-bottom: 20px;
-  color: #ffffff;
+  color: #d3b600;
   font-size: 1.5rem;
   padding-bottom: 15px;
   border-bottom: 1px solid #333;
 }
 
 .cart-icon, .delivery-icon, .info-icon {
+  color: #d3b600;
   font-size: 1.2em;
 }
 
@@ -141,8 +144,8 @@
   position: absolute;
   top: -8px;
   right: -8px;
-  background-color: #e81cff;
-  color: white;
+  background-color: #d3b600;
+  color: #121212;
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -185,6 +188,7 @@
   font-size: 3rem;
   display: block;
   margin-bottom: 15px;
+  color: #d3b600;
 }
 
 .order-totals {
@@ -206,7 +210,7 @@
   border-top: 1px solid #444;
   font-size: 1.2rem;
   font-weight: 600;
-  color: #40c9ff;
+  color: #d3b600;
 }
 
 .delivery-payment {
@@ -216,10 +220,11 @@
 }
 
 .delivery-form, .payment-instructions {
-  background-color: #121212;
+  background-color: #1e1e1e;
   border-radius: 12px;
   padding: 25px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid #333;
 }
 
 .section-title {
@@ -228,7 +233,7 @@
   gap: 10px;
   margin-top: 0;
   margin-bottom: 20px;
-  color: #ffffff;
+  color: #d3b600;
   font-size: 1.5rem;
   padding-bottom: 15px;
   border-bottom: 1px solid #333;
@@ -250,8 +255,8 @@
 }
 
 .address-option.selected {
-  border-color: #40c9ff;
-  background-color: rgba(64, 201, 255, 0.1);
+  border-color: #d3b600;
+  background-color: rgba(211, 182, 0, 0.1);
 }
 
 .address-option:hover {
@@ -264,7 +269,7 @@
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  accent-color: #e81cff;
+  accent-color: #d3b600;
 }
 
 .address-option label {
@@ -312,7 +317,7 @@
   padding: 12px 15px;
   border-radius: 6px;
   border: 1px solid #333;
-  background-color: #1e1e1e;
+  background-color: #252525;
   color: #ffffff;
   font-size: 0.95rem;
   transition: all 0.3s;
@@ -320,8 +325,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #40c9ff;
-  box-shadow: 0 0 0 2px rgba(64, 201, 255, 0.2);
+  border-color: #d3b600;
+  box-shadow: 0 0 0 2px rgba(211, 182, 0, 0.2);
 }
 
 .form-group input:disabled {
@@ -350,8 +355,8 @@
   padding: 15px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(135deg, #40c9ff, #e81cff);
-  color: #000;
+  background: linear-gradient(135deg, #d3b600, #f0d900);
+  color: #121212;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -364,7 +369,7 @@
 
 .checkout-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(64, 201, 255, 0.3);
+  box-shadow: 0 5px 15px rgba(211, 182, 0, 0.3);
 }
 
 .checkout-btn:disabled {
@@ -380,7 +385,7 @@
   height: 20px;
   border: 3px solid rgba(0, 0, 0, 0.3);
   border-radius: 50%;
-  border-top-color: #000;
+  border-top-color: #121212;
   animation: spin 1s linear infinite;
 }
 
