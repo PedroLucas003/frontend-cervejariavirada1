@@ -1,4 +1,4 @@
-/* BeerDashboard.css - Versão Dark com estilo do Login */
+/* BeerDashboard.css - Versão Dark com estilo dourado (#d3b600) */
 
 /* Container Principal */
 .beer-dashboard {
@@ -6,32 +6,34 @@
   flex-direction: column;
   min-height: 100vh;
   padding: 2rem;
-  background-color: #121212;
+  background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
   color: white;
   font-family: inherit;
 }
 
-/* Container do Formulário e Lista - Estilo igual ao login */
+/* Container do Formulário e Lista - Estilo premium */
 .dashboard-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  background: linear-gradient(#212121, #212121) padding-box,
-              linear-gradient(145deg, transparent 35%,#e81cff, #40c9ff) border-box;
+  background: linear-gradient(#1e1e1e, #1a1a1a) padding-box,
+              linear-gradient(145deg, transparent 35%,#d3b600, #f0d900) border-box;
   border: 2px solid transparent;
   padding: 32px 24px;
   font-size: 14px;
   color: white;
   box-sizing: border-box;
   border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(211, 182, 0, 0.1);
 }
 
 /* Títulos */
 .beer-dashboard h2 {
   text-align: center;
   margin: 0 0 20px 0;
-  color: #fff;
+  color: #d3b600;
   font-size: 1.8rem;
+  text-shadow: 0 0 10px rgba(211, 182, 0, 0.3);
 }
 
 .admin-welcome {
@@ -71,8 +73,9 @@
   border-radius: 8px;
   color: #fff;
   font-family: inherit;
-  background-color: transparent;
-  border: 1px solid #414141;
+  background-color: #252525;
+  border: 1px solid #333;
+  transition: all 0.3s;
 }
 
 .form-group textarea {
@@ -84,7 +87,8 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #e81cff;
+  border-color: #d3b600;
+  box-shadow: 0 0 0 2px rgba(211, 182, 0, 0.2);
 }
 
 .form-group input::placeholder {
@@ -115,8 +119,8 @@ button {
   font-family: inherit;
   color: #fff;
   font-weight: 600;
-  background: #313131;
-  border: 1px solid #414141;
+  background: #333;
+  border: 1px solid #444;
   padding: 12px 16px;
   font-size: inherit;
   gap: 8px;
@@ -126,8 +130,7 @@ button {
 }
 
 button:hover {
-  background-color: #e81cff;
-  border-color: #e81cff;
+  transform: translateY(-1px);
 }
 
 button:active {
@@ -135,20 +138,23 @@ button:active {
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #e81cff, #40c9ff);
+  background: linear-gradient(135deg, #d3b600, #f0d900);
   border: none;
+  color: #121212;
 }
 
 .submit-btn:hover {
-  background: linear-gradient(135deg, #d100d1, #30b9e9);
+  background: linear-gradient(135deg, #c0a500, #e0c900);
 }
 
 .cancel-btn {
   background: transparent;
+  border: 1px solid #d3b600;
+  color: #d3b600;
 }
 
 .cancel-btn:hover {
-  background: #414141;
+  background: rgba(211, 182, 0, 0.1);
 }
 
 /* Tabela */
@@ -157,7 +163,7 @@ button:active {
 }
 
 .beer-list h3 {
-  color: #fff;
+  color: #d3b600;
   margin-bottom: 20px;
   font-size: 1.4rem;
 }
@@ -171,8 +177,8 @@ table {
 }
 
 th {
-  background: linear-gradient(145deg, #e81cff, #40c9ff);
-  color: white;
+  background: linear-gradient(135deg, #d3b600, #c0a500);
+  color: #121212;
   padding: 14px 16px;
   text-align: left;
   font-weight: 600;
@@ -180,16 +186,16 @@ th {
 
 td {
   padding: 12px 16px;
-  border-bottom: 1px solid #414141;
+  border-bottom: 1px solid #333;
   color: #e0e0e0;
 }
 
 tr {
-  background-color: #212121;
+  background-color: #252525;
 }
 
 tr:hover {
-  background-color: #313131;
+  background-color: #2e2e2e;
 }
 
 .actions-cell {
@@ -198,21 +204,22 @@ tr:hover {
 }
 
 .edit-btn {
-  background: linear-gradient(135deg, #40c9ff, #2d9cdb);
+  background: linear-gradient(135deg, #d3b600, #c0a500);
   border: none;
+  color: #121212;
 }
 
 .edit-btn:hover {
-  background: linear-gradient(135deg, #2d9cdb, #1b7eb9);
+  background: linear-gradient(135deg, #c0a500, #b09700);
 }
 
 .delete-btn {
-  background: linear-gradient(135deg, #ff4d4d, #eb2f2f);
+  background: linear-gradient(135deg, #d33636, #b32b2b);
   border: none;
 }
 
 .delete-btn:hover {
-  background: linear-gradient(135deg, #eb2f2f, #c92424);
+  background: linear-gradient(135deg, #b32b2b, #922222);
 }
 
 /* Mensagens */
@@ -236,9 +243,9 @@ tr:hover {
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
+  border: 3px solid rgba(211, 182, 0, 0.3);
   border-radius: 50%;
-  border-top-color: #e81cff;
+  border-top-color: #d3b600;
   animation: spin 1s linear infinite;
   margin-bottom: 15px;
 }
