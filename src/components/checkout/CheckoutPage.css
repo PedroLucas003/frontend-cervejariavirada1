@@ -390,24 +390,18 @@
 
 /* Responsividade */
 @media (max-width: 1024px) {
-@media (max-width: 1024px) {
   .checkout-grid {
     gap: 20px;
   }
 }
 
 @media (max-width: 768px) {
-  .checkout-page {
-    padding-top: 60px; /* Espaço para a navbar fixa no mobile */
-  }
-
   .checkout-grid {
     grid-template-columns: 1fr;
   }
   
   .checkout-header h1 {
     font-size: 1.8rem;
-    margin-top: 0;
   }
   
   .section-title, .summary-title {
@@ -416,63 +410,37 @@
   
   .form-row {
     grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  /* Melhoria para os passos do checkout */
-  .checkout-steps {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .step {
-    padding: 6px 12px;
-    font-size: 13px;
   }
 }
 
 @media (max-width: 480px) {
   .checkout-container {
-    padding: 0 12px;
+    padding: 0 15px;
   }
   
   .checkout-header h1 {
     font-size: 1.5rem;
-    padding-bottom: 5px;
   }
   
   .checkout-steps {
-    flex-direction: row; /* Mantém horizontal em telas muito pequenas */
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
   }
   
   .step:not(:last-child)::after {
-    content: '→'; /* Volta para seta horizontal */
-    right: -8px;
-    bottom: auto;
-    left: auto;
-    transform: none;
+    content: '↓';
+    right: auto;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
   }
-
-  /* Ajustes para formulário */
-  .form-group input {
-    padding: 10px 12px;
-  }
-
-  /* Ajustes para itens do carrinho */
+  
   .cart-item {
-    padding: 10px 0;
+    flex-direction: column;
   }
-
-  .cart-item-image {
-    width: 60px;
-    height: 60px;
-  }
-
-  /* Botão de checkout maior em mobile */
-  .checkout-btn {
-    padding: 16px;
-    font-size: 1.1rem;
+  
+  .item-image-container {
+    margin-bottom: 10px;
   }
 }
