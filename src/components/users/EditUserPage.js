@@ -36,14 +36,14 @@ const EditUserPage = () => {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(`${API_URL}/api/users/${id}`, {
-          headers: {
+          headers: { 
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         });
-
+        
         const userData = response.data.data || response.data;
-
+        
         setFormData({
           nomeCompleto: userData.nomeCompleto || '',
           email: userData.email || '',
@@ -91,11 +91,11 @@ const EditUserPage = () => {
   const fetchAddressByCEP = async (cep) => {
     cep = cep.replace(/\D/g, '');
     if (cep.length !== 8) return;
-
+    
     try {
       const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
       const data = response.data;
-
+      
       if (!data.erro) {
         setFormData(prev => ({
           ...prev,
@@ -116,7 +116,7 @@ const EditUserPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-
+    
     if (name === 'cpf') {
       const numericValue = value.replace(/\D/g, '');
       if (numericValue.length > 11) return;
@@ -124,7 +124,7 @@ const EditUserPage = () => {
       setFormData(prev => ({ ...prev, [name]: formattedValue }));
       return;
     }
-
+    
     if (name === 'telefone') {
       const numericValue = value.replace(/\D/g, '');
       if (numericValue.length > 11) return;
@@ -132,7 +132,7 @@ const EditUserPage = () => {
       setFormData(prev => ({ ...prev, [name]: formattedValue }));
       return;
     }
-
+    
     if (name === 'enderecos.0.cep') {
       const numericValue = value.replace(/\D/g, '');
       if (numericValue.length > 8) return;
@@ -144,13 +144,13 @@ const EditUserPage = () => {
           cep: formattedValue
         }]
       }));
-
+      
       if (numericValue.length === 8) {
         fetchAddressByCEP(numericValue);
       }
       return;
     }
-
+    
     if (name.startsWith('enderecos.0.')) {
       const field = name.split('.')[2];
       setFormData(prev => ({
@@ -162,7 +162,7 @@ const EditUserPage = () => {
       }));
       return;
     }
-
+    
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
@@ -173,39 +173,39 @@ const EditUserPage = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-
+    
     if (!formData.nomeCompleto.trim()) {
       setError('Nome completo é obrigatório');
       return;
     }
-
+    
     if (!validateEmail(formData.email)) {
       setError('Email inválido');
       return;
     }
-
+    
     if (!validateCPF(formData.cpf)) {
       setError('CPF inválido (deve ter 11 dígitos)');
       return;
     }
-
+    
     if (!formData.dataNascimento) {
       setError('Data de nascimento é obrigatória');
       return;
     }
-
+    
     if (!formData.telefone.replace(/\D/g, '').length >= 10) {
       setError('Telefone inválido');
       return;
     }
 
-    if (!formData.enderecos[0].estado ||
-      formData.enderecos[0].estado.length !== 2 ||
-      !formData.enderecos[0].estado.match(/^[A-Za-z]{2}$/)) {
+    if (!formData.enderecos[0].estado || 
+        formData.enderecos[0].estado.length !== 2 ||
+        !formData.enderecos[0].estado.match(/^[A-Za-z]{2}$/)) {
       setError('Estado deve ser a sigla com 2 letras (ex: SP, RJ)');
       return;
     }
-
+    
     const userToSend = {
       nomeCompleto: formData.nomeCompleto,
       email: formData.email,
@@ -219,7 +219,7 @@ const EditUserPage = () => {
       }],
       isAdmin: formData.isAdmin
     };
-
+    
     setIsSubmitting(true);
     try {
       const token = localStorage.getItem('token');
@@ -227,13 +227,13 @@ const EditUserPage = () => {
         `${API_URL}/api/users/${id}`,
         userToSend,
         {
-          headers: {
+          headers: { 
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         }
       );
-
+      
       setSuccess(response.data.message || 'Usuário atualizado com sucesso!');
       setTimeout(() => navigate('/admin/users'), 2000);
     } catch (err) {
@@ -258,21 +258,18 @@ const EditUserPage = () => {
       <div className="edit-user-container">
         <div className="edit-user-header">
           <h1>Editar Usuário</h1>
-          <button
-            onClick={() => navigate(-1)} // Isso volta para a página anterior
-            className="back-btn"
-          >
+          <button onClick={() => navigate('/admin/users')} className="back-btn">
             &larr; Voltar
           </button>
         </div>
-
+        
         {error && (
           <div className="edit-user-error">
             {error}
             <button onClick={() => setError(null)} className="close-btn">×</button>
           </div>
         )}
-
+        
         {success && (
           <div className="edit-user-success">
             {success}
@@ -292,7 +289,7 @@ const EditUserPage = () => {
                 disabled={isSubmitting}
               />
             </div>
-
+            
             <div className="form-group">
               <label>Email</label>
               <input
@@ -304,7 +301,7 @@ const EditUserPage = () => {
                 disabled={isSubmitting}
               />
             </div>
-
+            
             <div className="form-group">
               <label>CPF</label>
               <input
@@ -318,7 +315,7 @@ const EditUserPage = () => {
                 disabled={isSubmitting}
               />
             </div>
-
+            
             <div className="form-group">
               <label>Data de Nascimento</label>
               <input
@@ -330,7 +327,7 @@ const EditUserPage = () => {
                 disabled={isSubmitting}
               />
             </div>
-
+            
             <div className="form-group">
               <label>Telefone</label>
               <input
@@ -348,7 +345,7 @@ const EditUserPage = () => {
 
           <div className="address-section">
             <h3>Endereço Principal</h3>
-
+            
             <div className="form-grid">
               <div className="form-group">
                 <label>CEP</label>
@@ -363,7 +360,7 @@ const EditUserPage = () => {
                   disabled={isSubmitting}
                 />
               </div>
-
+              
               <div className="form-group">
                 <label>Logradouro</label>
                 <input
@@ -375,7 +372,7 @@ const EditUserPage = () => {
                   disabled={isSubmitting}
                 />
               </div>
-
+              
               <div className="form-group">
                 <label>Número</label>
                 <input
@@ -387,7 +384,7 @@ const EditUserPage = () => {
                   disabled={isSubmitting}
                 />
               </div>
-
+              
               <div className="form-group">
                 <label>Complemento</label>
                 <input
@@ -398,7 +395,7 @@ const EditUserPage = () => {
                   disabled={isSubmitting}
                 />
               </div>
-
+              
               <div className="form-group">
                 <label>Bairro</label>
                 <input
@@ -410,7 +407,7 @@ const EditUserPage = () => {
                   disabled={isSubmitting}
                 />
               </div>
-
+              
               <div className="form-group">
                 <label>Cidade</label>
                 <input
@@ -422,7 +419,7 @@ const EditUserPage = () => {
                   disabled={isSubmitting}
                 />
               </div>
-
+              
               <div className="form-group">
                 <label>Estado (Sigla)</label>
                 <input
@@ -440,7 +437,7 @@ const EditUserPage = () => {
               </div>
             </div>
           </div>
-
+          
           <div className="form-group checkbox-group">
             <label>
               <input
@@ -454,10 +451,10 @@ const EditUserPage = () => {
               Administrador
             </label>
           </div>
-
+          
           <div className="form-actions">
-            <button
-              type="submit"
+            <button 
+              type="submit" 
               className="submit-btn"
               disabled={isSubmitting}
             >
@@ -468,8 +465,8 @@ const EditUserPage = () => {
                 </>
               ) : 'Salvar Alterações'}
             </button>
-            <button
-              type="button"
+            <button 
+              type="button" 
               onClick={() => navigate('/admin/users')}
               className="cancel-btn"
               disabled={isSubmitting}

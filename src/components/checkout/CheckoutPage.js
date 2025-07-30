@@ -15,7 +15,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
     city: '',
     state: ''
   });
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
 
   useEffect(() => {
     const principalAddress = user?.enderecos?.find(addr => addr.principal) || user?.enderecos?.[0];
-    
+   
     if (principalAddress) {
       setDeliveryData({
         cep: principalAddress.cep || '',
@@ -87,7 +87,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
 
       onOrderSuccess();
       window.location.href = init_point;
-      
+     
     } catch (error) {
       console.error('Erro no checkout:', error);
       setError(
@@ -101,7 +101,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
 
   const handleUsePrincipalAddress = () => {
     const principalAddress = user?.enderecos?.find(addr => addr.principal) || user?.enderecos?.[0];
-    
+   
     if (principalAddress) {
       setDeliveryData({
         cep: principalAddress.cep || '',
@@ -131,7 +131,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
+   
     if (usingPrincipalAddress) {
       setUsingPrincipalAddress(false);
     }
@@ -158,7 +158,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
     <div className="checkout-page">
       <div className="checkout-container">
         <div className="checkout-header">
-          <h1>Finalize sua Compra</h1>
+          <h1>Finalizar Pedido</h1>
           <div className="checkout-steps">
             <div className="step active">1. Carrinho</div>
             <div className="step active">2. Entrega</div>
@@ -171,9 +171,9 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
         <div className="checkout-grid">
           <div className="order-summary">
             <h2 className="summary-title">
-              <span className="cart-icon">🛒</span> Seu Pedido
+              <span className="cart-icon">🛒</span> Resumo do Pedido
             </h2>
-            
+           
             {cartItems.length > 0 ? (
               <>
                 <div className="cart-items">
@@ -197,12 +197,12 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
                     <span>Subtotal:</span>
                     <span>R$ {subtotal.toFixed(2)}</span>
                   </div>
-                  
+                 
                   <div className="total-row">
                     <span>Frete:</span>
                     <span>R$ {shipping.toFixed(2)}</span>
                   </div>
-                  
+                 
                   <div className="total-row grand-total">
                     <span>Total:</span>
                     <span>R$ {totalAmount.toFixed(2)}</span>
@@ -220,7 +220,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
           <div className="delivery-payment">
             <div className="delivery-form">
               <h2 className="section-title">
-                <span className="delivery-icon">🚚</span> Informações de Entrega
+                <span className="delivery-icon">📍</span> Endereço de Entrega
               </h2>
 
               <div className="address-selection">
@@ -246,7 +246,7 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
                     </label>
                   </div>
                 )}
-                
+               
                 <div className={`address-option ${!usingPrincipalAddress ? 'selected' : ''}`}>
                   <input
                     type="radio"
@@ -365,13 +365,12 @@ const CheckoutPage = ({ cartItems, user, onOrderSuccess }) => {
 
               <div className="payment-instructions">
                 <h3 className="section-title">
-                  <span className="info-icon">ℹ️</span> Informações Importantes
+                  <span className="info-icon">ℹ️</span> Informações de Pagamento
                 </h3>
                 <ul>
-                  <li>Após clicar em "Finalizar Compra", seu pedido será registrado</li>
-                  <li>Você será redirecionado para a página de pagamento do Mercado Pago</li>
-                  <li>Lá você poderá escolher o método de pagamento (PIX, Cartão, Boleto, etc.)</li>
-                  <li>O prazo de entrega começa a contar após a confirmação do pagamento</li>
+                  <li>Após clicar em "Finalizar Compra", você será redirecionado para o pagamento</li>
+                  <li>Escolha entre PIX, Cartão de Crédito ou Boleto Bancário</li>
+                  <li>Pedidos são processados somente após confirmação do pagamento</li>
                 </ul>
               </div>
 
