@@ -183,7 +183,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                   disabled={stock[cerveja._id] <= 0}
                 >
                   <i className="fas fa-shopping-cart"></i>
-                  {stock[cerveja._id] > 0 ? 'Adicionar' : 'Esgotado'}
+                  {stock[cerveja._id] > 0 ? '' : 'Esgotado'}
                 </button>
               </div>
               <div className="cerveja-info">
