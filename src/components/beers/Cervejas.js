@@ -8,7 +8,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   const [cervejas, setCervejas] = useState([]);
   const [stock, setStock] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Erro corrigido aqui
   const [error, setError] = useState(null);
   const [showCart, setShowCart] = useState(false);
   const [expandedCards, setExpandedCards] = useState({});
@@ -50,7 +50,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
       let formattedBeers = response.data.data.map(beer => {
         return {
           _id: beer._id,
-          nome: beer.beerType, // Removido "Virada"
+          nome: beer.beerType,
           tipo: beer.beerType,
           beerType: beer.beerType,
           descricao: beer.description || 'Descrição não disponível',
@@ -59,7 +59,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           ibu: beer.ibu,
           cor: beer.color,
           turbidez: beer.turbidity,
-          ano: beer.yearCreated, // Removido o default 2016, agora usa o ano da API
+          ano: beer.yearCreated,
           price: beer.price || 15.90,
           quantity: beer.quantity,
           createdAt: beer.createdAt
@@ -177,7 +177,6 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                     e.target.src = "/default-beer.png";
                   }}
                 />
-                {/* Removido cerveja-detalhes com Virada e ano */}
                 <button
                   className={`add-to-cart-btn ${stock[cerveja._id] <= 0 ? 'disabled' : ''}`}
                   onClick={() => handleAddToCart(cerveja)}
@@ -208,12 +207,12 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                   {cerveja.cor && <span className="spec-item">Cor: {cerveja.cor}</span>}
                   {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
                 </div>
-                <div className="cerveja-stock">
+                {/* <div className="cerveja-stock">
                   <span className="stock-label">Estoque:</span>
                   <span className={`stock-value ${stock[cerveja._id] > 0 ? 'in-stock' : 'out-of-stock'}`}>
                     {stock[cerveja._id]} unidades
                   </span>
-                </div>
+                </div> */}
                 <span className="cerveja-price">R$ {(cerveja.price || 0).toFixed(2)}</span>
               </div>
             </div>

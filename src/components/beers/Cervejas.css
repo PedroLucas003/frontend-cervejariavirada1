@@ -73,17 +73,6 @@
   object-fit: cover;
 }
 
-/* DETALHES (REMOVIDO OU MODIFICADO) */
-/*
-.cerveja-detalhes {
-  // Este bloco foi removido do JSX, então seu estilo não é mais necessário
-}
-
-.cerveja-tag, .cerveja-ano {
-  // Estes estilos não são mais necessários para os detalhes removidos
-}
-*/
-
 /* BOTÃO DE ADICIONAR AO CARRINHO - DESIGN MINIMALISTA */
 .add-to-cart-btn {
   position: absolute;
@@ -138,7 +127,7 @@
 /* BOTÃO DESCRIÇÃO */
 .toggle-desc-btn {
   background: #333;
-  color: #d3b600;
+  color: #ffffff; /* Cor alterada para branco */
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -188,7 +177,7 @@
   color: #e0e0e0;
 }
 
-/* ESTOQUE */
+/* ESTOQUE (Mantido no CSS, mas não exibido no HTML) */
 .cerveja-stock {
   margin-top: auto;
 }
@@ -210,7 +199,7 @@
 .cerveja-price {
   display: block;
   font-weight: bold;
-  color: #d3b600;
+  color: #ffffff; /* Cor alterada para branco */
   font-size: 1.2rem;
   margin-top: 10px;
 }
