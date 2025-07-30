@@ -1,649 +1,732 @@
 /* ESTILOS GERAIS */
 .cervejas-section {
-  padding: 40px 20px;
-  min-height: 100vh;
-  color: #e0e0e0;
-  background: linear-gradient(to bottom, #000000, #2d2d2d);
-  background-attachment: fixed;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+    color: #e0e0e0;
+    background: linear-gradient(to bottom, #000000, #2d2d2d);
+    background-attachment: fixed;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* TÍTULO CENTRALIZADO */
 .title-container {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 30px;
-  padding: 20px 0;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px 0;
 }
 
 .section-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.5rem;
-  color: #ffffff;
-  margin: 0 auto;
-  padding: 0;
-  display: block;
-  text-align: center;
-  width: 100%;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin: 0 auto;
+    padding: 0;
+    display: block;
+    text-align: center;
+    width: 100%;
 }
 
 .destaque {
-  color: #d3b600;
+    color: #d3b600; /* Dourado */
 }
 
 /* GRID DE CERVEJAS */
 .cervejas-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  align-items: start;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: stretch; /* Garante que os cards tenham a mesma altura */
 }
 
-/* CARD DE CERVEJA - VERSÃO ATUALIZADA */
+/* CARD DE CERVEJA */
 .cerveja-card {
-  background: #1e1e1e;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+    background: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Permite que o flex-grow dentro de .cerveja-card-content funcione */
 }
 
 .cerveja-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
 .cerveja-card-content {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Ocupa o espaço restante verticalmente no card */
+    justify-content: space-between; /* Empurra o card-actions para o final */
 }
 
 /* IMAGEM */
 .cerveja-imagem-container {
-  height: 300px;
-  flex-shrink: 0;
-  position: relative;
+    height: 250px; /* Ajuste a altura se necessário */
+    width: 100%;
+    position: relative;
+    overflow: hidden; /* Garante que a imagem não vaze */
+    flex-shrink: 0;
 }
 
 .cerveja-imagem {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Mantém a proporção e preenche o container */
+    transition: transform 0.3s ease-in-out;
+}
+
+.cerveja-card:hover .cerveja-imagem {
+    transform: scale(1.05); /* Zoom sutil na imagem no hover do card */
 }
 
 /* INFORMAÇÕES */
 .cerveja-info {
-  padding: 15px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+    padding: 15px;
+    flex-grow: 1; /* Permite que o bloco de info ocupe espaço antes da descrição/botões */
+    display: flex;
+    flex-direction: column;
 }
 
-.cerveja-info h3 {
-  font-size: 1.3rem;
-  margin-bottom: 5px;
-  color: #ffffff;
+.cerveja-nome {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; /* Aumentado para maior destaque */
+    margin: 0 0 5px 0;
+    color: #ffffff;
+    line-height: 1.1;
 }
 
 .cerveja-tipo {
-  color: #b0b0b0;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-}
-
-/* BOTÃO DESCRIÇÃO */
-.toggle-desc-btn {
-  background: #333;
-  color: #ffffff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  margin: 10px 0;
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: all 0.3s;
-  width: 100%;
-  text-align: center;
-}
-
-.toggle-desc-btn:hover {
-  background: #444;
-}
-
-/* DESCRIÇÃO */
-.cerveja-desc-container {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
-}
-
-.cerveja-desc-container.expanded {
-  max-height: 500px;
-}
-
-.cerveja-desc {
-  color: #b0b0b0;
-  font-size: 0.9rem;
-  margin-bottom: 15px;
+    color: #b0b0b0;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* ESPECIFICAÇÕES */
 .cerveja-specs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* Espaçamento entre os itens */
+    margin-top: 10px; /* Espaçamento acima das specs */
+    margin-bottom: 0; /* Removido para controle mais fino */
+    font-size: 0.9rem;
 }
 
 .spec-item {
-  background: #333333;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  color: #e0e0e0;
+    background: #2a2a2a; /* Fundo mais escuro para os specs */
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #c0c0c0;
+    border: 1px solid #3a3a3a;
 }
 
-/* PREÇO E BOTÃO - NOVA ESTRUTURA */
-.cerveja-price-container {
-  margin-top: auto;
-  padding: 15px;
-  border-top: 1px solid #333;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* BOTÃO MOSTRAR/OCULTAR DESCRIÇÃO */
+.toggle-desc-btn {
+    background: #333;
+    color: #ffffff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin: 15px; /* Margens para separá-lo do conteúdo e do preço */
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    width: calc(100% - 30px); /* 100% menos o padding do card (15px * 2) */
+    text-align: center;
+    border: 1px solid #444; /* Borda sutil */
+    align-self: center; /* Centraliza o botão dentro do flex container */
+}
+
+.toggle-desc-btn:hover {
+    background: #444;
+    border-color: #555;
+}
+
+/* DESCRIÇÃO EXPANSÍVEL */
+.cerveja-desc-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+    padding: 0 15px; /* Mantém o padding lateral */
+    margin-bottom: 15px; /* Espaço abaixo da descrição */
+}
+
+.cerveja-desc-container.expanded {
+    max-height: 500px; /* Altura máxima para a descrição */
+    /* Você pode ajustar este valor se as descrições forem muito longas */
+}
+
+.cerveja-desc {
+    color: #b0b0b0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-top: 10px; /* Espaço acima da descrição */
+    margin-bottom: 0;
+}
+
+/* PREÇO E BOTÃO DE COMPRA */
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px; /* Mesmo padding dos outros blocos */
+    border-top: 1px solid #333; /* Separador sutil */
+    margin-top: auto; /* Empurra para o fundo do .cerveja-card-content */
+    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+    gap: 10px;
 }
 
 .cerveja-price {
-  font-weight: bold;
-  color: #ffffff;
-  font-size: 1.2rem;
+    font-weight: bold;
+    color: #d3b600; /* Cor dourada para o preço */
+    font-size: 1.5rem; /* Maior destaque para o preço */
+    flex-shrink: 0; /* Não encolhe o preço */
 }
 
-/* BOTÃO DE ADICIONAR AO CARRINHO - NOVA VERSÃO */
+/* BOTÃO DE ADICIONAR AO CARRINHO */
 .add-to-cart-btn {
-  background: #333333;
-  color: white;
-  border: 1px solid #555555;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background 0.3s, border-color 0.3s;
-  font-size: 0.9rem;
+    background: #d3b600; /* Cor dourada principal */
+    color: #1e1e1e; /* Texto escuro para contraste */
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: background 0.3s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1; /* Permite que o botão ocupe espaço restante */
+    min-width: 150px; /* Garante um tamanho mínimo */
 }
 
 .add-to-cart-btn:hover {
-  background: #555555;
-  border-color: #888888;
+    background: #e6c53e; /* Dourado mais claro no hover */
+    color: #000000;
 }
 
 .add-to-cart-btn.disabled {
-  background: #666666;
-  cursor: not-allowed;
-  border-color: #666666;
+    background: #444444; /* Cinza escuro para desabilitado */
+    color: #a0a0a0;
+    cursor: not-allowed;
+    opacity: 0.8;
 }
 
 /* CARRINHO - BOTÃO DO CARRINHO */
 .cart-icon {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background: #555555;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  transition: background 0.3s;
-  z-index: 100;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #d3b600; /* Cor do botão do carrinho (dourado) */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #1e1e1e; /* Cor do ícone no botão */
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 100;
 }
 
 .cart-icon.has-items {
-  background: #4a90e2;
+    background: #d35400; /* Uma cor mais vibrante quando há itens (laranja) */
 }
 
 .cart-icon:hover {
-  background: #666666;
+    transform: scale(1.05); /* Pequeno zoom no hover */
+    background: #e6c53e; /* Dourado mais claro no hover */
 }
 
 .cart-count {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background: #e74c3c;
-  color: white;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8rem;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #e74c3c;
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: bold;
 }
 
 /* SIDEBAR CARRINHO */
 .cart-sidebar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 350px;
-  height: 100%;
-  background: #1e1e1e;
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-  transform: translateX(100%);
-  transition: transform 0.3s ease-out;
-  z-index: 101;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  color: #e0e0e0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px;
+    height: 100%;
+    background: #1e1e1e;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    z-index: 101;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    color: #e0e0e0;
 }
 
 .cart-sidebar.open {
-  transform: translateX(0);
+    transform: translateX(0);
 }
 
 .cart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
 }
 
 .cart-header h3 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #ffffff;
+    margin: 0;
+    font-size: 1.5rem;
+    color: #ffffff;
 }
 
 .close-cart {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: #b0b0b0;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #b0b0b0;
+    transition: color 0.3s ease;
+}
+
+.close-cart:hover {
+    color: #ffffff;
 }
 
 .empty-cart {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  color: #b0b0b0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    color: #b0b0b0;
+    text-align: center;
 }
 
 .empty-cart i {
-  font-size: 3rem;
-  margin-bottom: 15px;
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #666;
 }
 
 .cart-items {
-  flex-grow: 1;
-  overflow-y: auto;
-  margin-bottom: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 5px; /* Para scrollbar */
 }
 
 .cart-item {
-  display: flex;
-  gap: 15px;
-  padding: 15px 0;
-  border-bottom: 1px solid #333;
+    display: flex;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #333;
+    align-items: center;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
 }
 
 .cart-item-image {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 5px;
+    width: 70px; /* Um pouco maior */
+    height: 70px;
+    object-fit: cover;
+    border-radius: 5px;
+    flex-shrink: 0;
 }
 
 .cart-item-details {
-  flex-grow: 1;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .cart-item-details h4 {
-  margin: 0 0 5px 0;
-  font-size: 1rem;
-  color: #ffffff;
+    margin: 0 0 5px 0;
+    font-size: 1.05rem;
+    color: #ffffff;
 }
 
 .cart-item-type {
-  color: #b0b0b0;
-  font-size: 0.8rem;
-  margin: 0 0 10px 0;
+    color: #b0b0b0;
+    font-size: 0.85rem;
+    margin: 0 0 10px 0;
 }
 
 .cart-item-quantity {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .cart-item-quantity button {
-  background: #333;
-  border: none;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  color: #e0e0e0;
+    background: #3a3a3a;
+    border: none;
+    width: 30px; /* Botões maiores */
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #e0e0e0;
+    transition: background 0.3s ease;
+}
+
+.cart-item-quantity button:hover:not(:disabled) {
+    background: #555;
 }
 
 .cart-item-quantity button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #2a2a2a;
+}
+
+.cart-item-quantity span {
+    font-size: 1rem;
+    font-weight: bold;
+    min-width: 20px; /* Garante espaço para números maiores */
+    text-align: center;
 }
 
 .cart-item-price {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  font-weight: bold;
-  color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-weight: bold;
+    color: #d3b600; /* Dourado para o preço individual */
+    font-size: 1.1rem;
 }
 
 .remove-item {
-  background: none;
-  border: none;
-  color: #e74c3c;
-  cursor: pointer;
-  margin-top: 5px;
-  font-size: 0.8rem;
+    background: none;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.remove-item:hover {
+    color: #ff6b6b;
 }
 
 .cart-summary {
-  border-top: 1px solid #333;
-  padding-top: 15px;
+    border-top: 1px solid #333;
+    padding-top: 15px;
 }
 
 .cart-total {
-  display: flex;
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1.3rem; /* Total um pouco maior */
+    margin-bottom: 20px;
+    color: #ffffff;
 }
 
 .checkout-btn {
-  width: 100%;
-  background: #d3b600;
-  color: white;
-  border: none;
-  padding: 12px;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
+    width: 100%;
+    background: #d3b600;
+    color: #1e1e1e;
+    border: none;
+    padding: 14px; /* Maior padding */
+    font-size: 1.1rem; /* Fonte maior */
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .checkout-btn:hover {
-  background: #d35400;
+    background: #e6c53e;
+    color: #000000;
 }
 
 .checkout-btn:disabled {
-  background: #666666;
-  cursor: not-allowed;
+    background: #666666;
+    color: #b0b0b0;
+    cursor: not-allowed;
+    opacity: 0.8;
 }
 
 .cart-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 99;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 99;
 }
 
 /* LOADING */
 .loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    color: white;
 }
 
 .spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: #d3b600;
-  animation: spin 1s ease-in-out infinite;
-  margin-bottom: 15px;
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #d3b600;
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 15px;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* ERRO */
 .error-message {
-  background: #3a1c1f;
-  color: #ff8a8a;
-  padding: 15px;
-  border-radius: 5px;
-  margin: 20px auto;
-  max-width: 600px;
-  text-align: center;
+    background: #3a1c1f;
+    color: #ff8a8a;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
 }
 
 .retry-button {
-  background: #d3b600;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  margin-top: 10px;
-  cursor: pointer;
+    background: #d3b600;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.retry-button:hover {
+    background: #e6c53e;
 }
 
 /* FOOTER */
 .transparent-footer {
-  background: linear-gradient(to top, #000000, #2d2d2d);
-  color: #e0e0e0;
-  padding: 3rem 20px;
-  text-align: center;
-  border-top: 1px solid #d3b600;
-  position: relative;
+    background: linear-gradient(to top, #000000, #2d2d2d);
+    color: #e0e0e0;
+    padding: 3rem 20px;
+    text-align: center;
+    border-top: 1px solid #d3b600;
+    position: relative;
 }
 
 .footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  align-items: center;
-  gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    gap: 2rem;
 }
 
 .footer-logo {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .footer-logo-img {
-  max-height: 100px;
-  width: auto;
-  filter: drop-shadow(0 0 5px rgba(230, 126, 34, 0.5));
-  transition: transform 0.3s ease;
+    max-height: 100px;
+    width: auto;
+    filter: drop-shadow(0 0 5px rgba(230, 126, 34, 0.5));
+    transition: transform 0.3s ease;
 }
 
 .footer-logo-img:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .footer-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 20px;
 }
 
 .footer-text {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.8rem;
-  margin: 0;
-  color: #ffffff;
-  letter-spacing: 1px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    margin: 0;
+    color: #ffffff;
+    letter-spacing: 1px;
 }
 
 .footer-contact {
-  font-size: 1rem;
-  margin: 0;
-  color: #b0b0b0;
-  line-height: 1.5;
+    font-size: 1rem;
+    margin: 0;
+    color: #b0b0b0;
+    line-height: 1.5;
 }
 
 .footer-social {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
 }
 
 .social-icon {
-  color: #e0e0e0;
-  font-size: 2.2rem;
-  transition: all 0.3s ease;
-  background: rgba(30, 30, 30, 0.7);
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #333;
+    color: #e0e0e0;
+    font-size: 2.2rem;
+    transition: all 0.3s ease;
+    background: rgba(30, 30, 30, 0.7);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #333;
 }
 
 .social-icon:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .whatsapp:hover {
-  color: #25D366;
-  border-color: #25D366;
+    color: #25D366;
+    border-color: #25D366;
 }
 
 .instagram:hover {
-  color: #E1306C;
-  border-color: #E1306C;
+    color: #E1306C;
+    border-color: #E1306C;
 }
 
 .footer-copyright {
-  grid-column: 1 / -1;
-  margin-top: 2rem;
-  font-size: 0.8rem;
-  color: #666;
-  border-top: 1px solid #333;
-  padding-top: 1rem;
+    grid-column: 1 / -1;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: #666;
+    border-top: 1px solid #333;
+    padding-top: 1rem;
 }
 
 /* RESPONSIVIDADE */
 @media (max-width: 900px) {
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
 
-  .footer-logo-img {
-    max-height: 80px;
-  }
+    .footer-logo-img {
+        max-height: 80px;
+    }
 
-  .footer-text {
-    font-size: 1.5rem;
-  }
+    .footer-text {
+        font-size: 1.5rem;
+    }
 
-  .footer-contact {
-    font-size: 0.9rem;
-  }
+    .footer-contact {
+        font-size: 0.9rem;
+    }
 
-  .social-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 1.8rem;
-  }
+    .social-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.8rem;
+    }
 }
 
 @media (max-width: 768px) {
-  .cervejas-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  }
+    .cervejas-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
 
-  .cerveja-imagem-container {
-    height: 250px;
-  }
+    .cerveja-imagem-container {
+        height: 220px;
+    }
 
-  .section-title {
-    font-size: 2rem;
-  }
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .cerveja-nome {
+        font-size: 1.6rem;
+    }
+
+    .card-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .add-to-cart-btn {
+        width: 100%;
+        min-width: unset;
+    }
 }
 
 @media (max-width: 480px) {
-  .footer-social {
-    gap: 1rem;
-  }
+    .footer-social {
+        gap: 1rem;
+    }
 
-  .social-icon {
-    width: 45px;
-    height: 45px;
-    font-size: 1.5rem;
-  }
+    .social-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.5rem;
+    }
 
-  .cervejas-grid {
-    grid-template-columns: 1fr;
-  }
+    .cervejas-grid {
+        grid-template-columns: 1fr;
+    }
 
-  .cerveja-desc-container.expanded {
-    max-height: 800px;
-  }
+    .cerveja-desc-container.expanded {
+        max-height: 800px; /* Um pouco maior para telas pequenas */
+    }
 
-  .section-title {
-    font-size: 1.8rem;
-  }
+    .section-title {
+        font-size: 1.8rem;
+    }
 
-  .cerveja-price-container {
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
-  }
-
-  .add-to-cart-btn {
-    width: 100%;
-  }
+    .toggle-desc-btn {
+        width: calc(100% - 30px); /* Ajuste para o padding */
+    }
 }

@@ -11,13 +11,15 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showCart, setShowCart] = useState(false);
+  // expandedCards agora é um objeto que mapeia IDs de cerveja para um booleano (true se expandido, false caso contrário)
   const [expandedCards, setExpandedCards] = useState({});
   const navigate = useNavigate();
 
+  // Função para alternar a expansão de um card específico
   const toggleCardExpansion = (id) => {
     setExpandedCards(prev => ({
       ...prev,
-      [id]: !prev[id]
+      [id]: !prev[id] // Inverte o estado de expansão apenas para o ID clicado
     }));
   };
 
@@ -138,7 +140,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
     <>
       <section id="cervejas-section" className="cervejas-section">
         <div className="title-container">
-          <h2 className="section-title" style={{ textAlign: 'center', width: '100%' }}>Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
+          <h2 className="section-title">Nossas <span className="destaque">CERVEJAS</span> Históricas</h2>
         </div>
 
         {error && (
@@ -178,22 +180,12 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                   }}
                 />
               </div>
-              
+
+              {/* Novo div para englobar o conteúdo abaixo da imagem e permitir flex-grow */}
               <div className="cerveja-card-content">
                 <div className="cerveja-info">
-                  <h3>{cerveja.nome}</h3>
+                  <h3 className="cerveja-nome">{cerveja.nome}</h3>
                   <p className="cerveja-tipo">{cerveja.tipo}</p>
-
-                  <button
-                    className="toggle-desc-btn"
-                    onClick={() => toggleCardExpansion(cerveja._id)}
-                  >
-                    {expandedCards[cerveja._id] ? 'Ocultar descrição' : 'Mostrar descrição'}
-                  </button>
-
-                  <div className={`cerveja-desc-container ${expandedCards[cerveja._id] ? 'expanded' : ''}`}>
-                    <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
-                  </div>
 
                   <div className="cerveja-specs">
                     <span className="spec-item">ABV: {cerveja.teor}</span>
@@ -202,16 +194,28 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                     {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
                   </div>
                 </div>
-                
-                <div className="cerveja-price-container">
+
+                {/* Conteúdo que expande/oculta */}
+                <button
+                  className="toggle-desc-btn"
+                  onClick={() => toggleCardExpansion(cerveja._id)}
+                >
+                  {expandedCards[cerveja._id] ? 'Ocultar Detalhes' : 'Ver Detalhes'}
+                </button>
+
+                <div className={`cerveja-desc-container ${expandedCards[cerveja._id] ? 'expanded' : ''}`}>
+                  <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
+                </div>
+
+                {/* Preço e botão de compra agrupados no final do card */}
+                <div className="card-actions">
                   <span className="cerveja-price">R$ {(cerveja.price || 0).toFixed(2)}</span>
                   <button
                     className={`add-to-cart-btn ${stock[cerveja._id] <= 0 ? 'disabled' : ''}`}
                     onClick={() => handleAddToCart(cerveja)}
                     disabled={stock[cerveja._id] <= 0}
                   >
-                    <i className="fas fa-shopping-cart"></i>
-                    {stock[cerveja._id] > 0 ? 'Adicionar' : 'Esgotado'}
+                    {stock[cerveja._id] > 0 ? 'Adicionar ao Carrinho' : 'Esgotado'}
                   </button>
                 </div>
               </div>
