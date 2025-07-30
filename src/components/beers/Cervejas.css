@@ -44,7 +44,7 @@
   align-items: start;
 }
 
-/* CARD DE CERVEJA */
+/* CARD DE CERVEJA - VERSÃO ATUALIZADA */
 .cerveja-card {
   background: #1e1e1e;
   border-radius: 8px;
@@ -53,6 +53,7 @@
   transition: transform 0.3s;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .cerveja-card:hover {
@@ -60,48 +61,23 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
+.cerveja-card-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 /* IMAGEM */
 .cerveja-imagem-container {
   height: 300px;
-  position: relative;
   flex-shrink: 0;
+  position: relative;
 }
 
 .cerveja-imagem {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-/* BOTÃO DE ADICIONAR AO CARRINHO - DESIGN MINIMALISTA */
-.add-to-cart-btn {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333333; /* Cor mais neutra */
-  color: white;
-  border: 1px solid #555555; /* Borda sutil */
-  padding: 10px 20px;
-  border-radius: 5px; /* Bordas menos arredondadas */
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.3s, border-color 0.3s; /* Transição apenas para cor */
-}
-
-.add-to-cart-btn:hover {
-  background: #555555; /* Cor mais escura no hover */
-  border-color: #888888;
-  transform: translateX(-50%); /* Garante que não há movimento no hover */
-}
-
-.add-to-cart-btn.disabled {
-  background: #666666;
-  cursor: not-allowed;
-  border-color: #666666;
 }
 
 /* INFORMAÇÕES */
@@ -127,7 +103,7 @@
 /* BOTÃO DESCRIÇÃO */
 .toggle-desc-btn {
   background: #333;
-  color: #ffffff; /* Cor alterada para branco */
+  color: #ffffff;
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -177,39 +153,56 @@
   color: #e0e0e0;
 }
 
-/* ESTOQUE (Mantido no CSS, mas não exibido no HTML) */
-.cerveja-stock {
+/* PREÇO E BOTÃO - NOVA ESTRUTURA */
+.cerveja-price-container {
   margin-top: auto;
+  padding: 15px;
+  border-top: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.stock-label {
-  font-weight: bold;
-  color: #e0e0e0;
-}
-
-.stock-value.in-stock {
-  color: #27ae60;
-}
-
-.stock-value.out-of-stock {
-  color: #e74c3c;
-}
-
-/* PREÇO */
 .cerveja-price {
-  display: block;
   font-weight: bold;
-  color: #ffffff; /* Cor alterada para branco */
+  color: #ffffff;
   font-size: 1.2rem;
-  margin-top: 10px;
 }
 
-/* CARRINHO - BOTÃO DO CARRINHO (Minimalista e sem movimento) */
+/* BOTÃO DE ADICIONAR AO CARRINHO - NOVA VERSÃO */
+.add-to-cart-btn {
+  background: #333333;
+  color: white;
+  border: 1px solid #555555;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.3s, border-color 0.3s;
+  font-size: 0.9rem;
+}
+
+.add-to-cart-btn:hover {
+  background: #555555;
+  border-color: #888888;
+}
+
+.add-to-cart-btn.disabled {
+  background: #666666;
+  cursor: not-allowed;
+  border-color: #666666;
+}
+
+/* CARRINHO - BOTÃO DO CARRINHO */
 .cart-icon {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background: #555555; /* Cor cinza mais escura */
+  background: #555555;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -220,17 +213,16 @@
   font-size: 1.5rem;
   cursor: pointer;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  transition: background 0.3s; /* Apenas transição de cor */
+  transition: background 0.3s;
   z-index: 100;
 }
 
 .cart-icon.has-items {
-  background: #4a90e2; /* Um azul sutil quando há itens, para indicar atividade */
+  background: #4a90e2;
 }
 
 .cart-icon:hover {
-  background: #666666; /* Um tom um pouco mais claro no hover */
-  transform: none; /* Garante que não há movimento */
+  background: #666666;
 }
 
 .cart-count {
@@ -643,5 +635,15 @@
 
   .section-title {
     font-size: 1.8rem;
+  }
+
+  .cerveja-price-container {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .add-to-cart-btn {
+    width: 100%;
   }
 }

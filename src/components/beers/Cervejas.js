@@ -8,7 +8,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   const [cervejas, setCervejas] = useState([]);
   const [stock, setStock] = useState({});
-  const [loading, setLoading] = useState(true); // Erro corrigido aqui
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showCart, setShowCart] = useState(false);
   const [expandedCards, setExpandedCards] = useState({});
@@ -177,43 +177,43 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                     e.target.src = "/default-beer.png";
                   }}
                 />
-                <button
-                  className={`add-to-cart-btn ${stock[cerveja._id] <= 0 ? 'disabled' : ''}`}
-                  onClick={() => handleAddToCart(cerveja)}
-                  disabled={stock[cerveja._id] <= 0}
-                >
-                  <i className="fas fa-shopping-cart"></i>
-                  {stock[cerveja._id] > 0 ? '' : 'Esgotado'}
-                </button>
               </div>
-              <div className="cerveja-info">
-                <h3>{cerveja.nome}</h3>
-                <p className="cerveja-tipo">{cerveja.tipo}</p>
+              
+              <div className="cerveja-card-content">
+                <div className="cerveja-info">
+                  <h3>{cerveja.nome}</h3>
+                  <p className="cerveja-tipo">{cerveja.tipo}</p>
 
-                <button
-                  className="toggle-desc-btn"
-                  onClick={() => toggleCardExpansion(cerveja._id)}
-                >
-                  {expandedCards[cerveja._id] ? 'Ocultar descrição' : 'Mostrar descrição'}
-                </button>
+                  <button
+                    className="toggle-desc-btn"
+                    onClick={() => toggleCardExpansion(cerveja._id)}
+                  >
+                    {expandedCards[cerveja._id] ? 'Ocultar descrição' : 'Mostrar descrição'}
+                  </button>
 
-                <div className={`cerveja-desc-container ${expandedCards[cerveja._id] ? 'expanded' : ''}`}>
-                  <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
+                  <div className={`cerveja-desc-container ${expandedCards[cerveja._id] ? 'expanded' : ''}`}>
+                    <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
+                  </div>
+
+                  <div className="cerveja-specs">
+                    <span className="spec-item">ABV: {cerveja.teor}</span>
+                    {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
+                    {cerveja.cor && <span className="spec-item">Cor: {cerveja.cor}</span>}
+                    {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
+                  </div>
                 </div>
-
-                <div className="cerveja-specs">
-                  <span className="spec-item">ABV: {cerveja.teor}</span>
-                  {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
-                  {cerveja.cor && <span className="spec-item">Cor: {cerveja.cor}</span>}
-                  {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
+                
+                <div className="cerveja-price-container">
+                  <span className="cerveja-price">R$ {(cerveja.price || 0).toFixed(2)}</span>
+                  <button
+                    className={`add-to-cart-btn ${stock[cerveja._id] <= 0 ? 'disabled' : ''}`}
+                    onClick={() => handleAddToCart(cerveja)}
+                    disabled={stock[cerveja._id] <= 0}
+                  >
+                    <i className="fas fa-shopping-cart"></i>
+                    {stock[cerveja._id] > 0 ? 'Adicionar' : 'Esgotado'}
+                  </button>
                 </div>
-                {/* <div className="cerveja-stock">
-                  <span className="stock-label">Estoque:</span>
-                  <span className={`stock-value ${stock[cerveja._id] > 0 ? 'in-stock' : 'out-of-stock'}`}>
-                    {stock[cerveja._id]} unidades
-                  </span>
-                </div> */}
-                <span className="cerveja-price">R$ {(cerveja.price || 0).toFixed(2)}</span>
               </div>
             </div>
           ))}
