@@ -50,7 +50,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
       let formattedBeers = response.data.data.map(beer => {
         return {
           _id: beer._id,
-          nome: `Virada ${beer.beerType}`,
+          nome: beer.beerType, // Removido "Virada"
           tipo: beer.beerType,
           beerType: beer.beerType,
           descricao: beer.description || 'Descrição não disponível',
@@ -59,7 +59,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           ibu: beer.ibu,
           cor: beer.color,
           turbidez: beer.turbidity,
-          ano: beer.yearCreated || 2016,
+          ano: beer.yearCreated, // Removido o default 2016, agora usa o ano da API
           price: beer.price || 15.90,
           quantity: beer.quantity,
           createdAt: beer.createdAt
@@ -177,10 +177,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                     e.target.src = "/default-beer.png";
                   }}
                 />
-                <div className="cerveja-detalhes">
-                  <div className="cerveja-tag">Virada</div>
-                  <div className="cerveja-ano">{cerveja.ano}</div>
-                </div>
+                {/* Removido cerveja-detalhes com Virada e ano */}
                 <button
                   className={`add-to-cart-btn ${stock[cerveja._id] <= 0 ? 'disabled' : ''}`}
                   onClick={() => handleAddToCart(cerveja)}

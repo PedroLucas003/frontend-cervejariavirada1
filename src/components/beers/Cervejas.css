@@ -12,7 +12,6 @@
 }
 
 /* TÍTULO CENTRALIZADO */
-/* TÍTULO CENTRALIZADO */
 .title-container {
   width: 100%;
   text-align: center;
@@ -74,58 +73,46 @@
   object-fit: cover;
 }
 
-/* DETALHES */
+/* DETALHES (REMOVIDO OU MODIFICADO) */
+/*
 .cerveja-detalhes {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  display: flex;
-  gap: 10px;
+  // Este bloco foi removido do JSX, então seu estilo não é mais necessário
 }
 
-.cerveja-tag {
-  background: #d3b600;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
+.cerveja-tag, .cerveja-ano {
+  // Estes estilos não são mais necessários para os detalhes removidos
 }
+*/
 
-.cerveja-ano {
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-}
-
-/* BOTÃO */
+/* BOTÃO DE ADICIONAR AO CARRINHO - DESIGN MINIMALISTA */
 .add-to-cart-btn {
   position: absolute;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background:#d3b600;
+  background: #333333; /* Cor mais neutra */
   color: white;
-  border: none;
+  border: 1px solid #555555; /* Borda sutil */
   padding: 10px 20px;
-  border-radius: 50px;
+  border-radius: 5px; /* Bordas menos arredondadas */
   cursor: pointer;
   font-weight: bold;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s;
+  transition: background 0.3s, border-color 0.3s; /* Transição apenas para cor */
 }
 
 .add-to-cart-btn:hover {
-  background: #d35400;
+  background: #555555; /* Cor mais escura no hover */
+  border-color: #888888;
+  transform: translateX(-50%); /* Garante que não há movimento no hover */
 }
 
 .add-to-cart-btn.disabled {
   background: #666666;
   cursor: not-allowed;
+  border-color: #666666;
 }
 
 /* INFORMAÇÕES */
@@ -151,7 +138,7 @@
 /* BOTÃO DESCRIÇÃO */
 .toggle-desc-btn {
   background: #333;
-  color:#d3b600;
+  color: #d3b600;
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -223,17 +210,17 @@
 .cerveja-price {
   display: block;
   font-weight: bold;
-  color:#d3b600;
+  color: #d3b600;
   font-size: 1.2rem;
   margin-top: 10px;
 }
 
-/* CARRINHO */
+/* CARRINHO - BOTÃO DO CARRINHO (Minimalista e sem movimento) */
 .cart-icon {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background:#d3b600;
+  background: #555555; /* Cor cinza mais escura */
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -244,16 +231,17 @@
   font-size: 1.5rem;
   cursor: pointer;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s;
+  transition: background 0.3s; /* Apenas transição de cor */
   z-index: 100;
 }
 
 .cart-icon.has-items {
-  background: #d35400;
+  background: #4a90e2; /* Um azul sutil quando há itens, para indicar atividade */
 }
 
 .cart-icon:hover {
-  transform: scale(1.1);
+  background: #666666; /* Um tom um pouco mais claro no hover */
+  transform: none; /* Garante que não há movimento */
 }
 
 .cart-count {
@@ -423,7 +411,7 @@
 
 .checkout-btn {
   width: 100%;
-  background:#d3b600;
+  background: #d3b600;
   color: white;
   border: none;
   padding: 12px;
@@ -474,7 +462,7 @@
   height: 50px;
   border: 5px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top-color:#d3b600;
+  border-top-color: #d3b600;
   animation: spin 1s ease-in-out infinite;
   margin-bottom: 15px;
 }
@@ -495,7 +483,7 @@
 }
 
 .retry-button {
-  background:#d3b600;
+  background: #d3b600;
   color: white;
   border: none;
   padding: 8px 15px;
@@ -510,7 +498,7 @@
   color: #e0e0e0;
   padding: 3rem 20px;
   text-align: center;
-  border-top: 1px solid#d3b600;
+  border-top: 1px solid #d3b600;
   position: relative;
 }
 
@@ -611,19 +599,19 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .footer-logo-img {
     max-height: 80px;
   }
-  
+
   .footer-text {
     font-size: 1.5rem;
   }
-  
+
   .footer-contact {
     font-size: 0.9rem;
   }
-  
+
   .social-icon {
     width: 50px;
     height: 50px;
@@ -635,11 +623,11 @@
   .cervejas-grid {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
-  
+
   .cerveja-imagem-container {
     height: 250px;
   }
-  
+
   .section-title {
     font-size: 2rem;
   }
@@ -649,7 +637,7 @@
   .footer-social {
     gap: 1rem;
   }
-  
+
   .social-icon {
     width: 45px;
     height: 45px;
@@ -663,7 +651,7 @@
   .cerveja-desc-container.expanded {
     max-height: 800px;
   }
-  
+
   .section-title {
     font-size: 1.8rem;
   }
