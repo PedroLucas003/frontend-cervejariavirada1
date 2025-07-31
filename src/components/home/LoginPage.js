@@ -4,8 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 
 const LoginPage = ({ onLogin, onError }) => {
+  // Estado para controlar o modo de formulário (Login ou Cadastro)
   const [isLoginMode, setIsLoginMode] = useState(true);
+  // Estado para controlar o estado de carregamento do botão
   const [isLoading, setIsLoading] = useState(false);
+  // Estado para armazenar os dados do formulário
   const [formData, setFormData] = useState({
     nomeCompleto: '',
     email: '',
@@ -25,17 +28,21 @@ const LoginPage = ({ onLogin, onError }) => {
       principal: true
     }]
   });
+  // Estado para os valores mascarados dos campos
   const [maskedValues, setMaskedValues] = useState({
     cpf: '',
     telefone: '',
     cep: ''
   });
+  // Estado para armazenar erros de validação
   const [errors, setErrors] = useState({});
+  // Hook do React Router para navegação
   const navigate = useNavigate();
 
-const API_URL = process.env.REACT_APP_API_URL;
+  // URL da API, deve ser carregada do ambiente
+  const API_URL = process.env.REACT_APP_API_URL;
 
-  // Mask functions
+  // Funções de máscara para formatação dos inputs
   const applyCpfMask = (value) => {
     return value
       .replace(/\D/g, '')
@@ -60,7 +67,7 @@ const API_URL = process.env.REACT_APP_API_URL;
       .replace(/(-\d{3})\d+?$/, '$1');
   };
 
-  // Validation functions
+  // Funções de validação
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
@@ -70,7 +77,7 @@ const API_URL = process.env.REACT_APP_API_URL;
     cpf = cpf.replace(/\D/g, '');
     if (cpf.length !== 11) return false;
     
-    // CPF validation algorithm
+    // Algoritmo de validação de CPF
     let sum = 0;
     let remainder;
     
@@ -98,7 +105,7 @@ const API_URL = process.env.REACT_APP_API_URL;
     return password.length >= 6;
   };
 
-  // Event handlers
+  // Funções de tratamento de eventos
   const handleChange = (e) => {
     const { name, value } = e.target;
     
@@ -148,7 +155,7 @@ const API_URL = process.env.REACT_APP_API_URL;
     setIsLoading(true);
     setErrors({});
 
-    // Basic validations
+    // Validações básicas
     const newErrors = {};
 
     if (!isLoginMode) {
@@ -258,6 +265,7 @@ const API_URL = process.env.REACT_APP_API_URL;
     }
   };
 
+  // Função para alternar entre os modos de Login e Cadastro
   const toggleMode = () => {
     setIsLoginMode(!isLoginMode);
     setErrors({});
@@ -292,9 +300,7 @@ const API_URL = process.env.REACT_APP_API_URL;
       <div className="form-container">
         <h2>{isLoginMode ? 'Login' : 'Cadastre-se'}</h2>
         <p className="subtitle">
-          {isLoginMode 
-            ? 'Entre para acessar sua conta' 
-            : 'Crie sua conta para começar'}
+          {isLoginMode ? 'Entre para acessar sua conta' : 'Crie sua conta para começar'}
         </p>
 
         {errors.submit && (
