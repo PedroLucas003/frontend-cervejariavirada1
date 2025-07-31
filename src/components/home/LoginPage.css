@@ -1,40 +1,40 @@
-/* Estilos baseados no Uiverse.io com tema dark */
+/* LoginPage.css - Versão Branco/Cinza */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   padding: 2rem;
-  background-color: #121212;
+  background-color: #f5f5f7;
 }
 
 .form-container {
   width: 100%;
   max-width: 500px;
-  background: linear-gradient(#212121, #212121) padding-box,
-              linear-gradient(145deg, transparent 35%,#e81cff, #40c9ff) border-box;
-  border: 2px solid transparent;
+  background: #ffffff;
+  border: 1px solid #d2d2d7;
   padding: 32px 24px;
   font-size: 14px;
   font-family: inherit;
-  color: white;
+  color: #1d1d1f;
   display: flex;
   flex-direction: column;
   gap: 20px;
   box-sizing: border-box;
   border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .form-container h2 {
   text-align: center;
   margin: 0;
-  color: #fff;
+  color: #1d1d1f;
   font-size: 1.8rem;
 }
 
 .subtitle {
   text-align: center;
-  color: #b0b0b0;
+  color: #86868b;
   margin: 0 0 20px 0;
   font-size: 1rem;
 }
@@ -54,7 +54,7 @@
 .form-group label {
   display: block;
   margin-bottom: 5px;
-  color: #b0b0b0;
+  color: #515154;
   font-weight: 600;
   font-size: 12px;
 }
@@ -64,21 +64,23 @@
   width: 100%;
   padding: 12px 16px;
   border-radius: 8px;
-  color: #fff;
+  color: #1d1d1f;
   font-family: inherit;
-  background-color: transparent;
-  border: 1px solid #414141;
+  background-color: #ffffff;
+  border: 1px solid #d2d2d7;
+  transition: all 0.2s;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #e81cff;
+  border-color: #1d1d1f;
+  box-shadow: 0 0 0 2px rgba(29,29,31,0.1);
 }
 
 .form-group input::placeholder {
   opacity: 0.5;
-  color: #b0b0b0;
+  color: #86868b;
 }
 
 .form-row {
@@ -93,12 +95,12 @@
 .address-section {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid #414141;
+  border-top: 1px solid #e8e8ed;
 }
 
 .address-section h3 {
   margin: 0 0 15px 0;
-  color: #fff;
+  color: #1d1d1f;
   font-size: 1.2rem;
 }
 
@@ -108,11 +110,11 @@
   justify-content: center;
   align-self: flex-start;
   font-family: inherit;
-  color: #fff;
+  color: #ffffff;
   font-weight: 600;
   width: 100%;
-  background: #313131;
-  border: 1px solid #414141;
+  background: #1d1d1f;
+  border: 1px solid #1d1d1f;
   padding: 12px 16px;
   font-size: inherit;
   gap: 8px;
@@ -123,22 +125,23 @@
 }
 
 .form-submit-btn:hover {
-  background-color: #e81cff;
-  border-color: #e81cff;
+  background-color: #2c2c2e;
+  border-color: #2c2c2e;
 }
 
 .form-submit-btn:active {
-  scale: 0.95;
+  transform: scale(0.98);
 }
 
 .form-submit-btn:disabled {
-  background-color: #666;
+  background-color: #d2d2d7;
+  color: #86868b;
   cursor: not-allowed;
 }
 
 .toggle-mode {
   text-align: center;
-  color: #b0b0b0;
+  color: #86868b;
   font-size: 0.9rem;
   margin-top: 15px;
 }
@@ -146,29 +149,29 @@
 .toggle-btn {
   background: none;
   border: none;
-  color: #40c9ff;
+  color: #0066cc;
   cursor: pointer;
   font-weight: 600;
   padding: 0;
   margin-left: 5px;
-  text-decoration: underline;
 }
 
 .toggle-btn:hover {
-  color: #e81cff;
+  text-decoration: underline;
 }
 
 .error-message {
-  background: #3a1c1f;
-  color: #ff8a8a;
+  background: #f8f8f8;
+  color: #d12654;
   padding: 12px 16px;
   border-radius: 8px;
   font-size: 0.9rem;
   margin-bottom: 10px;
+  border-left: 4px solid #d12654;
 }
 
 .field-error {
-  color: #ff8a8a;
+  color: #d12654;
   font-size: 0.8rem;
   margin-top: 5px;
 }
