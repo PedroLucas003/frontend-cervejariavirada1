@@ -121,13 +121,11 @@
 
 /* DESCRIÇÃO */
 .cerveja-desc-container {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
+  display: none;
 }
 
 .cerveja-desc-container.expanded {
-  max-height: 500px;
+  display: block;
 }
 
 .cerveja-desc {
