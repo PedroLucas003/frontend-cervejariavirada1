@@ -647,3 +647,15 @@
     width: 100%;
   }
 }
+.cerveja-specs {
+  margin-bottom: 10px;
+}
+
+.toggle-desc-btn {
+  margin: 10px 0;
+  width: 100%;
+}
+
+.cerveja-desc-container {
+  margin-top: 10px;
+}

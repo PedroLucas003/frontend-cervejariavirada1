@@ -17,7 +17,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   const toggleCardExpansion = (id) => {
     setExpandedCards(prev => ({
       ...prev,
-      [id]: !prev[id] // Alterna apenas o card clicado
+      [id]: !prev[id]
     }));
   };
 
@@ -165,7 +165,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
           )}
 
           {cervejas.map((cerveja) => (
-            <div key={cerveja._id} className={`cerveja-card ${expandedCards[cerveja._id] ? 'expanded' : ''}`}>
+            <div key={cerveja._id} className="cerveja-card">
               <div className="cerveja-imagem-container">
                 <img
                   src={cerveja.imagem}
@@ -184,6 +184,13 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                   <h3>{cerveja.nome}</h3>
                   <p className="cerveja-tipo">{cerveja.tipo}</p>
 
+                  <div className="cerveja-specs">
+                    <span className="spec-item">ABV: {cerveja.teor}</span>
+                    {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
+                    {cerveja.cor && <span className="spec-item">Cor: {cerveja.cor}</span>}
+                    {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
+                  </div>
+
                   <button
                     className="toggle-desc-btn"
                     onClick={() => toggleCardExpansion(cerveja._id)}
@@ -193,13 +200,6 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
 
                   <div className={`cerveja-desc-container ${expandedCards[cerveja._id] ? 'expanded' : ''}`}>
                     <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
-                  </div>
-
-                  <div className="cerveja-specs">
-                    <span className="spec-item">ABV: {cerveja.teor}</span>
-                    {cerveja.ibu && <span className="spec-item">IBU: {cerveja.ibu}</span>}
-                    {cerveja.cor && <span className="spec-item">Cor: {cerveja.cor}</span>}
-                    {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
                   </div>
                 </div>
                 
