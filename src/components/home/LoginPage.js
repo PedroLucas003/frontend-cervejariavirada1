@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './LoginPage.css';
 
-// Componente principal da página de login/cadastro
 const LoginPage = ({ onLogin, onError }) => {
-  // State para alternar entre modo de login e cadastro
   const [isLoginMode, setIsLoginMode] = useState(true);
-  // State para controlar o estado de carregamento durante a submissão
   const [isLoading, setIsLoading] = useState(false);
-  // State para armazenar os dados do formulário
   const [formData, setFormData] = useState({
     nomeCompleto: '',
     email: '',
@@ -28,21 +25,17 @@ const LoginPage = ({ onLogin, onError }) => {
       principal: true
     }]
   });
-  // State para armazenar os valores mascarados para exibição
   const [maskedValues, setMaskedValues] = useState({
     cpf: '',
     telefone: '',
     cep: ''
   });
-  // State para armazenar erros de validação
   const [errors, setErrors] = useState({});
-  // Hook de navegação do React Router
   const navigate = useNavigate();
 
-  // URL da API, obtida de uma variável de ambiente
-  const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
-  // Funções de máscara
+  // Mask functions
   const applyCpfMask = (value) => {
     return value
       .replace(/\D/g, '')
@@ -67,7 +60,7 @@ const LoginPage = ({ onLogin, onError }) => {
       .replace(/(-\d{3})\d+?$/, '$1');
   };
 
-  // Funções de validação
+  // Validation functions
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
@@ -77,7 +70,7 @@ const LoginPage = ({ onLogin, onError }) => {
     cpf = cpf.replace(/\D/g, '');
     if (cpf.length !== 11) return false;
     
-    // Algoritmo de validação de CPF
+    // CPF validation algorithm
     let sum = 0;
     let remainder;
     
@@ -105,7 +98,7 @@ const LoginPage = ({ onLogin, onError }) => {
     return password.length >= 6;
   };
 
-  // Funções de tratamento de eventos
+  // Event handlers
   const handleChange = (e) => {
     const { name, value } = e.target;
     
@@ -150,12 +143,12 @@ const LoginPage = ({ onLogin, onError }) => {
     setMaskedValues(prev => ({ ...prev, cep: maskedValue }));
   };
 
-  // Função de submissão do formulário
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setErrors({});
 
+    // Basic validations
     const newErrors = {};
 
     if (!isLoginMode) {
@@ -239,7 +232,6 @@ const LoginPage = ({ onLogin, onError }) => {
     }
   };
 
-  // Busca o endereço pelo CEP
   const handleCepBlur = async (index) => {
     const cep = formData.enderecos[index].cep.replace(/\D/g, '');
     if (cep.length !== 8) return;
@@ -266,7 +258,6 @@ const LoginPage = ({ onLogin, onError }) => {
     }
   };
 
-  // Alterna o modo de formulário
   const toggleMode = () => {
     setIsLoginMode(!isLoginMode);
     setErrors({});
@@ -297,56 +288,43 @@ const LoginPage = ({ onLogin, onError }) => {
   };
 
   return (
-    <div className="login-container min-h-screen flex items-center justify-center p-4 bg-gray-950 text-white font-inter">
-      {/* Estilo para a borda com gradiente, já que o Tailwind não tem nativamente */}
-      <style>{`
-        .form-container {
-          background: #121212;
-          background: linear-gradient(145deg, transparent 35%, #e81cff, #40c9ff) border-box;
-          border-width: 2px;
-          border-style: solid;
-          border-color: transparent;
-        }
-      `}</style>
-      <div className="form-container w-full max-w-lg p-8 rounded-2xl flex flex-col gap-5 box-border">
-        <h2 className="text-center text-3xl font-bold">
-          {isLoginMode ? 'Login' : 'Cadastre-se'}
-        </h2>
-        <p className="text-center text-gray-400 text-base -mt-4">
+    <div className="login-container">
+      <div className="form-container">
+        <h2>{isLoginMode ? 'Login' : 'Cadastre-se'}</h2>
+        <p className="subtitle">
           {isLoginMode 
             ? 'Entre para acessar sua conta' 
             : 'Crie sua conta para começar'}
         </p>
 
         {errors.submit && (
-          <div className="bg-red-950 text-red-300 p-3 rounded-lg text-sm">
+          <div className="error-message">
             {errors.submit}
           </div>
         )}
 
-        <form className="form flex flex-col gap-5" onSubmit={handleSubmit}>
+        <form className="form" onSubmit={handleSubmit}>
           {!isLoginMode && (
             <>
-              <div className="flex flex-col gap-1">
-                <label htmlFor="nomeCompleto" className="text-gray-400 font-semibold text-xs">Nome Completo</label>
+              <div className="form-group">
+                <label htmlFor="nomeCompleto">Nome Completo</label>
                 <input
                   type="text"
                   id="nomeCompleto"
                   name="nomeCompleto"
                   value={formData.nomeCompleto}
                   onChange={handleChange}
-                  className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                  placeholder="Seu nome completo"
+                  placeholder=" "
                   required
                 />
                 {errors.nomeCompleto && (
-                  <span className="text-red-300 text-xs mt-1">{errors.nomeCompleto}</span>
+                  <span className="field-error">{errors.nomeCompleto}</span>
                 )}
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-5">
-                <div className="flex-1 flex flex-col gap-1">
-                  <label htmlFor="cpf" className="text-gray-400 font-semibold text-xs">CPF</label>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="cpf">CPF</label>
                   <input
                     type="text"
                     id="cpf"
@@ -354,34 +332,33 @@ const LoginPage = ({ onLogin, onError }) => {
                     value={maskedValues.cpf}
                     onChange={handleCpfChange}
                     maxLength="14"
-                    className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                    placeholder="000.000.000-00"
+                    placeholder=" "
                     required
                   />
                   {errors.cpf && (
-                    <span className="text-red-300 text-xs mt-1">{errors.cpf}</span>
+                    <span className="field-error">{errors.cpf}</span>
                   )}
                 </div>
 
-                <div className="flex-1 flex flex-col gap-1">
-                  <label htmlFor="dataNascimento" className="text-gray-400 font-semibold text-xs">Data de Nascimento</label>
+                <div className="form-group">
+                  <label htmlFor="dataNascimento">Data de Nascimento</label>
                   <input
                     type="date"
                     id="dataNascimento"
                     name="dataNascimento"
                     value={formData.dataNascimento}
                     onChange={handleChange}
-                    className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
+                    placeholder=" "
                     required
                   />
                   {errors.dataNascimento && (
-                    <span className="text-red-300 text-xs mt-1">{errors.dataNascimento}</span>
+                    <span className="field-error">{errors.dataNascimento}</span>
                   )}
                 </div>
               </div>
 
-              <div className="flex flex-col gap-1">
-                <label htmlFor="telefone" className="text-gray-400 font-semibold text-xs">Telefone</label>
+              <div className="form-group">
+                <label htmlFor="telefone">Telefone</label>
                 <input
                   type="tel"
                   id="telefone"
@@ -389,78 +366,74 @@ const LoginPage = ({ onLogin, onError }) => {
                   value={maskedValues.telefone}
                   onChange={handlePhoneChange}
                   maxLength="15"
-                  className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                  placeholder="(00) 90000-0000"
+                  placeholder=" "
                   required
                 />
                 {errors.telefone && (
-                  <span className="text-red-300 text-xs mt-1">{errors.telefone}</span>
+                  <span className="field-error">{errors.telefone}</span>
                 )}
               </div>
             </>
           )}
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="text-gray-400 font-semibold text-xs">Email</label>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-              placeholder="seu-email@exemplo.com"
+              placeholder=" "
               required
             />
             {errors.email && (
-              <span className="text-red-300 text-xs mt-1">{errors.email}</span>
+              <span className="field-error">{errors.email}</span>
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-5">
-            <div className="flex-1 flex flex-col gap-1">
-              <label htmlFor="senha" className="text-gray-400 font-semibold text-xs">Senha</label>
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="senha">Senha</label>
               <input
                 type="password"
                 id="senha"
                 name="senha"
                 value={formData.senha}
                 onChange={handleChange}
-                className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                placeholder="••••••••"
+                placeholder=" "
                 required
               />
               {errors.senha && (
-                <span className="text-red-300 text-xs mt-1">{errors.senha}</span>
+                <span className="field-error">{errors.senha}</span>
               )}
             </div>
 
             {!isLoginMode && (
-              <div className="flex-1 flex flex-col gap-1">
-                <label htmlFor="confirmarSenha" className="text-gray-400 font-semibold text-xs">Confirmar Senha</label>
+              <div className="form-group">
+                <label htmlFor="confirmarSenha">Confirmar Senha</label>
                 <input
                   type="password"
                   id="confirmarSenha"
                   name="confirmarSenha"
                   value={formData.confirmarSenha}
                   onChange={handleChange}
-                  className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                  placeholder="••••••••"
+                  placeholder=" "
                   required
                 />
                 {errors.confirmarSenha && (
-                  <span className="text-red-300 text-xs mt-1">{errors.confirmarSenha}</span>
+                  <span className="field-error">{errors.confirmarSenha}</span>
                 )}
               </div>
             )}
           </div>
 
           {!isLoginMode && (
-            <div className="address-section pt-5 border-t border-gray-700">
-              <h3 className="text-lg font-bold mb-4">Endereço Principal</h3>
+            <div className="address-section">
+              <h3>Endereço Principal</h3>
               
-              <div className="flex flex-col gap-1 mb-5">
-                <label htmlFor="enderecos.0.cep" className="text-gray-400 font-semibold text-xs">CEP</label>
+              <div className="form-group">
+                <label htmlFor="enderecos.0.cep">CEP</label>
                 <input
                   type="text"
                   id="enderecos.0.cep"
@@ -469,101 +442,95 @@ const LoginPage = ({ onLogin, onError }) => {
                   onChange={(e) => handleCepChange(e, 0)}
                   onBlur={() => handleCepBlur(0)}
                   maxLength="9"
-                  className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                  placeholder="00000-000"
+                  placeholder=" "
                   required
                 />
                 {errors.cep && (
-                  <span className="text-red-300 text-xs mt-1">{errors.cep}</span>
+                  <span className="field-error">{errors.cep}</span>
                 )}
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-5 mb-5">
-                <div className="flex-1 flex flex-col gap-1">
-                  <label htmlFor="enderecos.0.logradouro" className="text-gray-400 font-semibold text-xs">Logradouro</label>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="enderecos.0.logradouro">Logradouro</label>
                   <input
                     type="text"
                     id="enderecos.0.logradouro"
                     name="enderecos.0.logradouro"
                     value={formData.enderecos[0].logradouro}
                     onChange={handleChange}
-                    className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                    placeholder="Rua, Avenida, etc."
+                    placeholder=" "
                     required
                   />
                   {errors.logradouro && (
-                    <span className="text-red-300 text-xs mt-1">{errors.logradouro}</span>
+                    <span className="field-error">{errors.logradouro}</span>
                   )}
                 </div>
 
-                <div className="flex-1 flex flex-col gap-1">
-                  <label htmlFor="enderecos.0.numero" className="text-gray-400 font-semibold text-xs">Número</label>
+                <div className="form-group">
+                  <label htmlFor="enderecos.0.numero">Número</label>
                   <input
                     type="text"
                     id="enderecos.0.numero"
                     name="enderecos.0.numero"
                     value={formData.enderecos[0].numero}
                     onChange={handleChange}
-                    className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                    placeholder="123"
+                    placeholder=" "
                     required
                   />
                   {errors.numero && (
-                    <span className="text-red-300 text-xs mt-1">{errors.numero}</span>
+                    <span className="field-error">{errors.numero}</span>
                   )}
                 </div>
               </div>
 
-              <div className="flex flex-col gap-1 mb-5">
-                <label htmlFor="enderecos.0.complemento" className="text-gray-400 font-semibold text-xs">Complemento</label>
+              <div className="form-group">
+                <label htmlFor="enderecos.0.complemento">Complemento</label>
                 <input
                   type="text"
                   id="enderecos.0.complemento"
                   name="enderecos.0.complemento"
                   value={formData.enderecos[0].complemento}
                   onChange={handleChange}
-                  className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                  placeholder="Apartamento, sala, etc."
+                  placeholder=" "
                 />
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-5">
-                <div className="flex-1 flex flex-col gap-1">
-                  <label htmlFor="enderecos.0.bairro" className="text-gray-400 font-semibold text-xs">Bairro</label>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="enderecos.0.bairro">Bairro</label>
                   <input
                     type="text"
                     id="enderecos.0.bairro"
                     name="enderecos.0.bairro"
                     value={formData.enderecos[0].bairro}
                     onChange={handleChange}
-                    className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                    placeholder="Bairro"
+                    placeholder=" "
                     required
                   />
                   {errors.bairro && (
-                    <span className="text-red-300 text-xs mt-1">{errors.bairro}</span>
+                    <span className="field-error">{errors.bairro}</span>
                   )}
                 </div>
 
-                <div className="flex-1 flex flex-col gap-1">
-                  <label htmlFor="enderecos.0.cidade" className="text-gray-400 font-semibold text-xs">Cidade</label>
+                <div className="form-group">
+                  <label htmlFor="enderecos.0.cidade">Cidade</label>
                   <input
                     type="text"
                     id="enderecos.0.cidade"
                     name="enderecos.0.cidade"
                     value={formData.enderecos[0].cidade}
                     onChange={handleChange}
-                    className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                    placeholder="Cidade"
+                    placeholder=" "
                     required
                   />
                   {errors.cidade && (
-                    <span className="text-red-300 text-xs mt-1">{errors.cidade}</span>
+                    <span className="field-error">{errors.cidade}</span>
                   )}
                 </div>
 
-                <div className="flex-1 flex flex-col gap-1">
-                  <label htmlFor="enderecos.0.estado" className="text-gray-400 font-semibold text-xs">Estado</label>
+                <div className="form-group">
+                  <label htmlFor="enderecos.0.estado">Estado</label>
                   <input
                     type="text"
                     id="enderecos.0.estado"
@@ -571,12 +538,11 @@ const LoginPage = ({ onLogin, onError }) => {
                     value={formData.enderecos[0].estado}
                     onChange={handleChange}
                     maxLength="2"
-                    className="w-full p-3 rounded-md bg-transparent border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                    placeholder="UF"
+                    placeholder=" "
                     required
                   />
                   {errors.estado && (
-                    <span className="text-red-300 text-xs mt-1">{errors.estado}</span>
+                    <span className="field-error">{errors.estado}</span>
                   )}
                 </div>
               </div>
@@ -585,23 +551,23 @@ const LoginPage = ({ onLogin, onError }) => {
 
           <button 
             type="submit" 
-            className="flex items-center justify-center font-semibold text-white w-full bg-gray-700 border border-gray-600 p-3 text-lg rounded-md mt-2 cursor-pointer hover:bg-purple-600 hover:border-purple-600 active:scale-95 transition-all duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed"
+            className="form-submit-btn"
             disabled={isLoading}
           >
             {isLoading ? (
               <>
-                <span className="loading-spinner inline-block w-4 h-4 border-2 border-white border-solid border-t-transparent rounded-full animate-spin mr-2"></span>
+                <span className="loading-spinner"></span>
                 Processando...
               </>
             ) : isLoginMode ? 'Entrar' : 'Cadastrar'}
           </button>
         </form>
 
-        <div className="text-center text-gray-400 text-sm mt-3">
+        <div className="toggle-mode">
           {isLoginMode ? 'Não tem uma conta?' : 'Já tem uma conta?'}
           <button 
             type="button" 
-            className="bg-transparent border-none text-blue-400 font-semibold p-0 ml-1 cursor-pointer hover:text-purple-400 transition-colors duration-300 underline"
+            className="toggle-btn"
             onClick={toggleMode}
           >
             {isLoginMode ? 'Cadastre-se' : 'Faça login'}
