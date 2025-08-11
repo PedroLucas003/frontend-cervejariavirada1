@@ -44,7 +44,7 @@
   align-items: start;
 }
 
-/* CARD DE CERVEJA */
+/* CARD DE CERVEJA - VERSÃO ATUALIZADA */
 .cerveja-card {
   background: #1e1e1e;
   border-radius: 8px;
@@ -53,7 +53,6 @@
   transition: transform 0.3s;
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
 .cerveja-card:hover {
@@ -119,17 +118,13 @@
   background: #444;
 }
 
-/* DESCRIÇÃO - COM ANIMAÇÃO SUAVE (CORRIGIDO) */
+/* DESCRIÇÃO */
 .cerveja-desc-container {
-  display: block;
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.4s ease-in-out;
-  margin-top: 10px;
+  display: none;
 }
 
 .cerveja-desc-container.expanded {
-  max-height: 800px; /* Garante espaço suficiente para o texto */
+  display: block;
 }
 
 .cerveja-desc {
@@ -155,7 +150,7 @@
   color: #e0e0e0;
 }
 
-/* PREÇO E BOTÃO */
+/* PREÇO E BOTÃO - NOVA ESTRUTURA */
 .cerveja-price-container {
   margin-top: auto;
   padding: 15px;
@@ -171,7 +166,7 @@
   font-size: 1.2rem;
 }
 
-/* BOTÃO DE ADICIONAR AO CARRINHO */
+/* BOTÃO DE ADICIONAR AO CARRINHO - NOVA VERSÃO */
 .add-to-cart-btn {
   background: #333333;
   color: white;
@@ -631,6 +626,10 @@
     grid-template-columns: 1fr;
   }
 
+  .cerveja-desc-container.expanded {
+    max-height: 800px;
+  }
+
   .section-title {
     font-size: 1.8rem;
   }
@@ -644,4 +643,16 @@
   .add-to-cart-btn {
     width: 100%;
   }
+}
+.cerveja-specs {
+  margin-bottom: 10px;
+}
+
+.toggle-desc-btn {
+  margin: 10px 0;
+  width: 100%;
+}
+
+.cerveja-desc-container {
+  margin-top: 10px;
 }

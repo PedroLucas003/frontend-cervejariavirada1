@@ -11,13 +11,15 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showCart, setShowCart] = useState(false);
+  // O estado expandedCards agora é um objeto que mapeia o ID da cerveja para um booleano (true/false)
   const [expandedCards, setExpandedCards] = useState({}); 
   const navigate = useNavigate();
 
+  // Função para alternar a expansão de um card específico
   const toggleCardExpansion = (id) => {
     setExpandedCards(prev => ({
       ...prev,
-      [id]: !prev[id]
+      [id]: !prev[id] // Inverte o valor booleano para o ID específico
     }));
   };
 
@@ -198,6 +200,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                     {expandedCards[cerveja._id] ? 'Ocultar descrição' : 'Mostrar descrição'}
                   </button>
 
+                  {/* A classe 'expanded' é aplicada somente se expandedCards[cerveja._id] for true */}
                   <div className={`cerveja-desc-container ${expandedCards[cerveja._id] ? 'expanded' : ''}`}>
                     <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
                   </div>
