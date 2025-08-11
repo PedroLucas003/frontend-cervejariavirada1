@@ -11,17 +11,20 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showCart, setShowCart] = useState(false);
-  // O estado expandedCards agora é um objeto que mapeia o ID da cerveja para um booleano (true/false)
+  
+  // --- LÓGICA CORRETA PARA EXPANSÃO INDIVIDUAL ---
+  // 1. Estado é um objeto para guardar o status de cada card pelo seu ID.
   const [expandedCards, setExpandedCards] = useState({}); 
   const navigate = useNavigate();
 
-  // Função para alternar a expansão de um card específico
+  // 2. Função que recebe o ID específico e altera o estado APENAS para esse ID.
   const toggleCardExpansion = (id) => {
     setExpandedCards(prev => ({
       ...prev,
-      [id]: !prev[id] // Inverte o valor booleano para o ID específico
+      [id]: !prev[id] // Inverte o valor (true/false) para o ID específico
     }));
   };
+  // --- FIM DA LÓGICA DE EXPANSÃO ---
 
   const getBeerImage = useCallback((beerType) => {
     const images = {
@@ -193,6 +196,7 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                     {cerveja.turbidez && <span className="spec-item">Turbidez: {cerveja.turbidez}</span>}
                   </div>
 
+                  {/* 3. Botão chama a função com o ID e o texto/classe são baseados no estado do ID */}
                   <button
                     className="toggle-desc-btn"
                     onClick={() => toggleCardExpansion(cerveja._id)}
@@ -200,7 +204,6 @@ const Cervejas = ({ cart, addToCart, updateCart, isAuthenticated }) => {
                     {expandedCards[cerveja._id] ? 'Ocultar descrição' : 'Mostrar descrição'}
                   </button>
 
-                  {/* A classe 'expanded' é aplicada somente se expandedCards[cerveja._id] for true */}
                   <div className={`cerveja-desc-container ${expandedCards[cerveja._id] ? 'expanded' : ''}`}>
                     <p className="cerveja-desc" dangerouslySetInnerHTML={{ __html: cerveja.descricao.replace(/\n/g, '<br />') }}></p>
                   </div>
