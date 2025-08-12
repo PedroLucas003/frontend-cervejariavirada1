@@ -291,3 +291,9 @@ body {
     background: transparent !important;
   }
 }
+@media (max-width: 768px) {
+  .navbar:not(.scrolled),
+  .navbar:not(.scrolled) * {
+    background: transparent !important;
+  }
+}
