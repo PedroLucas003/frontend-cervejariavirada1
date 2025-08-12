@@ -1,3 +1,16 @@
+/* --- CORREÇÃO ADICIONADA --- */
+:root {
+  /* Defina a altura da sua navbar. 70px é um bom começo. Ajuste se necessário. */
+  --navbar-height: 70px; 
+}
+
+body {
+  /* Adiciona um espaçamento no topo do corpo da página para não sobrepor o conteúdo */
+  padding-top: var(--navbar-height);
+}
+/* --- FIM DA CORREÇÃO --- */
+
+
 /* Estilos base do navbar */
 .navbar {
   background: transparent;
@@ -12,6 +25,9 @@
   right: 0;
   z-index: 1000;
   transition: all 0.3s ease;
+  /* Garante que a altura seja a definida na variável para consistência */
+  height: var(--navbar-height); 
+  box-sizing: border-box; /* Garante que padding não aumente a altura total */
 }
 
 .navbar.scrolled {
@@ -117,7 +133,8 @@
 .dropdown-menu {
   position: absolute;
   right: 0;
-  top: 100%;
+  /* Inicia abaixo da navbar */
+  top: calc(var(--navbar-height) - 10px); 
   background: rgba(0, 0, 0, 0.9);
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -157,7 +174,8 @@
   background: rgba(0, 0, 0, 0.95);
   z-index: 1002;
   transition: left 0.3s ease;
-  padding-top: 5rem;
+  padding-top: var(--navbar-height); /* Começa abaixo da area da navbar */
+  box-sizing: border-box;
   display: none;
 }
 
