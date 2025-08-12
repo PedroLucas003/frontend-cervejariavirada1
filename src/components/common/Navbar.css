@@ -1,4 +1,17 @@
-/* Estilos base do navbar */
+:root {
+  --navbar-height: 70px;
+}
+
+.main-content {
+  padding-top: 0;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: var(--navbar-height);
+  }
+}
+
 .navbar {
   background: transparent;
   color: white;
@@ -12,6 +25,8 @@
   right: 0;
   z-index: 1000;
   transition: all 0.3s ease;
+  height: var(--navbar-height);
+  box-sizing: border-box;
 }
 
 .navbar.scrolled {
@@ -19,14 +34,12 @@
   backdrop-filter: blur(5px);
 }
 
-/* Estrutura do layout */
 .navbar-left, .navbar-right {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-/* Botão do menu hambúrguer (apenas mobile) */
 .menu-toggle {
   background: transparent;
   border: none;
@@ -77,7 +90,6 @@
   transform: rotate(-45deg);
 }
 
-/* Links e botões base */
 .login-link,
 .user-toggle,
 .mobile-menu-item {
@@ -97,12 +109,10 @@
   color: #ccc;
 }
 
-/* Botão Login */
 .login-link {
   padding: 0.5rem 1rem;
 }
 
-/* Menu do usuário (desktop) */
 .user-menu {
   position: relative;
 }
@@ -147,7 +157,6 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Menu mobile */
 .mobile-menu {
   position: fixed;
   top: 0;
@@ -193,7 +202,6 @@
   display: none;
 }
 
-/* Ícone do carrinho */
 .cart-icon {
   position: relative;
   color: white;
@@ -224,11 +232,9 @@
   padding-right: 2rem !important;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem;
-    background: rgba(0, 0, 0, 0.8);
   }
   
   .menu-toggle {
