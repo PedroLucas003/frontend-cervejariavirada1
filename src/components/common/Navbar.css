@@ -1,12 +1,33 @@
+/* Define a variável para a altura da navbar */
+:root {
+  --navbar-height: 70px; 
+}
+
 /*
-  SOLUÇÃO DEFINITIVA
-  Este CSS resolve os dois problemas: a barra branca no desktop e a sobreposição no mobile.
+  --- SOLUÇÃO AJUSTADA ---
+  Esta é a correção que você pediu, agora funcionando para todas as telas.
 */
 
-/* PASSO 1: Força a navbar a ser transparente e flutuante */
+/* Por padrão (DESKTOP), o body NÃO tem espaçamento no topo. */
+/* Isso faz sua navbar voltar a ser flutuante e transparente sobre o conteúdo. */
+body {
+  padding-top: 0;
+}
+
+/* APENAS em telas pequenas (MOBILE), aplicamos o espaçamento no topo. */
+/* Isso corrige a sobreposição do menu no celular. */
+@media (max-width: 768px) {
+  body {
+    padding-top: var(--navbar-height);
+  }
+}
+
+/* --- FIM DA SOLUÇÃO --- */
+
+
+/* Estilos base do navbar (garantindo a transparência inicial) */
 .navbar {
-  /* Usamos !important para garantir que nenhum outro estilo sobreponha a transparência */
-  background: transparent !important;
+  background: transparent;
   color: white;
   padding: 1rem 2rem;
   display: flex;
@@ -20,37 +41,19 @@
   transition: all 0.3s ease;
 }
 
-/* A navbar só ganha fundo quando o usuário rola a página */
 .navbar.scrolled {
-  background: rgba(0, 0, 0, 0.8) !important; /* Fundo preto semi-transparente */
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(5px);
 }
 
-/*
-  PASSO 2: Cria um espaçamento para o conteúdo principal APENAS no mobile.
-  Isso empurra o "Meus Pedidos" para baixo do menu.
-*/
-.main-content {
-  /* No desktop, não há espaçamento, permitindo que a navbar flutue sobre o conteúdo */
-  padding-top: 0;
-}
-
-@media (max-width: 768px) {
-  .main-content {
-    /* No mobile, adicionamos um padding equivalente à altura da navbar */
-    padding-top: 70px; /* Ajuste este valor se a altura da sua navbar for diferente */
-  }
-}
-
-
-/* --- RESTANTE DO SEU CSS ORIGINAL (sem alterações) --- */
-
+/* Estrutura do layout */
 .navbar-left, .navbar-right {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
+/* Botão do menu hambúrguer (apenas mobile) */
 .menu-toggle {
   background: transparent;
   border: none;
@@ -101,6 +104,7 @@
   transform: rotate(-45deg);
 }
 
+/* Links e botões base */
 .login-link,
 .user-toggle,
 .mobile-menu-item {
@@ -120,10 +124,12 @@
   color: #ccc;
 }
 
+/* Botão Login */
 .login-link {
   padding: 0.5rem 1rem;
 }
 
+/* Menu do usuário (desktop) */
 .user-menu {
   position: relative;
 }
@@ -147,7 +153,7 @@
   z-index: 1001;
 }
 
-.dropdown-menu a,
+.dropdown-menu a, 
 .dropdown-menu button {
   display: flex;
   align-items: center;
@@ -163,11 +169,12 @@
   transition: background 0.2s;
 }
 
-.dropdown-menu a:hover,
+.dropdown-menu a:hover, 
 .dropdown-menu button:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* Menu mobile */
 .mobile-menu {
   position: fixed;
   top: 0;
@@ -213,6 +220,7 @@
   display: none;
 }
 
+/* Ícone do carrinho */
 .cart-icon {
   position: relative;
   color: white;
@@ -248,25 +256,25 @@
   .navbar {
     padding: 1rem;
   }
-
+  
   .menu-toggle {
     display: flex;
   }
-
+  
   .user-menu {
     display: none;
   }
-
+  
   .login-text {
     display: none;
   }
-
+  
   .login-link,
   .cart-icon {
     font-size: 1.2rem;
     padding: 0.5rem;
   }
-
+  
   .mobile-menu,
   .menu-overlay {
     display: block;

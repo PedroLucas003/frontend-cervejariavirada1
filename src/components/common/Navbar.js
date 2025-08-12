@@ -8,7 +8,6 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  // Este useEffect controla apenas a aparência (scrolled) e a responsividade (isMobile)
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -25,7 +24,6 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
     
-    // Limpa os event listeners quando o componente é desmontado
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
