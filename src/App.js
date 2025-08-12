@@ -21,11 +21,11 @@ const API_URL = process.env.REACT_APP_API_URL;
 // Componente Wrapper para PixPayment para extrair os parâmetros da URL e o state
 const PixPaymentWrapper = ({ onOrderSuccess }) => {
   const { orderId } = useParams(); // Pega o orderId da URL
-  const location = useLocation();    // Pega o objeto location para acessar o state
-  const navigate = useNavigate();    // Para navegar após o sucesso do pagamento
+  const location = useLocation();   // Pega o objeto location para acessar o state
+  const navigate = useNavigate();   // Para navegar após o sucesso do pagamento
 
   // O 'amount' é passado via 'state' na navegação do CheckoutPage
-  const amount = location.state?.amount; 
+  const amount = location.state?.amount;
 
   // Basicamente, se não tivermos o orderId ou o amount, algo deu errado
   if (!orderId || amount === undefined) {
@@ -41,14 +41,14 @@ const PixPaymentWrapper = ({ onOrderSuccess }) => {
   }
 
   return (
-    <PixPayment 
-      orderId={orderId} 
-      amount={amount} 
+    <PixPayment
+      orderId={orderId}
+      amount={amount}
       onBack={() => navigate('/checkout')} // Volta para a página de checkout
-      onSuccess={() => { 
+      onSuccess={() => {
         onOrderSuccess(); // Limpa o carrinho, etc.
         navigate('/payment-success'); // Redireciona para uma página de sucesso final
-      }} 
+      }}
     />
   );
 };
@@ -220,6 +220,7 @@ function App() {
           <Route path="/my-orders" element={
             authState.isAuthenticated ? <UserOrdersPage /> : <Navigate to="/login" state={{ from: '/my-orders' }} />
           } />
+          
           <Route path="/admin/orders" element={
             authState.isAuthenticated && authState.user?.isAdmin ? (
               <AdminOrdersPage />
@@ -265,15 +266,15 @@ function App() {
           } />
 
           {/* ROTA PARA A PÁGINA DE PAGAMENTO PIX */}
-          <Route 
-            path="/pix-payment/:orderId" 
+          <Route
+            path="/pix-payment/:orderId"
             element={
               authState.isAuthenticated ? (
                 <PixPaymentWrapper onOrderSuccess={handleOrderSuccess} />
               ) : (
                 <Navigate to="/login" state={{ from: '/pix-payment' }} />
               )
-            } 
+            }
           />
 
           {/* ROTA PARA A PÁGINA DE SUCESSO DO PAGAMENTO */}

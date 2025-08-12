@@ -356,4 +356,11 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.4rem;
   }
 }
-
+.content-wrapper {
+  padding-top: 0;
+}
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding-top: 70px; 
+  }
+}
