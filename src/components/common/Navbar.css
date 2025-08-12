@@ -2,16 +2,7 @@
   --navbar-height: 70px;
 }
 
-.main-content {
-  padding-top: 0;
-}
-
-@media (max-width: 768px) {
-  .main-content {
-    padding-top: var(--navbar-height);
-  }
-}
-
+/* Estilos da Navbar */
 .navbar {
   background: transparent;
   color: white;
@@ -40,6 +31,7 @@
   gap: 1rem;
 }
 
+/* Menu Toggle */
 .menu-toggle {
   background: transparent;
   border: none;
@@ -90,6 +82,7 @@
   transform: rotate(-45deg);
 }
 
+/* Links */
 .login-link,
 .user-toggle,
 .mobile-menu-item {
@@ -113,6 +106,7 @@
   padding: 0.5rem 1rem;
 }
 
+/* User Menu */
 .user-menu {
   position: relative;
 }
@@ -157,16 +151,17 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* Mobile Menu */
 .mobile-menu {
   position: fixed;
-  top: 0;
+  top: var(--navbar-height);
   left: -300px;
   width: 250px;
-  height: 100vh;
+  height: calc(100vh - var(--navbar-height));
   background: rgba(0, 0, 0, 0.95);
   z-index: 1002;
   transition: left 0.3s ease;
-  padding-top: 5rem;
+  padding-top: 1rem;
   display: none;
 }
 
@@ -193,7 +188,7 @@
 
 .menu-overlay {
   position: fixed;
-  top: 0;
+  top: var(--navbar-height);
   left: 0;
   right: 0;
   bottom: 0;
@@ -202,6 +197,7 @@
   display: none;
 }
 
+/* Cart */
 .cart-icon {
   position: relative;
   color: white;
@@ -232,6 +228,12 @@
   padding-right: 2rem !important;
 }
 
+/* Main Content */
+.main-content {
+  padding-top: var(--navbar-height);
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem;

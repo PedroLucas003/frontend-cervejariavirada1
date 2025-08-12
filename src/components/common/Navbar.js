@@ -15,7 +15,6 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
 
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
-      // Fecha o menu mobile se redimensionar para desktop
       if (window.innerWidth > 768) {
         setMobileMenuOpen(false);
       }
