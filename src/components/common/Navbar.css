@@ -2,7 +2,7 @@
   --navbar-height: 70px;
 }
 
-/* Estilos da Navbar */
+/* Estilos base da Navbar */
 .navbar {
   background: transparent;
   color: white;
@@ -20,18 +20,20 @@
   box-sizing: border-box;
 }
 
+/* Navbar com scroll */
 .navbar.scrolled {
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(5px);
 }
 
+/* Layout dos lados */
 .navbar-left, .navbar-right {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-/* Menu Toggle */
+/* Botão do menu mobile */
 .menu-toggle {
   background: transparent;
   border: none;
@@ -44,6 +46,7 @@
   z-index: 1003;
 }
 
+/* Ícone do menu hamburguer */
 .menu-icon {
   width: 24px;
   height: 2px;
@@ -70,6 +73,7 @@
   transform: translateY(6px);
 }
 
+/* Estado aberto do menu */
 .menu-icon.open {
   background: transparent;
 }
@@ -82,7 +86,7 @@
   transform: rotate(-45deg);
 }
 
-/* Links */
+/* Links e botões */
 .login-link,
 .user-toggle,
 .mobile-menu-item {
@@ -106,7 +110,7 @@
   padding: 0.5rem 1rem;
 }
 
-/* User Menu */
+/* Menu de usuário */
 .user-menu {
   position: relative;
 }
@@ -118,6 +122,7 @@
   font-size: 1.2rem;
 }
 
+/* Dropdown menu */
 .dropdown-menu {
   position: absolute;
   right: 0;
@@ -151,7 +156,7 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Mobile Menu */
+/* Menu mobile */
 .mobile-menu {
   position: fixed;
   top: var(--navbar-height);
@@ -186,6 +191,7 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* Overlay do menu mobile */
 .menu-overlay {
   position: fixed;
   top: var(--navbar-height);
@@ -197,7 +203,7 @@
   display: none;
 }
 
-/* Cart */
+/* Ícone do carrinho */
 .cart-icon {
   position: relative;
   color: white;
@@ -228,7 +234,7 @@
   padding-right: 2rem !important;
 }
 
-/* Main Content */
+/* Espaço para o conteúdo principal */
 .main-content {
   padding-top: var(--navbar-height);
 }
