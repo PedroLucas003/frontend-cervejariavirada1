@@ -1,31 +1,4 @@
-/* Define a variável para a altura da navbar */
-:root {
-  --navbar-height: 70px; 
-}
-
-/*
-  --- SOLUÇÃO AJUSTADA ---
-  Esta é a correção que você pediu, agora funcionando para todas as telas.
-*/
-
-/* Por padrão (DESKTOP), o body NÃO tem espaçamento no topo. */
-/* Isso faz sua navbar voltar a ser flutuante e transparente sobre o conteúdo. */
-body {
-  padding-top: 0;
-}
-
-/* APENAS em telas pequenas (MOBILE), aplicamos o espaçamento no topo. */
-/* Isso corrige a sobreposição do menu no celular. */
-@media (max-width: 768px) {
-  body {
-    padding-top: var(--navbar-height);
-  }
-}
-
-/* --- FIM DA SOLUÇÃO --- */
-
-
-/* Estilos base do navbar (garantindo a transparência inicial) */
+/* Estilos base do navbar */
 .navbar {
   background: transparent;
   color: white;
@@ -255,6 +228,7 @@ body {
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem;
+    background: rgba(0, 0, 0, 0.8);
   }
   
   .menu-toggle {
@@ -284,16 +258,5 @@ body {
 @media (max-width: 480px) {
   .navbar {
     padding: 0.75rem;
-  }
-}
-@media (max-width: 768px) {
-  .navbar {
-    background: transparent !important;
-  }
-}
-@media (max-width: 768px) {
-  .navbar:not(.scrolled),
-  .navbar:not(.scrolled) * {
-    background: transparent !important;
   }
 }
