@@ -1,6 +1,12 @@
-/* Estilos base do navbar */
+/*
+  SOLUÇÃO DEFINITIVA
+  Este CSS resolve os dois problemas: a barra branca no desktop e a sobreposição no mobile.
+*/
+
+/* PASSO 1: Força a navbar a ser transparente e flutuante */
 .navbar {
-  background: transparent;
+  /* Usamos !important para garantir que nenhum outro estilo sobreponha a transparência */
+  background: transparent !important;
   color: white;
   padding: 1rem 2rem;
   display: flex;
@@ -14,20 +20,37 @@
   transition: all 0.3s ease;
 }
 
-/* Adiciona fundo escuro APENAS quando a página é rolada */
+/* A navbar só ganha fundo quando o usuário rola a página */
 .navbar.scrolled {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.8) !important; /* Fundo preto semi-transparente */
   backdrop-filter: blur(5px);
 }
 
-/* Estrutura do layout */
+/*
+  PASSO 2: Cria um espaçamento para o conteúdo principal APENAS no mobile.
+  Isso empurra o "Meus Pedidos" para baixo do menu.
+*/
+.main-content {
+  /* No desktop, não há espaçamento, permitindo que a navbar flutue sobre o conteúdo */
+  padding-top: 0;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    /* No mobile, adicionamos um padding equivalente à altura da navbar */
+    padding-top: 70px; /* Ajuste este valor se a altura da sua navbar for diferente */
+  }
+}
+
+
+/* --- RESTANTE DO SEU CSS ORIGINAL (sem alterações) --- */
+
 .navbar-left, .navbar-right {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-/* Botão do menu hambúrguer (apenas mobile) */
 .menu-toggle {
   background: transparent;
   border: none;
@@ -78,7 +101,6 @@
   transform: rotate(-45deg);
 }
 
-/* Links e botões base */
 .login-link,
 .user-toggle,
 .mobile-menu-item {
@@ -98,12 +120,10 @@
   color: #ccc;
 }
 
-/* Botão Login */
 .login-link {
   padding: 0.5rem 1rem;
 }
 
-/* Menu do usuário (desktop) */
 .user-menu {
   position: relative;
 }
@@ -148,7 +168,6 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Menu mobile */
 .mobile-menu {
   position: fixed;
   top: 0;
@@ -194,7 +213,6 @@
   display: none;
 }
 
-/* Ícone do carrinho */
 .cart-icon {
   position: relative;
   color: white;
@@ -229,8 +247,6 @@
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem;
-    /* A linha de background foi REMOVIDA daqui para permitir a transparência inicial.
-       A classe .scrolled cuidará de adicionar o fundo ao rolar. */
   }
 
   .menu-toggle {
