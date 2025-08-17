@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 800px;
   background: linear-gradient(#1e1e1e, #1a1a1a) padding-box,
-              linear-gradient(145deg, transparent 35%,#d3b600, #f0d900) border-box;
+              linear-gradient(145deg, transparent 35%,#ffffff, #ffffff) border-box;
   border: 2px solid transparent;
   padding: 32px 24px;
   font-size: 14px;
@@ -34,7 +34,7 @@
 
 .profile-header h2 {
   margin: 0;
-  color: #d3b600;
+  color: #ffffff;
   font-size: 1.8rem;
   text-shadow: 0 0 10px rgba(211, 182, 0, 0.3);
 }
@@ -64,7 +64,7 @@
 }
 
 .profile-tab.active {
-  color: #d3b600;
+  color: #ffffff;
 }
 
 .profile-tab.active::after {
@@ -74,7 +74,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, #d3b600, #f0d900);
+  background: linear-gradient(90deg, #ffffff, #ffffff);
 }
 
 .profile-form {
@@ -91,7 +91,7 @@
 
 .profile-section h3 {
   margin: 0;
-  color: #d3b600;
+  color: #ffffff;
   font-size: 1.2rem;
   padding-bottom: 8px;
   border-bottom: 1px solid #333;
@@ -128,7 +128,7 @@
 
 .form-input:focus {
   outline: none;
-  border-color: #d3b600;
+  border-color: #ffffff;
   box-shadow: 0 0 0 2px rgba(211, 182, 0, 0.2);
 }
 
@@ -151,7 +151,7 @@
 }
 
 .address-card.principal {
-  border-left: 3px solid #d3b600;
+  border-left: 3px solid #ffffff;
   background: linear-gradient(to right, #252525, #2a2a1a);
 }
 
@@ -170,7 +170,7 @@
 }
 
 .principal-badge {
-  background: linear-gradient(135deg, #d3b600, #f0d900);
+  background: linear-gradient(135deg, #ffffff, #ffffff);
   color: #121212;
   padding: 4px 8px;
   border-radius: 4px;
