@@ -228,7 +228,6 @@
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem;
-    background: rgba(0, 0, 0, 0.8);
   }
   
   .menu-toggle {

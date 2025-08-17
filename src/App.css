@@ -57,14 +57,7 @@ h1, h2, h3, h4, h5, h6 {
   flex: 1;
   display: flex;
   flex-direction: column;
-  /* Garanta que NÃO haja padding-top aqui */
 }
-
-/* CLASSE ADICIONADA PARA CORRIGIR SOBREPOSIÇÃO DA NAVBAR */
-.content-below-navbar {
-  padding-top: 80px; /* Ajuste este valor para corresponder à altura da sua navbar */
-}
-
 
 /* ============ LOADING SCREEN ============ */
 .loading-screen {
@@ -363,3 +356,4 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.4rem;
   }
 }
+
