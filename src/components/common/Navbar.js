@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
@@ -8,11 +8,6 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  const location = useLocation();
-  // Esta verificação ainda é útil para esconder o botão de menu mobile na página de checkout,
-  // caso você decida mostrar a navbar lá no futuro.
-  const isCheckoutPage = location.pathname === '/checkout';
-
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -20,6 +15,7 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
 
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
+      // Fecha o menu mobile se redimensionar para desktop
       if (window.innerWidth > 768) {
         setMobileMenuOpen(false);
       }
@@ -52,7 +48,7 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="navbar-left">
-          {isMobile && !isCheckoutPage && (
+          {isMobile && (
             <button className="menu-toggle" onClick={toggleMobileMenu} aria-label="Menu">
               <span className={`menu-icon ${mobileMenuOpen ? 'open' : ''}`}></span>
             </button>
@@ -67,28 +63,48 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
                   <button className="user-toggle" onClick={toggleMenu} aria-label="Perfil">
                     <i className="fas fa-user-circle user-icon"></i>
                   </button>
+
                   {menuOpen && (
                     <div className="dropdown-menu">
-                      <Link to="/" onClick={() => setMenuOpen(false)}><i className="fas fa-home"></i> Início</Link>
-                      <Link to="/profile" onClick={() => setMenuOpen(false)}><i className="fas fa-user"></i> Perfil</Link>
-                      <Link to="/my-orders" onClick={() => setMenuOpen(false)}><i className="fas fa-receipt"></i> Meus Pedidos</Link>
+                      <Link to="/" onClick={() => setMenuOpen(false)}>
+                        <i className="fas fa-home"></i> Início
+                      </Link>
+
+                      <Link to="/profile" onClick={() => setMenuOpen(false)}>
+                        <i className="fas fa-user"></i> Perfil
+                      </Link>
+
+                      <Link to="/my-orders" onClick={() => setMenuOpen(false)}>
+                        <i className="fas fa-receipt"></i> Meus Pedidos
+                      </Link>
+
                       {user?.isAdmin && (
                         <>
-                          <Link to="/admin/dashboard" onClick={() => setMenuOpen(false)}><i className="fas fa-tachometer-alt"></i> Dashboard</Link>
-                          <Link to="/admin/users" onClick={() => setMenuOpen(false)}><i className="fas fa-users"></i> Usuários</Link>
-                          <Link to="/admin/orders" onClick={() => setMenuOpen(false)}><i className="fas fa-list-alt"></i> Todos Pedidos</Link>
+                          <Link to="/admin/dashboard" onClick={() => setMenuOpen(false)}>
+                            <i className="fas fa-tachometer-alt"></i> Dashboard
+                          </Link>
+                          <Link to="/admin/users" onClick={() => setMenuOpen(false)}>
+                            <i className="fas fa-users"></i> Usuários
+                          </Link>
+                          <Link to="/admin/orders" onClick={() => setMenuOpen(false)}>
+                            <i className="fas fa-list-alt"></i> Todos Pedidos
+                          </Link>
                         </>
                       )}
+
                       <Link to="/checkout" onClick={() => setMenuOpen(false)} className="cart-menu-item">
                         <i className="fas fa-shopping-cart"></i> Carrinho
                         {cartItems > 0 && <span className="cart-count">{cartItems}</span>}
                       </Link>
-                      <button onClick={handleLogoutClick} className="logout-btn"><i className="fas fa-sign-out-alt"></i> Sair</button>
+                      <button onClick={handleLogoutClick} className="logout-btn">
+                        <i className="fas fa-sign-out-alt"></i> Sair
+                      </button>
                     </div>
                   )}
                 </div>
               )}
-              {isMobile && cartItems > 0 && !mobileMenuOpen && (
+
+              {isMobile && cartItems > 0 && (
                 <Link to="/checkout" className="cart-icon">
                   <i className="fas fa-shopping-cart"></i>
                   <span className="cart-count">{cartItems}</span>
@@ -101,6 +117,7 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
               {!isMobile && <span className="login-text">Entrar</span>}
             </Link>
           )}
+
           {!isMobile && cartItems > 0 && (
             <Link to="/checkout" className="cart-icon">
               <i className="fas fa-shopping-cart"></i>
@@ -115,30 +132,54 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
         <>
           <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
             <div className="mobile-menu-content">
-              <Link to="/" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item"><i className="fas fa-home"></i> Início</Link>
+              <Link to="/" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item">
+                <i className="fas fa-home"></i> Início
+              </Link>
+
               {isAuthenticated ? (
                 <>
-                  <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item"><i className="fas fa-user"></i> Perfil</Link>
-                  <Link to="/my-orders" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item"><i className="fas fa-receipt"></i> Meus Pedidos</Link>
+                  <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item">
+                    <i className="fas fa-user"></i> Perfil
+                  </Link>
+
+                  <Link to="/my-orders" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item">
+                    <i className="fas fa-receipt"></i> Meus Pedidos
+                  </Link>
+
                   {user?.isAdmin && (
                     <>
-                      <Link to="/admin/dashboard" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item"><i className="fas fa-tachometer-alt"></i> Dashboard</Link>
-                      <Link to="/admin/users" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item"><i className="fas fa-users"></i> Usuários</Link>
-                      <Link to="/admin/orders" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item"><i className="fas fa-list-alt"></i> Todos Pedidos</Link>
+                      <Link to="/admin/dashboard" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item">
+                        <i className="fas fa-tachometer-alt"></i> Dashboard
+                      </Link>
+                      <Link to="/admin/users" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item">
+                        <i className="fas fa-users"></i> Usuários
+                      </Link>
+                      <Link to="/admin/orders" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item">
+                        <i className="fas fa-list-alt"></i> Todos Pedidos
+                      </Link>
                     </>
                   )}
+
                   <Link to="/checkout" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item cart-menu-item">
                     <i className="fas fa-shopping-cart"></i> Carrinho
                     {cartItems > 0 && <span className="cart-count">{cartItems}</span>}
                   </Link>
-                  <button onClick={handleLogoutClick} className="mobile-menu-item logout-btn"><i className="fas fa-sign-out-alt"></i> Sair</button>
+                  <button onClick={handleLogoutClick} className="mobile-menu-item logout-btn">
+                    <i className="fas fa-sign-out-alt"></i> Sair
+                  </button>
                 </>
               ) : (
-                <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item"><i className="fas fa-sign-in-alt"></i> Entrar</Link>
+                <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item">
+                  <i className="fas fa-sign-in-alt"></i> Entrar
+                </Link>
               )}
             </div>
           </div>
-          {mobileMenuOpen && <div className="menu-overlay" onClick={() => setMobileMenuOpen(false)}></div>}
+
+          {/* Overlay para fechar o menu ao clicar fora */}
+          {mobileMenuOpen && (
+            <div className="menu-overlay" onClick={() => setMobileMenuOpen(false)}></div>
+          )}
         </>
       )}
     </>
