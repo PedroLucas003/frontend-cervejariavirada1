@@ -18,19 +18,14 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-// Componente Wrapper para PixPayment para extrair os parâmetros da URL e o state
+// Componente Wrapper para PixPayment (sem alterações aqui)
 const PixPaymentWrapper = ({ onOrderSuccess }) => {
-  const { orderId } = useParams(); // Pega o orderId da URL
-  const location = useLocation();    // Pega o objeto location para acessar o state
-  const navigate = useNavigate();    // Para navegar após o sucesso do pagamento
-
-  // O 'amount' é passado via 'state' na navegação do CheckoutPage
+  const { orderId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const amount = location.state?.amount; 
 
-  // Basicamente, se não tivermos o orderId ou o amount, algo deu errado
   if (!orderId || amount === undefined) {
-    console.error("Dados de pagamento PIX insuficientes para renderizar PixPayment.");
-    // Redirecione para uma página de erro ou para a página inicial, ou mostre uma mensagem
     return (
       <div className="error-container">
         <h2>Erro: Dados de Pagamento Ausentes</h2>
@@ -44,15 +39,14 @@ const PixPaymentWrapper = ({ onOrderSuccess }) => {
     <PixPayment 
       orderId={orderId} 
       amount={amount} 
-      onBack={() => navigate('/checkout')} // Volta para a página de checkout
+      onBack={() => navigate('/checkout')}
       onSuccess={() => { 
-        onOrderSuccess(); // Limpa o carrinho, etc.
-        navigate('/payment-success'); // Redireciona para uma página de sucesso final
+        onOrderSuccess();
+        navigate('/payment-success');
       }} 
     />
   );
 };
-
 
 function AppWrapper() {
   return (
@@ -76,6 +70,12 @@ function App() {
   });
 
   const navigate = useNavigate();
+  
+  // *** ALTERAÇÃO 1: Adicionar useLocation e verificar a rota ***
+  const location = useLocation();
+  // Consideramos que o "carrinho está aberto" se estivermos na página de checkout ou de pagamento PIX
+  const isCartPageActive = location.pathname === '/checkout' || location.pathname.startsWith('/pix-payment');
+
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -104,7 +104,6 @@ function App() {
         });
       }
     };
-
     checkAuth();
   }, []);
 
@@ -148,13 +147,10 @@ function App() {
     });
   };
 
-  // Função para limpar o carrinho após o pedido ser criado/pago
   const handleOrderSuccess = () => {
-    setCart([]); // Limpa o carrinho
-    localStorage.removeItem('cart'); // Remove do localStorage
-    console.log('Carrinho limpo após sucesso do pedido.');
+    setCart([]);
+    localStorage.removeItem('cart');
   };
-
 
   if (authState.loading) {
     return (
@@ -166,11 +162,13 @@ function App() {
 
   return (
     <div className="App">
+      {/* *** ALTERAÇÃO 2: Passar a nova prop para a Navbar *** */}
       <Navbar
         isAuthenticated={authState.isAuthenticated}
         user={authState.user}
         onLogout={handleLogout}
         cartItems={cart.reduce((total, item) => total + item.quantity, 0)}
+        isCartOpen={isCartPageActive}
       />
 
       {error && (
@@ -182,6 +180,7 @@ function App() {
 
       <main className="main-content">
         <Routes>
+          {/* Suas rotas permanecem as mesmas */}
           <Route path="/" element={
             <>
               <HeroBanner />
@@ -193,65 +192,36 @@ function App() {
               />
             </>
           } />
-
           <Route path="/login" element={
             authState.isAuthenticated ?
               <Navigate to={authState.user?.isAdmin ? '/admin/dashboard' : '/'} /> :
-              <LoginPage
-                onLogin={handleLogin}
-                onError={setError}
-              />
+              <LoginPage onLogin={handleLogin} onError={setError} />
           } />
-
           <Route path="/profile" element={
             authState.isAuthenticated ? (
               <UserProfilePage
                 user={authState.user}
-                onUpdateUser={(updatedUser) => setAuthState(prev => ({
-                  ...prev,
-                  user: updatedUser
-                }))}
+                onUpdateUser={(updatedUser) => setAuthState(prev => ({ ...prev, user: updatedUser }))}
               />
             ) : (
               <Navigate to="/login" state={{ from: '/profile' }} />
             )
           } />
-
           <Route path="/my-orders" element={
             authState.isAuthenticated ? <UserOrdersPage /> : <Navigate to="/login" state={{ from: '/my-orders' }} />
           } />
           <Route path="/admin/orders" element={
-            authState.isAuthenticated && authState.user?.isAdmin ? (
-              <AdminOrdersPage />
-            ) : (
-              <Navigate to="/login" />
-            )
+            authState.isAuthenticated && authState.user?.isAdmin ? <AdminOrdersPage /> : <Navigate to="/login" />
           } />
-
           <Route path="/admin/dashboard" element={
-            authState.isAuthenticated && authState.user?.isAdmin ? (
-              <BeerDashboard user={authState.user} />
-            ) : (
-              <Navigate to="/login" state={{ from: '/admin/dashboard' }} />
-            )
+            authState.isAuthenticated && authState.user?.isAdmin ? <BeerDashboard user={authState.user} /> : <Navigate to="/login" state={{ from: '/admin/dashboard' }} />
           } />
-
           <Route path="/admin/users" element={
-            authState.isAuthenticated && authState.user?.isAdmin ? (
-              <UserDashboard user={authState.user} />
-            ) : (
-              <Navigate to="/login" />
-            )
+            authState.isAuthenticated && authState.user?.isAdmin ? <UserDashboard user={authState.user} /> : <Navigate to="/login" />
           } />
-
           <Route path="/admin/users/edit/:id" element={
-            authState.isAuthenticated && authState.user?.isAdmin ? (
-              <EditUserPage user={authState.user} />
-            ) : (
-              <Navigate to="/login" />
-            )
+            authState.isAuthenticated && authState.user?.isAdmin ? <EditUserPage user={authState.user} /> : <Navigate to="/login" />
           } />
-
           <Route path="/checkout" element={
             authState.isAuthenticated ? (
               <CheckoutPage
@@ -263,8 +233,6 @@ function App() {
               <Navigate to="/login" state={{ from: '/checkout' }} />
             )
           } />
-
-          {/* ROTA PARA A PÁGINA DE PAGAMENTO PIX */}
           <Route 
             path="/pix-payment/:orderId" 
             element={
@@ -275,18 +243,14 @@ function App() {
               )
             } 
           />
-
-          {/* ROTA PARA A PÁGINA DE SUCESSO DO PAGAMENTO */}
           <Route path="/payment-success" element={
             <div className="payment-success-page">
               <h2>🎉 Pedido Confirmado! 🎉</h2>
-              <p>Seu pagamento foi recebido e seu pedido está sendo processado. Em breve você receberá um e-mail com os detalhes.</p>
+              <p>Seu pagamento foi recebido e seu pedido está sendo processado.</p>
               <button onClick={() => navigate('/my-orders')} className="btn btn-primary">Ver Meus Pedidos</button>
               <button onClick={() => navigate('/')} className="btn btn-secondary">Voltar para a Loja</button>
             </div>
           } />
-
-          {/* Rota de fallback para 404 - Mantenha no final */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
