@@ -18,7 +18,7 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-// Componente Wrapper para PixPayment (sem alterações aqui)
+// Componente Wrapper para PixPayment (sem alterações)
 const PixPaymentWrapper = ({ onOrderSuccess }) => {
   const { orderId } = useParams();
   const location = useLocation();
@@ -29,7 +29,7 @@ const PixPaymentWrapper = ({ onOrderSuccess }) => {
     return (
       <div className="error-container">
         <h2>Erro: Dados de Pagamento Ausentes</h2>
-        <p>Não foi possível carregar os detalhes do pagamento PIX. Por favor, tente novamente.</p>
+        <p>Não foi possível carregar os detalhes do pagamento PIX.</p>
         <button onClick={() => navigate('/')}>Voltar para a Página Inicial</button>
       </div>
     );
@@ -70,12 +70,8 @@ function App() {
   });
 
   const navigate = useNavigate();
-  
-  // *** ALTERAÇÃO 1: Adicionar useLocation e verificar a rota ***
   const location = useLocation();
-  // Consideramos que o "carrinho está aberto" se estivermos na página de checkout ou de pagamento PIX
   const isCartPageActive = location.pathname === '/checkout' || location.pathname.startsWith('/pix-payment');
-
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -86,22 +82,14 @@ function App() {
             headers: { Authorization: `Bearer ${token}` }
           });
           if (response.data.valid) {
-            setAuthState({
-              isAuthenticated: true,
-              user: response.data.user,
-              loading: false
-            });
+            setAuthState({ isAuthenticated: true, user: response.data.user, loading: false });
             return;
           }
         }
         throw new Error('Sessão inválida');
       } catch (err) {
         localStorage.removeItem('token');
-        setAuthState({
-          isAuthenticated: false,
-          user: null,
-          loading: false
-        });
+        setAuthState({ isAuthenticated: false, user: null, loading: false });
       }
     };
     checkAuth();
@@ -113,22 +101,14 @@ function App() {
 
   const handleLogin = (token, userData) => {
     localStorage.setItem('token', token);
-    setAuthState({
-      isAuthenticated: true,
-      user: userData,
-      loading: false
-    });
+    setAuthState({ isAuthenticated: true, user: userData, loading: false });
     navigate(userData.isAdmin ? '/admin/dashboard' : '/');
   };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('cart');
-    setAuthState({
-      isAuthenticated: false,
-      user: null,
-      loading: false
-    });
+    setAuthState({ isAuthenticated: false, user: null, loading: false });
     setCart([]);
     navigate('/');
   };
@@ -138,9 +118,7 @@ function App() {
       const existingItem = prevCart.find(cartItem => cartItem._id === item._id);
       if (existingItem) {
         return prevCart.map(cartItem =>
-          cartItem._id === item._id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
+          cartItem._id === item._id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
         );
       }
       return [...prevCart, { ...item, quantity: 1 }];
@@ -162,14 +140,15 @@ function App() {
 
   return (
     <div className="App">
-      {/* *** ALTERAÇÃO 2: Passar a nova prop para a Navbar *** */}
-      <Navbar
-        isAuthenticated={authState.isAuthenticated}
-        user={authState.user}
-        onLogout={handleLogout}
-        cartItems={cart.reduce((total, item) => total + item.quantity, 0)}
-        isCartOpen={isCartPageActive}
-      />
+      {/* *** SOLUÇÃO FINAL: A Navbar inteira só é renderizada se a página do carrinho NÃO estiver ativa *** */}
+      {!isCartPageActive && (
+        <Navbar
+          isAuthenticated={authState.isAuthenticated}
+          user={authState.user}
+          onLogout={handleLogout}
+          cartItems={cart.reduce((total, item) => total + item.quantity, 0)}
+        />
+      )}
 
       {error && (
         <div className="global-error">
@@ -181,76 +160,17 @@ function App() {
       <main className="main-content">
         <Routes>
           {/* Suas rotas permanecem as mesmas */}
-          <Route path="/" element={
-            <>
-              <HeroBanner />
-              <Cervejas
-                cart={cart}
-                addToCart={addToCart}
-                updateCart={setCart}
-                isAuthenticated={authState.isAuthenticated}
-              />
-            </>
-          } />
-          <Route path="/login" element={
-            authState.isAuthenticated ?
-              <Navigate to={authState.user?.isAdmin ? '/admin/dashboard' : '/'} /> :
-              <LoginPage onLogin={handleLogin} onError={setError} />
-          } />
-          <Route path="/profile" element={
-            authState.isAuthenticated ? (
-              <UserProfilePage
-                user={authState.user}
-                onUpdateUser={(updatedUser) => setAuthState(prev => ({ ...prev, user: updatedUser }))}
-              />
-            ) : (
-              <Navigate to="/login" state={{ from: '/profile' }} />
-            )
-          } />
-          <Route path="/my-orders" element={
-            authState.isAuthenticated ? <UserOrdersPage /> : <Navigate to="/login" state={{ from: '/my-orders' }} />
-          } />
-          <Route path="/admin/orders" element={
-            authState.isAuthenticated && authState.user?.isAdmin ? <AdminOrdersPage /> : <Navigate to="/login" />
-          } />
-          <Route path="/admin/dashboard" element={
-            authState.isAuthenticated && authState.user?.isAdmin ? <BeerDashboard user={authState.user} /> : <Navigate to="/login" state={{ from: '/admin/dashboard' }} />
-          } />
-          <Route path="/admin/users" element={
-            authState.isAuthenticated && authState.user?.isAdmin ? <UserDashboard user={authState.user} /> : <Navigate to="/login" />
-          } />
-          <Route path="/admin/users/edit/:id" element={
-            authState.isAuthenticated && authState.user?.isAdmin ? <EditUserPage user={authState.user} /> : <Navigate to="/login" />
-          } />
-          <Route path="/checkout" element={
-            authState.isAuthenticated ? (
-              <CheckoutPage
-                cartItems={cart}
-                user={authState.user}
-                onOrderSuccess={handleOrderSuccess}
-              />
-            ) : (
-              <Navigate to="/login" state={{ from: '/checkout' }} />
-            )
-          } />
-          <Route 
-            path="/pix-payment/:orderId" 
-            element={
-              authState.isAuthenticated ? (
-                <PixPaymentWrapper onOrderSuccess={handleOrderSuccess} />
-              ) : (
-                <Navigate to="/login" state={{ from: '/pix-payment' }} />
-              )
-            } 
-          />
-          <Route path="/payment-success" element={
-            <div className="payment-success-page">
-              <h2>🎉 Pedido Confirmado! 🎉</h2>
-              <p>Seu pagamento foi recebido e seu pedido está sendo processado.</p>
-              <button onClick={() => navigate('/my-orders')} className="btn btn-primary">Ver Meus Pedidos</button>
-              <button onClick={() => navigate('/')} className="btn btn-secondary">Voltar para a Loja</button>
-            </div>
-          } />
+          <Route path="/" element={<><HeroBanner /><Cervejas cart={cart} addToCart={addToCart} updateCart={setCart} isAuthenticated={authState.isAuthenticated} /></>} />
+          <Route path="/login" element={authState.isAuthenticated ? <Navigate to={authState.user?.isAdmin ? '/admin/dashboard' : '/'} /> : <LoginPage onLogin={handleLogin} onError={setError} />} />
+          <Route path="/profile" element={authState.isAuthenticated ? <UserProfilePage user={authState.user} onUpdateUser={(updatedUser) => setAuthState(prev => ({ ...prev, user: updatedUser }))} /> : <Navigate to="/login" state={{ from: '/profile' }} />} />
+          <Route path="/my-orders" element={authState.isAuthenticated ? <UserOrdersPage /> : <Navigate to="/login" state={{ from: '/my-orders' }} />} />
+          <Route path="/admin/orders" element={authState.isAuthenticated && authState.user?.isAdmin ? <AdminOrdersPage /> : <Navigate to="/login" />} />
+          <Route path="/admin/dashboard" element={authState.isAuthenticated && authState.user?.isAdmin ? <BeerDashboard user={authState.user} /> : <Navigate to="/login" state={{ from: '/admin/dashboard' }} />} />
+          <Route path="/admin/users" element={authState.isAuthenticated && authState.user?.isAdmin ? <UserDashboard user={authState.user} /> : <Navigate to="/login" />} />
+          <Route path="/admin/users/edit/:id" element={authState.isAuthenticated && authState.user?.isAdmin ? <EditUserPage user={authState.user} /> : <Navigate to="/login" />} />
+          <Route path="/checkout" element={authState.isAuthenticated ? <CheckoutPage cartItems={cart} user={authState.user} onOrderSuccess={handleOrderSuccess} /> : <Navigate to="/login" state={{ from: '/checkout' }} />} />
+          <Route path="/pix-payment/:orderId" element={authState.isAuthenticated ? <PixPaymentWrapper onOrderSuccess={handleOrderSuccess} /> : <Navigate to="/login" state={{ from: '/pix-payment' }} />} />
+          <Route path="/payment-success" element={<div className="payment-success-page"><h2>🎉 Pedido Confirmado! 🎉</h2><p>Seu pagamento foi recebido e seu pedido está sendo processado.</p><button onClick={() => navigate('/my-orders')} className="btn btn-primary">Ver Meus Pedidos</button><button onClick={() => navigate('/')} className="btn btn-secondary">Voltar para a Loja</button></div>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>

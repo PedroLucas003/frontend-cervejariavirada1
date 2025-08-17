@@ -2,20 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
-const Navbar = ({ isAuthenticated, onLogout, user, cartItems, isCartOpen = false }) => {
+const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const location = useLocation();
+  // Esta verificação ainda é útil para esconder o botão de menu mobile na página de checkout,
+  // caso você decida mostrar a navbar lá no futuro.
   const isCheckoutPage = location.pathname === '/checkout';
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
-      if (window.innerWidth > 768) setMobileMenuOpen(false);
+      if (window.innerWidth > 768) {
+        setMobileMenuOpen(false);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -27,8 +34,13 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems, isCartOpen = false
     };
   }, []);
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   const handleLogoutClick = () => {
     setMenuOpen(false);
@@ -50,8 +62,7 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems, isCartOpen = false
         <div className="navbar-right">
           {isAuthenticated ? (
             <>
-              {/* AQUI ESTÁ A CORREÇÃO: só mostra o menu de usuário se o carrinho NÃO estiver aberto */}
-              {!isMobile && !isCartOpen && (
+              {!isMobile && (
                 <div className="user-menu">
                   <button className="user-toggle" onClick={toggleMenu} aria-label="Perfil">
                     <i className="fas fa-user-circle user-icon"></i>
@@ -85,14 +96,12 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems, isCartOpen = false
               )}
             </>
           ) : (
-            !isCartOpen && (
-              <Link to="/login" className="login-link">
-                <i className="fas fa-sign-in-alt"></i>
-                {!isMobile && <span className="login-text">Entrar</span>}
-              </Link>
-            )
+            <Link to="/login" className="login-link">
+              <i className="fas fa-sign-in-alt"></i>
+              {!isMobile && <span className="login-text">Entrar</span>}
+            </Link>
           )}
-          {!isMobile && !isCartOpen && cartItems > 0 && (
+          {!isMobile && cartItems > 0 && (
             <Link to="/checkout" className="cart-icon">
               <i className="fas fa-shopping-cart"></i>
               <span className="cart-count">{cartItems}</span>
@@ -101,6 +110,7 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems, isCartOpen = false
         </div>
       </nav>
 
+      {/* Menu lateral para mobile */}
       {isMobile && (
         <>
           <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
