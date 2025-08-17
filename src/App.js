@@ -183,7 +183,7 @@ function App() {
       <main className="main-content">
         <Routes>
           <Route path="/" element={
-            <>
+            <div className="content-below-navbar">
               <HeroBanner />
               <Cervejas
                 cart={cart}
@@ -191,7 +191,7 @@ function App() {
                 updateCart={setCart}
                 isAuthenticated={authState.isAuthenticated}
               />
-            </>
+            </div>
           } />
 
           <Route path="/login" element={
@@ -205,24 +205,31 @@ function App() {
 
           <Route path="/profile" element={
             authState.isAuthenticated ? (
-              <UserProfilePage
-                user={authState.user}
-                onUpdateUser={(updatedUser) => setAuthState(prev => ({
-                  ...prev,
-                  user: updatedUser
-                }))}
-              />
+              <div className="content-below-navbar">
+                <UserProfilePage
+                  user={authState.user}
+                  onUpdateUser={(updatedUser) => setAuthState(prev => ({
+                    ...prev,
+                    user: updatedUser
+                  }))}
+                />
+              </div>
             ) : (
               <Navigate to="/login" state={{ from: '/profile' }} />
             )
           } />
 
           <Route path="/my-orders" element={
-            authState.isAuthenticated ? <UserOrdersPage /> : <Navigate to="/login" state={{ from: '/my-orders' }} />
+            authState.isAuthenticated ? (
+              <div className="content-below-navbar"><UserOrdersPage /></div>
+            ) : (
+              <Navigate to="/login" state={{ from: '/my-orders' }} />
+            )
           } />
+          
           <Route path="/admin/orders" element={
             authState.isAuthenticated && authState.user?.isAdmin ? (
-              <AdminOrdersPage />
+              <div className="content-below-navbar"><AdminOrdersPage /></div>
             ) : (
               <Navigate to="/login" />
             )
@@ -230,7 +237,7 @@ function App() {
 
           <Route path="/admin/dashboard" element={
             authState.isAuthenticated && authState.user?.isAdmin ? (
-              <BeerDashboard user={authState.user} />
+              <div className="content-below-navbar"><BeerDashboard user={authState.user} /></div>
             ) : (
               <Navigate to="/login" state={{ from: '/admin/dashboard' }} />
             )
@@ -238,7 +245,7 @@ function App() {
 
           <Route path="/admin/users" element={
             authState.isAuthenticated && authState.user?.isAdmin ? (
-              <UserDashboard user={authState.user} />
+              <div className="content-below-navbar"><UserDashboard user={authState.user} /></div>
             ) : (
               <Navigate to="/login" />
             )
@@ -246,7 +253,7 @@ function App() {
 
           <Route path="/admin/users/edit/:id" element={
             authState.isAuthenticated && authState.user?.isAdmin ? (
-              <EditUserPage user={authState.user} />
+              <div className="content-below-navbar"><EditUserPage user={authState.user} /></div>
             ) : (
               <Navigate to="/login" />
             )
@@ -254,39 +261,42 @@ function App() {
 
           <Route path="/checkout" element={
             authState.isAuthenticated ? (
-              <CheckoutPage
-                cartItems={cart}
-                user={authState.user}
-                onOrderSuccess={handleOrderSuccess}
-              />
+              <div className="content-below-navbar">
+                <CheckoutPage
+                  cartItems={cart}
+                  user={authState.user}
+                  onOrderSuccess={handleOrderSuccess}
+                />
+              </div>
             ) : (
               <Navigate to="/login" state={{ from: '/checkout' }} />
             )
           } />
 
-          {/* ROTA PARA A PÁGINA DE PAGAMENTO PIX */}
           <Route 
             path="/pix-payment/:orderId" 
             element={
               authState.isAuthenticated ? (
-                <PixPaymentWrapper onOrderSuccess={handleOrderSuccess} />
+                <div className="content-below-navbar">
+                  <PixPaymentWrapper onOrderSuccess={handleOrderSuccess} />
+                </div>
               ) : (
                 <Navigate to="/login" state={{ from: '/pix-payment' }} />
               )
             } 
           />
 
-          {/* ROTA PARA A PÁGINA DE SUCESSO DO PAGAMENTO */}
           <Route path="/payment-success" element={
-            <div className="payment-success-page">
-              <h2>🎉 Pedido Confirmado! 🎉</h2>
-              <p>Seu pagamento foi recebido e seu pedido está sendo processado. Em breve você receberá um e-mail com os detalhes.</p>
-              <button onClick={() => navigate('/my-orders')} className="btn btn-primary">Ver Meus Pedidos</button>
-              <button onClick={() => navigate('/')} className="btn btn-secondary">Voltar para a Loja</button>
+            <div className="content-below-navbar">
+              <div className="payment-success-page">
+                <h2>🎉 Pedido Confirmado! 🎉</h2>
+                <p>Seu pagamento foi recebido e seu pedido está sendo processado. Em breve você receberá um e-mail com os detalhes.</p>
+                <button onClick={() => navigate('/my-orders')} className="btn btn-primary">Ver Meus Pedidos</button>
+                <button onClick={() => navigate('/')} className="btn btn-secondary">Voltar para a Loja</button>
+              </div>
             </div>
           } />
 
-          {/* Rota de fallback para 404 - Mantenha no final */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
