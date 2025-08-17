@@ -31,7 +31,7 @@
 .beer-dashboard h2 {
   text-align: center;
   margin: 0 0 20px 0;
-  color: #d3b600;
+  color: #ffffff;
   font-size: 1.8rem;
   text-shadow: 0 0 10px rgba(211, 182, 0, 0.3);
 }
@@ -87,7 +87,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #d3b600;
+  border-color: #ffffff;
   box-shadow: 0 0 0 2px rgba(211, 182, 0, 0.2);
 }
 
@@ -138,19 +138,19 @@ button:active {
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #d3b600, #f0d900);
+  background: linear-gradient(135deg, #ffffff, #ffffff);
   border: none;
   color: #121212;
 }
 
 .submit-btn:hover {
-  background: linear-gradient(135deg, #c0a500, #e0c900);
+  background: linear-gradient(135deg, #ffffff, #ffffff);
 }
 
 .cancel-btn {
   background: transparent;
-  border: 1px solid #d3b600;
-  color: #d3b600;
+  border: 1px solid #ffffff;
+  color: #ffffff;
 }
 
 .cancel-btn:hover {
@@ -163,7 +163,7 @@ button:active {
 }
 
 .beer-list h3 {
-  color: #d3b600;
+  color: #ffffff;
   margin-bottom: 20px;
   font-size: 1.4rem;
 }
@@ -177,7 +177,7 @@ table {
 }
 
 th {
-  background: linear-gradient(135deg, #d3b600, #c0a500);
+  background: linear-gradient(135deg, #ffffff, #ffffff);
   color: #121212;
   padding: 14px 16px;
   text-align: left;
