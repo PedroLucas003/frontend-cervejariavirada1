@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
@@ -8,6 +8,9 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
+  const location = useLocation();
+  const isCheckoutPage = location.pathname === '/checkout';
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -15,7 +18,6 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
 
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
-      // Fecha o menu mobile se redimensionar para desktop
       if (window.innerWidth > 768) {
         setMobileMenuOpen(false);
       }
@@ -48,7 +50,8 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="navbar-left">
-          {isMobile && (
+          {/* BOTÃO DO MENU SÓ APARECE SE FOR MOBILE E NÃO ESTIVER NO CHECKOUT */}
+          {isMobile && !isCheckoutPage && (
             <button className="menu-toggle" onClick={toggleMobileMenu} aria-label="Menu">
               <span className={`menu-icon ${mobileMenuOpen ? 'open' : ''}`}></span>
             </button>
@@ -69,15 +72,12 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
                       <Link to="/" onClick={() => setMenuOpen(false)}>
                         <i className="fas fa-home"></i> Início
                       </Link>
-
                       <Link to="/profile" onClick={() => setMenuOpen(false)}>
                         <i className="fas fa-user"></i> Perfil
                       </Link>
-
                       <Link to="/my-orders" onClick={() => setMenuOpen(false)}>
                         <i className="fas fa-receipt"></i> Meus Pedidos
                       </Link>
-
                       {user?.isAdmin && (
                         <>
                           <Link to="/admin/dashboard" onClick={() => setMenuOpen(false)}>
@@ -91,7 +91,6 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
                           </Link>
                         </>
                       )}
-
                       <Link to="/checkout" onClick={() => setMenuOpen(false)} className="cart-menu-item">
                         <i className="fas fa-shopping-cart"></i> Carrinho
                         {cartItems > 0 && <span className="cart-count">{cartItems}</span>}
@@ -104,7 +103,8 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
                 </div>
               )}
 
-              {isMobile && cartItems > 0 && (
+              {/* ÍCONE DO CARRINHO SÓ APARECE SE O MENU MOBILE ESTIVER FECHADO */}
+              {isMobile && cartItems > 0 && !mobileMenuOpen && (
                 <Link to="/checkout" className="cart-icon">
                   <i className="fas fa-shopping-cart"></i>
                   <span className="cart-count">{cartItems}</span>
@@ -135,17 +135,14 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
               <Link to="/" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item">
                 <i className="fas fa-home"></i> Início
               </Link>
-
               {isAuthenticated ? (
                 <>
                   <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item">
                     <i className="fas fa-user"></i> Perfil
                   </Link>
-
                   <Link to="/my-orders" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item">
                     <i className="fas fa-receipt"></i> Meus Pedidos
                   </Link>
-
                   {user?.isAdmin && (
                     <>
                       <Link to="/admin/dashboard" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item">
@@ -159,7 +156,6 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
                       </Link>
                     </>
                   )}
-
                   <Link to="/checkout" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-item cart-menu-item">
                     <i className="fas fa-shopping-cart"></i> Carrinho
                     {cartItems > 0 && <span className="cart-count">{cartItems}</span>}
@@ -175,8 +171,6 @@ const Navbar = ({ isAuthenticated, onLogout, user, cartItems }) => {
               )}
             </div>
           </div>
-
-          {/* Overlay para fechar o menu ao clicar fora */}
           {mobileMenuOpen && (
             <div className="menu-overlay" onClick={() => setMobileMenuOpen(false)}></div>
           )}
