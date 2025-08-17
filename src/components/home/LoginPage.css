@@ -1,18 +1,20 @@
-/* Estilos baseados no Uiverse.io com tema dark */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 2rem;
+  /* MODIFICADO - Aumenta o espaço no topo para a navbar (Desktop) */
+  padding: 120px 2rem 2rem 2rem;
   background-color: #121212;
+  box-sizing: border-box;
+  /* Garante que o padding não aumente o tamanho total */
 }
 
 .form-container {
   width: 100%;
   max-width: 500px;
   background: linear-gradient(#212121, #212121) padding-box,
-              linear-gradient(145deg, transparent 35%,#e81cff, #40c9ff) border-box;
+    linear-gradient(145deg, transparent 35%, #ffffff, #ffffff) border-box;
   border: 2px solid transparent;
   padding: 32px 24px;
   font-size: 14px;
@@ -184,20 +186,23 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {
   .login-container {
     padding: 1rem;
     align-items: flex-start;
-    padding-top: 3rem;
+    /* MODIFICADO - Aumenta o espaço no topo para a navbar (Mobile) */
+    padding-top: 100px;
   }
-  
+
   .form-container {
     padding: 24px 16px;
   }
-  
+
   .form-row {
     flex-direction: column;
     gap: 15px;
@@ -208,7 +213,7 @@
   .form-container {
     padding: 20px 12px;
   }
-  
+
   .form-container h2 {
     font-size: 1.5rem;
   }
